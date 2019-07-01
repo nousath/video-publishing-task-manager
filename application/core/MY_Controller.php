@@ -7,7 +7,7 @@ class MY_Controller extends CI_Controller{
 	}
 }
 
-class Admin_Controller extends MY_Controller {
+class App_Controller extends MY_Controller {
 	// var $permission = array();
 
 	public function __construct() {
