@@ -134,16 +134,20 @@
 		<ul class="sidebar-menu" data-widget="tree">
 			<li><a href="<?=base_url('dashboard'); ?>"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
 			<li class="header">COMPONENTS</li>
-			<li><a href="#"> <i class="fa fa-file"></i> <span>Topics</span> </a></li>
-			<li><a href="#"> <i class="fa fa-group"></i> <span>Staffs</span> </a></li>
+			<li><a href="<?=base_url('topics'); ?>"> <i class="fa fa-file"></i> <span>Topics</span> </a></li>
+			<li><a href="#"> <i class="fa fa-edit"></i> <span>Scripts</span> </a></li>
+			<li><a href="#"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
+			<li><a href="#"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
+			<li><a href="#"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
 			<li><a href="<?=base_url('admin/viewreports'); ?>"> <i class="fa fa-archive"></i> <span>Reports</span> </a></li>
 		 
 
         <li class="header">SYSTEM</li>
-			<li><a href="<?=base_url('reports'); ?>"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
-			<li><a href="<?=base_url('reports'); ?>"> <i class="fa fa-users"></i> <span>Users</span> </a></li>
+			<li><a href="<?=base_url('reports'); ?>"> <i class="fa fa-shield"></i> <span>Admins</span> </a></li>
+			<li><a href="<?=base_url('groups'); ?>"> <i class="fa fa-users"></i> <span>Groups</span> </a></li>
 			<li><a href="<?=base_url('admin/users'); ?>"> <i class="fa fa-hdd-o"></i> <span>Backup</span></a></li>
-			<li><a href="<?php echo base_url(); ?>"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+			<li><a href="<?php echo base_url(); ?>"><i class="fa fa-book"></i> <span>Manual</span></a></li>
+			<li><a href="<?=base_url('reports'); ?>"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 			
 			<!-- <li class="header">LABELS</li>
 			<li><a href="<?php echo base_url('assets/theme/'); ?>#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
@@ -209,7 +213,7 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.1.0
     </div>
-    <strong>Copyright &copy;<?=date('Y'); ?> | <a href="#">Success Secrets Media Staff</a>| </strong> All rights
+    <strong>Copyright &copy;<?=date('Y'); ?> | <a href="#">Success Secrets Media Staff</a> | </strong> All rights
     reserved.
   </footer>
 

@@ -4,7 +4,7 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Group Edit</h3>
             </div>
-			<?php echo form_open('group/edit/'.$group['id']); ?>
+			<?php echo form_open('groups/edit/'.$group['id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
 					<div class="col-md-6">

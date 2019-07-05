@@ -4,74 +4,16 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Topic Add</h3>
             </div>
-            <?php echo form_open('topic/add'); ?>
+            <?php echo form_open('topic/add_action'); ?>
           	<div class="box-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="stage_id" class="control-label">Topic</label>
-						<div class="form-group">
-							<select name="stage_id" class="form-control">
-								<option value="">select topic</option>
-								<?php 
-								foreach($all_topics as $topic)
-								{
-									$selected = ($topic['id'] == $this->input->post('stage_id')) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$topic['id'].'" '.$selected.'>'.$topic['stage_id'].'</option>';
-								} 
-								?>
-							</select>
+						<label class="control-label" for="username">Topic <?php echo form_error('topic') ?></label>
+						<div class="form-group form-group-lg">
+							<input type="text" name="topic" id="topic" class="form-control" value="<?=$topic; ?>" required="required" pattern="" title="Topic or Title">
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="topic" class="control-label"><span class="text-danger">*</span>Topic</label>
-						<div class="form-group">
-							<input type="text" name="topic" value="<?php echo $this->input->post('topic'); ?>" class="form-control" id="topic" />
-							<span class="text-danger"><?php echo form_error('topic');?></span>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="assigned" class="control-label">Assigned</label>
-						<div class="form-group">
-							<input type="text" name="assigned" value="<?php echo $this->input->post('assigned'); ?>" class="form-control" id="assigned" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="doc" class="control-label">Doc</label>
-						<div class="form-group">
-							<input type="text" name="doc" value="<?php echo $this->input->post('doc'); ?>" class="form-control" id="doc" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="audio" class="control-label">Audio</label>
-						<div class="form-group">
-							<input type="text" name="audio" value="<?php echo $this->input->post('audio'); ?>" class="form-control" id="audio" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="video" class="control-label">Video</label>
-						<div class="form-group">
-							<input type="text" name="video" value="<?php echo $this->input->post('video'); ?>" class="form-control" id="video" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="created_by" class="control-label">Created By</label>
-						<div class="form-group">
-							<input type="text" name="created_by" value="<?php echo $this->input->post('created_by'); ?>" class="form-control" id="created_by" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="created_at" class="control-label">Created At</label>
-						<div class="form-group">
-							<input type="text" name="created_at" value="<?php echo $this->input->post('created_at'); ?>" class="form-control" id="created_at" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="script" class="control-label">Script</label>
-						<div class="form-group">
-							<textarea name="script" class="form-control" id="script"><?php echo $this->input->post('script'); ?></textarea>
-						</div>
-					</div>
+					
 				</div>
 			</div>
           	<div class="box-footer">
