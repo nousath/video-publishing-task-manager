@@ -12,14 +12,8 @@ class App_Controller extends MY_Controller {
 
 	public function __construct() {
 		parent::__construct();
-
-		$group_data = array();
-		if(empty($this->session->userdata('logged_in'))) {
-			$session_data = array('logged_in' => FALSE);
-			$this->session->set_userdata($session_data);
-		}
-		else {
-			$user_id = $this->session->userdata('id');
+		if (!$this->ion_auth->logged_in()){
+			redirect('auth/login');
 		}
 	}
 
@@ -47,24 +41,37 @@ class App_Controller extends MY_Controller {
 		}
 	}
 
-	// ====================================================================
-	// Admin related
-	// ====================================================================
+	/*
+    * This function is invoked from another function to upload the image into the assets folder
+    * and returns the image path
+    */
+	public function upload_image()
+    {
+    	// assets/images/product_image
+        $config['upload_path'] = 'uploads/users/';
+        $config['file_name'] =  uniqid();
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = '1000';
 
-	public function admin_logged_in(){
-		$session_data = $this->session->userdata();
-		if($session_data['admin_logged_in'] == TRUE) {
-			redirect(site_url('dashboard'), 'refresh');
-		}
-	}
+        $config['max_width']  = '1024';
+        $config['max_height']  = '768';
 
-	public function admin_not_logged_in(){
-		$session_data = $this->session->userdata();
-		if($session_data['admin_logged_in'] == FALSE) {
-			// redirect('auth/admin_login', 'refresh');
-			echo '<script>window.location="'.base_url().'auth/admin_login";</script>';
-		}
-	}
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('photo'))
+        {
+            $error = $this->upload->display_errors();
+            return $error;
+        }
+        else
+        {
+            $data = array('upload_data' => $this->upload->data());
+            $type = explode('.', $_FILES['photo']['name']);
+            $type = $type[count($type) - 1];
+            
+            $path = $config['upload_path'].'/'.$config['file_name'].'.'.$type;
+            return ($data == true) ? $path : false;            
+        }
+    }
 
 }
 

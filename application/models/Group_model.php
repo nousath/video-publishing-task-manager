@@ -16,7 +16,7 @@ class Group_model extends CI_Model
      */
     function get_group($id)
     {
-        return $this->db->get_where('groups',array('id'=>$id))->row_array();
+        return $this->db->get_where('groups',array('id'=>$id))->row();
     }
         
     /*
@@ -25,7 +25,7 @@ class Group_model extends CI_Model
     function get_all_groups()
     {
         $this->db->order_by('id', 'desc');
-        return $this->db->get('groups')->result_array();
+        return $this->db->get('groups')->result();
     }
         
     /*

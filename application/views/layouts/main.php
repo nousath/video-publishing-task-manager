@@ -42,6 +42,12 @@
 
 			<!-- jQuery 3 -->
 	<script src="<?php echo base_url('assets/theme/'); ?>bower_components/jquery/dist/jquery.min.js"></script>
+
+	<style>
+		tr[data-href] {
+			cursor: pointer;
+		}
+	</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -135,10 +141,10 @@
 			<li><a href="<?=base_url('dashboard'); ?>"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
 			<li class="header">COMPONENTS</li>
 			<li><a href="<?=base_url('topics'); ?>"> <i class="fa fa-file"></i> <span>Topics</span> </a></li>
-			<li><a href="#"> <i class="fa fa-edit"></i> <span>Scripts</span> </a></li>
+			<li><a href="<?=base_url(); ?>"> <i class="fa fa-edit"></i> <span>Scripts</span> </a></li>
 			<li><a href="#"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
 			<li><a href="#"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
-			<li><a href="#"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
+			<li><a href="<?=base_url('users'); ?>"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
 			<li><a href="<?=base_url('admin/viewreports'); ?>"> <i class="fa fa-archive"></i> <span>Reports</span> </a></li>
 		 
 

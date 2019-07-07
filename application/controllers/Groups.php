@@ -2,11 +2,10 @@
 
  
 class Groups extends App_Controller{
-    function __construct()
-    {
-        parent::__construct();
-        $this->load->model('Group_model');
-    } 
+    // function __construct()
+    // {
+    //     parent::__construct();
+    // } 
 
     /*
      * Listing of groups
