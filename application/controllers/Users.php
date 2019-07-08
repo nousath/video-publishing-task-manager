@@ -14,7 +14,8 @@ class Users extends App_Controller{
         $data = array(
 			'title' => 'Staffs',
 			'content' => 'users/index',
-			'users'  => $this->User_model->get_all_users()
+			'users'  => $this->User_model->get_all_users(),
+			'content_header' => 'Users List',
 		);
         $this->load->view('layouts/main',$data);
     }
@@ -58,7 +59,8 @@ class Users extends App_Controller{
 			); 
             $this->load->view('layouts/main',$data);
         }
-    }  
+	}
+	  
 
     /*
      * Editing a user
@@ -75,26 +77,45 @@ class Users extends App_Controller{
 			if(isset($user_data->id)){
 				$this->load->library('form_validation');
 	
-				$this->form_validation->set_rules('employed_on','Date Employed','trim');
-				$this->form_validation->set_rules('job_describtion','Job Describtion','trim');
-				$this->form_validation->set_rules('salary','Salary','trim');
+				$this->form_validation->set_rules('first_name','First name','trim');
+				$this->form_validation->set_rules('last_name','Last name','trim');
+				$this->form_validation->set_rules('phone','Phone number','trim');
+				$this->form_validation->set_rules('email','Email','trim');
+				$this->form_validation->set_rules('employed_on','Employed on','trim');
 			
-				if($this->form_validation->run())     {   
+				if($this->form_validation->run())     {  
+					
+
 					$data = array(
+						'email' => $this->input->post('email'),
+						'first_name' => $this->input->post('first_name'),
+						'last_name' => $this->input->post('last_name'),
 						'employed_on' => $this->input->post('employed_on'),
-						'job_title' => $this->input->post('job_title'),
-						'job_describtion' => $this->input->post('job_describtion'),
-						'salary' => $this->input->post('salary'),
+						'dob' => $this->input->post('dob'),
+						'phone' => $this->input->post('phone'),
 					);
+
+					if($_FILES['photo']['size'] > 0) {
+
+						$upload_image = $this->upload_image();
+						$upload_image = array('photo' => $upload_image);
+						
+						$this->User_model->update_user($id,$upload_image);
+					}
+		
 	
-					$this->User_model->update_user($id, $data);            
-					redirect('user/index');
+					$this->User_model->update_user($id,$data);            
+					redirect('users/index');
+	
+					// $this->User_model->update_user($id, $data);            
+					// redirect('users/index');
 				}
 				else{
 					$data = array(
 						'title' => 'Edit User',
 						'content' => 'users/edit',
-						'user'  => $this->User_model->get_user($id)
+						'user'  => $this->User_model->get_user($id),
+						'content_header' => 'Edit User',
 					);
 					$this->load->view('layouts/main',$data);
 				}
@@ -134,7 +155,7 @@ class Users extends App_Controller{
 					);
 	
 					$this->User_model->update_user($id,$params);            
-					redirect('user/index');
+					redirect('users/index');
 				}
 				else{
 					$data = array(
