@@ -93,7 +93,7 @@
                   <a href="<?php echo base_url('#'); ?>" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="<?php echo base_url('auth/admin_logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?php echo base_url('auth/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -170,8 +170,8 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dashboard
-        <small>Success Secrets TV</small>
+        <?=$content_header; ?>
+        <small><?php echo $subheader = (!empty($content_subheader)) ? $content_subheader : 'Success Secrets TV'; ?></small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo base_url(); ?>#"><i class="fa fa-dashboard"></i> Home</a></li>

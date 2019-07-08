@@ -12,6 +12,7 @@ class Dashboard extends App_Controller{
 		$data = array(
 			'title' => 'SS Media Staff - Dashboard',
 			'content' => 'dashboard/dashboard.php',
+			'content_header' => 'Dashboard',
 		);
 		
         $this->load->view('layouts/main',$data);

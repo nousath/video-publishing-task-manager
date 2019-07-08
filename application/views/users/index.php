@@ -30,8 +30,8 @@
 						foreach ($users as $u ) {
 
 							
-						echo '	<tr data-href="'.base_url('users/'.$u['id'].'').'">
-									<td><img src="'.base_url('uploads/'.$u['photo'].'').'" class="imgage image-sm image-round"></td>
+						echo '	<tr data-href="'.base_url('profile/index/'.$u['id'].'').'">
+									<td><img src="'.base_url().$u['photo'].'" class="img img-responsive img-circle img-md"></td>
 									<td>'.$u['username'].'</td>
 									<td>'.$u['email'].'</td>
 									<td>'.$u['phone'].'</td>

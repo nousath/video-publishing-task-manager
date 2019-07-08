@@ -47,11 +47,11 @@ class App_Controller extends MY_Controller {
     */
 	public function upload_image()
     {
-    	// assets/images/product_image
-        $config['upload_path'] = 'uploads/users/';
+    	// uploads/users
+        $config['upload_path'] = 'uploads/users';
         $config['file_name'] =  uniqid();
         $config['allowed_types'] = 'gif|jpg|png';
-        $config['max_size'] = '1000';
+        $config['max_size'] = '1024';
 
         $config['max_width']  = '1024';
         $config['max_height']  = '768';
@@ -60,7 +60,7 @@ class App_Controller extends MY_Controller {
         if ( ! $this->upload->do_upload('photo'))
         {
             $error = $this->upload->display_errors();
-            return $error;
+			return $error;
         }
         else
         {
@@ -68,7 +68,7 @@ class App_Controller extends MY_Controller {
             $type = explode('.', $_FILES['photo']['name']);
             $type = $type[count($type) - 1];
             
-            $path = $config['upload_path'].'/'.$config['file_name'].'.'.$type;
+			$path = $config['upload_path'].'/'.$config['file_name'].'.'.$type;
             return ($data == true) ? $path : false;            
         }
     }
