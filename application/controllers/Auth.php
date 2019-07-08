@@ -12,9 +12,7 @@ class Auth extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->database();
-		$this->load->library(['ion_auth', 'form_validation']);
-		$this->load->helper(['url', 'language']);
+		// $this->load->database();
 
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -31,14 +29,7 @@ class Auth extends CI_Controller
 		{
 			// redirect them to the login page
 			redirect('auth/login', 'refresh');
-		}
-		else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
-		{
-			// redirect them to the home page because they must be an administrator to view this
-			show_error('You must be an administrator to view this page.');
-		}
-		else
-		{
+		}else{
 			$this->data['title'] = $this->lang->line('index_heading');
 			
 			// set the flash data error message if there is one
@@ -47,15 +38,9 @@ class Auth extends CI_Controller
 			//list the users
 			$this->data['users'] = $this->ion_auth->users()->result();
 			
-			//USAGE NOTE - you can do more complicated queries like this
-			//$this->data['users'] = $this->ion_auth->where('field', 'value')->users()->result();
 			
-			foreach ($this->data['users'] as $k => $user)
-			{
-				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
-			}
-
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'index', $this->data);
+			redirect(base_url('dashboard'),'refresh');
+			
 		}
 	}
 
@@ -94,23 +79,17 @@ class Auth extends CI_Controller
 		else
 		{
 			// the user is not logging in so display the login page
-			// set the flash data error message if there is one
-			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+			
+			$data = array(
+				'identity' => set_value('identity'),
+				'password' => set_value('password'),
+				'title'    => 'Login',
+				// set the flash data error message if there is one
+				'message'  => (validation_errors()) ? validation_errors() : $this->session->flashdata('message'),
+			);
 
-			$this->data['identity'] = [
-				'name' => 'identity',
-				'id' => 'identity',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('identity'),
-			];
-
-			$this->data['password'] = [
-				'name' => 'password',
-				'id' => 'password',
-				'type' => 'password',
-			];
-
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'login', $this->data);
+			$this->load->view('auth/login', $data);
+			// $this->_render_page('auth' . DIRECTORY_SEPARATOR . 'login', $data); // A second option for loading the view
 		}
 	}
 
