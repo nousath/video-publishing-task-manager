@@ -5,86 +5,91 @@ if (!defined('BASEPATH'))
 
 class Topics extends CI_Controller
 {
-    function __construct()
-    {
-        parent::__construct();
-        $this->load->model('Topics_model');
-        $this->load->library('form_validation');
-    }
+    // function __construct()
+    // {
+    //     parent::__construct();
+    //     $this->load->model('Topics_model');
+    //     $this->load->library('form_validation');
+    // }
 
     public function index()
     {
-        $q = urldecode($this->input->get('q', TRUE));
-        $start = intval($this->input->get('start'));
-        
-        if ($q <> '') {
-            $config['base_url'] = base_url() . 'topics/index.html?q=' . urlencode($q);
-            $config['first_url'] = base_url() . 'topics/index.html?q=' . urlencode($q);
-        } else {
-            $config['base_url'] = base_url() . 'topics/index.html';
-            $config['first_url'] = base_url() . 'topics/index.html';
-        }
+		$data = array(
+			'title' => 'Topics',
+			'content' => 'topics/index',
+			'topics'  => $this->Topics_model->get_all(),
+			'content_header' => 'Topics List',
+		);
 
-        $config['per_page'] = 10;
-        $config['page_query_string'] = TRUE;
-        $config['total_rows'] = $this->Topics_model->total_rows($q);
-        $topics = $this->Topics_model->get_limit_data($config['per_page'], $start, $q);
-
-        $this->load->library('pagination');
-        $this->pagination->initialize($config);
-
-        $data = array(
-            'topics_data' => $topics,
-            'q' => $q,
-            'pagination' => $this->pagination->create_links(),
-            'total_rows' => $config['total_rows'],
-            'start' => $start,
-        );
-        $this->load->view('topics/topics_list', $data);
+        $this->load->view('layouts/main', $data);
     }
 
-    public function read($id) 
-    {
-        $row = $this->Topics_model->get_by_id($id);
-        if ($row) {
-            $data = array(
-		'id' => $row->id,
-		'topic' => $row->topic,
-		'stage_id' => $row->stage_id,
-		'user_id' => $row->user_id,
-		'assigned' => $row->assigned,
-		'script' => $row->script,
-		'doc' => $row->doc,
-		'audio' => $row->audio,
-		'video' => $row->video,
-		'created_by' => $row->created_by,
-		'created_at' => $row->created_at,
-	    );
-            $this->load->view('topics/topics_read', $data);
-        } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('topics'));
-        }
-    }
+    public function doc($id = ''){
+		if($id == ''){
+			
+			redirect(base_url('topics'),'refresh');
+			
+		}else{
+			$data = array(
+				'title' => 'Document',
+				'content' => 'topics/doc',
+				'topic'  => $this->Topics_model->get_by_id($id),
+				'content_header' => 'Document',
+			);
+	
+			$this->load->view('layouts/main', $data);
+		}
+       
+	}
+	
 
-    public function create() 
-    {
+	public function audio($id = ''){
+		if($id == ''){
+			
+			redirect(base_url('topics'),'refresh');
+			
+		}else{
+			$data = array(
+				'title' => 'Audio',
+				'content' => 'topics/audio',
+				'topic'  => $this->Topics_model->get_by_id($id),
+				'content_header' => 'Audio',
+			);
+	
+			$this->load->view('layouts/main', $data);
+		}
+       
+	}
+
+	public function video($id = ''){
+		if($id == ''){
+			
+			redirect(base_url('topics'),'refresh');
+			
+		}else{
+			$data = array(
+				'title' => 'Video',
+				'content' => 'topics/video',
+				'topic'  => $this->Topics_model->get_by_id($id),
+				'content_header' => 'Vedeo',
+			);
+	
+			$this->load->view('layouts/main', $data);
+		}
+       
+	}
+
+    public function add() {
         $data = array(
-            'button' => 'Create',
-            'action' => site_url('topics/create_action'),
-	    'id' => set_value('id'),
-	    'topic' => set_value('topic'),
-	    'stage_id' => set_value('stage_id'),
-	    'user_id' => set_value('user_id'),
-	    'assigned' => set_value('assigned'),
-	    'script' => set_value('script'),
-	    'doc' => set_value('doc'),
-	    'audio' => set_value('audio'),
-	    'video' => set_value('video'),
-	    'created_by' => set_value('created_by'),
-	    'created_at' => set_value('created_at'),
-	);
-        $this->load->view('topics/topics_form', $data);
+			'topic' => set_value('topic'),
+			'assignto' => set_value('assignto'),
+			'content' => 'topics/topics_form',
+			'content_header' => 'Topic',
+			'title' => 'New Topic',
+			'users' => $this->User_model->get_all_users(),
+		);
+
+        $this->load->view('layouts/main', $data);
     }
     
     public function create_action() 
@@ -94,21 +99,19 @@ class Topics extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
-            $data = array(
-		'topic' => $this->input->post('topic',TRUE),
-		'stage_id' => $this->input->post('stage_id',TRUE),
-		'user_id' => $this->input->post('user_id',TRUE),
-		'assigned' => $this->input->post('assigned',TRUE),
-		'script' => $this->input->post('script',TRUE),
-		'doc' => $this->input->post('doc',TRUE),
-		'audio' => $this->input->post('audio',TRUE),
-		'video' => $this->input->post('video',TRUE),
-		'created_by' => $this->input->post('created_by',TRUE),
-		'created_at' => $this->input->post('created_at',TRUE),
-	    );
+			$user = $this->ion_auth->user()->row();
+			$assign = $this->input->post('assingto',TRUE);
+
+			$data = array(
+				'topic' => $this->input->post('topic',TRUE),
+				'user_id' => $this->input->post('assingto',TRUE),
+				'stage_id' => 5,
+				'created_by' => $user->id,
+				'created_at' => time(),
+			);
 
             $this->Topics_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
+            $this->session->set_flashdata('success_message', 'Topic has been created');
             redirect(site_url('topics'));
         }
     }
@@ -172,29 +175,20 @@ class Topics extends CI_Controller
 
         if ($row) {
             $this->Topics_model->delete($id);
-            $this->session->set_flashdata('message', 'Delete Record Success');
+            $this->session->set_flashdata('delete_message', 'Delete Record Success');
             redirect(site_url('topics'));
         } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
+            $this->session->set_flashdata('delete_message', 'Record Not Found');
             redirect(site_url('topics'));
         }
     }
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('topic', 'topic', 'trim|required');
-	$this->form_validation->set_rules('stage_id', 'stage id', 'trim|required');
-	$this->form_validation->set_rules('user_id', 'user id', 'trim|required');
-	$this->form_validation->set_rules('assigned', 'assigned', 'trim|required');
-	$this->form_validation->set_rules('script', 'script', 'trim|required');
-	$this->form_validation->set_rules('doc', 'doc', 'trim|required');
-	$this->form_validation->set_rules('audio', 'audio', 'trim|required');
-	$this->form_validation->set_rules('video', 'video', 'trim|required');
-	$this->form_validation->set_rules('created_by', 'created by', 'trim|required');
-	$this->form_validation->set_rules('created_at', 'created at', 'trim|required');
-
-	$this->form_validation->set_rules('id', 'id', 'trim');
-	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+		$this->form_validation->set_rules('topic', 'topic', 'trim|required');
+		$this->form_validation->set_rules('stage_id', 'stage id', 'trim');
+		$this->form_validation->set_rules('assigned', 'assigned', 'trim');
+		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
 }
@@ -202,5 +196,4 @@ class Topics extends CI_Controller
 /* End of file Topics.php */
 /* Location: ./application/controllers/Topics.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2019-07-08 11:06:27 */
-/* http://harviacode.com */
+

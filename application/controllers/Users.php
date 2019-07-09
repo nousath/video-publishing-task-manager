@@ -17,6 +17,7 @@ class Users extends App_Controller{
 			'users'  => $this->User_model->get_all_users(),
 			'content_header' => 'Users List',
 		);
+		
         $this->load->view('layouts/main',$data);
     }
 
