@@ -30,20 +30,20 @@
 						foreach ($users as $u ) {
 
 							
-						echo '	<tr data-href="'.base_url('profile/index/'.$u['id'].'').'">
-									<td><img src="'.base_url().$u['photo'].'" class="img img-responsive img-circle img-md"></td>
-									<td>'.$u['username'].'</td>
-									<td>'.$u['email'].'</td>
-									<td>'.$u['phone'].'</td>
-									<td>'.$u['first_name'].'</td>
-									<td>'.$u['last_name'].'</td>
-									<td>'.$u['job_title'].'</td>
-									<td>'.$u['salary'].'</td>
-									<td>'.$u['tasks_completed'].'</td>							
-									<td>'.date('d/m/Y H:i:s', $u['last_login']).'</td>							
+						echo '	<tr data-href="'.base_url('profile/index/'.$u->id.'').'">
+									<td><img src="'.base_url().$u->photo.'" class="img img-responsive img-circle img-md"></td>
+									<td>'.$u->username.'</td>
+									<td>'.$u->email.'</td>
+									<td>'.$u->phone.'</td>
+									<td>'.$u->first_name.'</td>
+									<td>'.$u->last_name.'</td>
+									<td>'.$u->job_title.'</td>
+									<td>'.$u->salary.'</td>
+									<td>'.$u->tasks_completed.'</td>							
+									<td>'.date('d/m/Y H:i:s', $u->last_login).'</td>							
 									<td>
-										<a href="'.site_url('users/edit/'.$u['id']).'" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-										<a href="'.site_url('users/remove/'.$u['id']).'" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
+										<a href="'.site_url('users/edit/'.$u->id).'" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
+										<a href="'.site_url('users/remove/'.$u->id).'" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
 									</td>
 								</tr>
 							';

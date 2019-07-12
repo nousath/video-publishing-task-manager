@@ -17,19 +17,32 @@
 			<div class="box-body">
 				<div class="row">
 					<div class="col-md-8">
+						<p>Fields marked (<span class="text text-danger">*</span>) are compulsory.</p>
 						<form action="<?=base_url('topics/create_action'); ?>" method="post">
 							<div class="form-group form-group-lg">
-								<label for="varchar">Title <?php echo form_error('topic') ?></label>
+								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Title <?php echo form_error('topic') ?></label>
 								<input type="text" class="form-control" name="topic" id="topic" placeholder="For example: Henry Ford's 7 Secrets To Success" value="<?php echo $topic; ?>" />
 							</div>
 
 							<div class="form-group form-group-lg">
-								<label for="varchar">Assign Topic To <?php echo form_error('assignto') ?></label>
-								<select name="assignto" id="assignto" class="form-control">
+								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Assign Topic To <?php echo form_error('assignto') ?></label>
+								<select name="assignto" id="assignto" class="form-control" required>
 									<option></option>
 									<?php 
 										foreach ($users as $user ) {
 											echo '<option value="'.$user->id.'">'.$user->username.'</option>';
+										}
+									?>
+								</select>
+							</div>
+
+							<div class="form-group form-group-lg">
+								<label for="varchar">Stage This Topic<?php echo form_error('stage') ?></label>
+								<select name="stage" id="stage" class="form-control">
+									<option></option>
+									<?php 
+										foreach ($stages as $stage ) {
+											echo '<option value="'.$stage->id.'">'.$stage->name.'</option>';
 										}
 									?>
 								</select>

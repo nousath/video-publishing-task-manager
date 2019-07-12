@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Topics extends CI_Controller
+class Topics extends App_Controller
 {
     // function __construct()
     // {
@@ -34,7 +34,7 @@ class Topics extends CI_Controller
 				'title' => 'Document',
 				'content' => 'topics/doc',
 				'topic'  => $this->Topics_model->get_by_id($id),
-				'content_header' => 'Document',
+				'content_header' => 'View Script',
 			);
 	
 			$this->load->view('layouts/main', $data);
@@ -86,7 +86,8 @@ class Topics extends CI_Controller
 			'content' => 'topics/topics_form',
 			'content_header' => 'Topic',
 			'title' => 'New Topic',
-			'users' => $this->User_model->get_all_users(),
+			'users' => $this->User_model->get_by_usertype(2),
+			'stages' => $this->Stages_model->get_all(),
 		);
 
         $this->load->view('layouts/main', $data);
@@ -97,20 +98,49 @@ class Topics extends CI_Controller
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->create();
+            $this->add();
         } else {
 			$user = $this->ion_auth->user()->row();
-			$assign = $this->input->post('assingto',TRUE);
+			// $assign = $this->input->post('assignto',TRUE);
 
 			$data = array(
 				'topic' => $this->input->post('topic',TRUE),
-				'user_id' => $this->input->post('assingto',TRUE),
-				'stage_id' => 5,
+				'user_id' => $this->input->post('assignto',TRUE),
+				'stage_id' => $this->input->post('stage',TRUE),
 				'created_by' => $user->id,
 				'created_at' => time(),
 			);
 
-            $this->Topics_model->insert($data);
+			$this->Topics_model->insert($data);
+			$inserted_topic_id = $this->db->insert_id();
+
+			// register assignment of topic to writer
+			$user_id = $this->input->post('assignto',TRUE);
+
+			$data = array(
+				'topic_id' => $inserted_topic_id,
+				'user_id' => $user_id,
+				'stage_id' => 1,
+			);
+
+			// update -> add user's id to 
+			$this->Assignment_model->insert($data);
+
+			
+
+			// get notification template to send
+			$notification_template = $this->Notifications_templates_model->get_by_type('new_topic');
+			
+			$data = array(
+				'send_to' => $user_id,
+				'body'    => $notification_template->message,
+				'created_at' => time(),
+			);
+
+			// send notification to user
+			$this->Notifications_model->insert($data);
+
+
             $this->session->set_flashdata('success_message', 'Topic has been created');
             redirect(site_url('topics'));
         }
@@ -124,18 +154,18 @@ class Topics extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('topics/update_action'),
-		'id' => set_value('id', $row->id),
-		'topic' => set_value('topic', $row->topic),
-		'stage_id' => set_value('stage_id', $row->stage_id),
-		'user_id' => set_value('user_id', $row->user_id),
-		'assigned' => set_value('assigned', $row->assigned),
-		'script' => set_value('script', $row->script),
-		'doc' => set_value('doc', $row->doc),
-		'audio' => set_value('audio', $row->audio),
-		'video' => set_value('video', $row->video),
-		'created_by' => set_value('created_by', $row->created_by),
-		'created_at' => set_value('created_at', $row->created_at),
-	    );
+				'id' => set_value('id', $row->id),
+				'topic' => set_value('topic', $row->topic),
+				'stage_id' => set_value('stage_id', $row->stage_id),
+				'user_id' => set_value('user_id', $row->user_id),
+				'assigned' => set_value('assigned', $row->assigned),
+				'script' => set_value('script', $row->script),
+				'doc' => set_value('doc', $row->doc),
+				'audio' => set_value('audio', $row->audio),
+				'video' => set_value('video', $row->video),
+				'created_by' => set_value('created_by', $row->created_by),
+				'created_at' => set_value('created_at', $row->created_at),
+				);
             $this->load->view('topics/topics_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
@@ -181,11 +211,24 @@ class Topics extends CI_Controller
             $this->session->set_flashdata('delete_message', 'Record Not Found');
             redirect(site_url('topics'));
         }
-    }
+	}
+	
+	// public function assign_to_writer(){
+	// 	$topics = $this->Topics_model->get_by_stage_and_assigned(5, 0);
+	// 	$writers = $this->User_model->get_by_usertype(4);
+	// }
+
+	public function assign_to_voiceartist(){
+		
+	}
+
+	public function assign_to_editor(){
+		
+	}
 
     public function _rules() 
     {
-		$this->form_validation->set_rules('topic', 'topic', 'trim|required');
+		$this->form_validation->set_rules('topic', 'Topic', 'trim|required');
 		$this->form_validation->set_rules('stage_id', 'stage id', 'trim');
 		$this->form_validation->set_rules('assigned', 'assigned', 'trim');
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');

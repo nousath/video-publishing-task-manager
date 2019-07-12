@@ -62,8 +62,11 @@
 										$stage = $this->Stages_model->get_by_id($topic->stage_id);
 										$stage_name = $stage->name;
 										$user = $this->ion_auth->user($topic->user_id)->row();
-										$assigned = ($topic->user_id == 0 ) ? 'Not assinged' : 'Assinged';
+										$assigned = ($topic->user_id != '' ) ? 'Assinged' : 'Not assinged';
 										$created_by = $this->ion_auth->user($topic->created_by)->row();
+										$doc = (!empty($topic->doc)) ? '<a href="'.base_url('topics/doc/'.$topic->id.'').'" class="btn btn-warning btn-xs"><i class="fa fa-file-word-o"></i> View/Download</a>' : 'Script Unavailable';
+										$audio = (!empty($topic->audio)) ? '<a href="'.base_url('topics/audio/'.$topic->id.'').'" class="btn btn-primary btn-xs"><i class="fa fa-microphone"></i> Listen/Download</a>' : 'Audio Unavailable';
+										$video = (!empty($topic->video)) ? '<a href="'.base_url('topics/video/'.$topic->id.'').'" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Watch/Download</a>' : 'Video Unavailable';
 
 										echo '<tr>
 												<td>'.$sn.'</td>
@@ -72,13 +75,13 @@
 												<td>'.$user->username.'</td>
 												<td>'.$assigned.'</td>
 												<td>
-													<a href="'.base_url('topics/doc/'.$topic->id.'').'" class="btn btn-warning btn-xs"><i class="fa fa-file-word-o"></i> View/Download</a>
+													'.$doc.'
 												</td>
 												<td>
-													<a href="'.base_url('topics/audio/'.$topic->id.'').'" class="btn btn-primary btn-xs"><i class="fa fa-microphone"></i> Listen/Download</a>
+													'.$audio.'
 												</td>
 												<td>
-													<a href="'.base_url('topics/video/'.$topic->id.'').'" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Watch/Download</a>
+													'.$video.'
 												</td>
 												<td>'.$created_by->username.'</td>
 												<td>'.date('d/m/Y H:i:s', $topic->created_at).'</td>

@@ -51,7 +51,7 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
+<?php $user = $this->ion_auth->user()->row(); ?>
   <header class="main-header">
 
     <!-- Logo -->
@@ -69,38 +69,174 @@
         <span class="sr-only">Toggle navigation</span>
       </a>
       <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
+			<div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-envelope-o"></i>
+              <span class="label label-success">4</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">You have 4 messages</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li><!-- start message -->
+                    <a href="#">
+                      <div class="pull-left">
+                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                      </div>
+                      <h4>
+                        Support Team
+                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                      </h4>
+                      <p>Why not buy a new awesome theme?</p>
+                    </a>
+                  </li>
+                  <!-- end message -->
+                  <li>
+                    <a href="#">
+                      <div class="pull-left">
+                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                      </div>
+                      <h4>
+                        AdminLTE Design Team
+                        <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                      </h4>
+                      <p>Why not buy a new awesome theme?</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <div class="pull-left">
+                        <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                      </div>
+                      <h4>
+                        Developers
+                        <small><i class="fa fa-clock-o"></i> Today</small>
+                      </h4>
+                      <p>Why not buy a new awesome theme?</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <div class="pull-left">
+                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                      </div>
+                      <h4>
+                        Sales Department
+                        <small><i class="fa fa-clock-o"></i> Yesterday</small>
+                      </h4>
+                      <p>Why not buy a new awesome theme?</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <div class="pull-left">
+                        <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                      </div>
+                      <h4>
+                        Reviewers
+                        <small><i class="fa fa-clock-o"></i> 2 days</small>
+                      </h4>
+                      <p>Why not buy a new awesome theme?</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="footer"><a href="#">See All Messages</a></li>
+            </ul>
+          </li>
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="fa fa-bell-o"></i>
+							<?php 
+								$number_of_unread_notifications = $this->Notifications_model->count_unread_notifications($user->id, 0); 
+								$notifications = $this->Notifications_model->get_by_user($user->id, 5);
+
+								// create excerpt
+								function excerpt($title) {
+									$new = substr($title, 0, 27);
+					
+									if (strlen($title) > 30) {
+											return $new.'...';
+									} else {
+											return $title;
+									}
+								}
+
+
+							?>
+							<?php if($number_of_unread_notifications > 0){
+								echo '<span class="label label-warning">'.$number_of_unread_notifications.'</span>
+											<ul class="dropdown-menu">
+												<li class="header">You have '.$number_of_unread_notifications.' notifications</li>
+												<li>
+													<!-- inner menu: contains the actual data -->
+													<ul class="menu">';
+													
+													foreach ($notifications as $notification ) {
+														if($notification->read_status == 0){
+															echo '<li style="background-color: #D7D9DF;">
+																		<a href="'.base_url('notifications/'.$notification->id.'').'">
+																			<i class="fa fa-clock-o text-aqua"></i><strong> '.date('M, d -', $notification->created_at).'</strong> '.excerpt($notification->body).'
+																		</a>
+																	</li>';
+														}else{
+															echo '<li>
+																		<a href="'.base_url('notifications/'.$notification->id.'').'">
+																			<i class="fa fa-clock-o text-aqua"></i><strong> '.date('M, d -', $notification->created_at).'</strong> '.excerpt($notification->body).'
+																		</a>
+																	</li>';
+														}
+														
+													}
+
+										echo '</ul>
+														</li>
+														<li class="footer"><a href="'.base_url('notifications').'">View all</a></li>
+
+												</ul>';
+							}
+							?>
+								
+            </a>
+          </li>
+         
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
-            <a href="<?php echo base_url(); ?>#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?php echo base_url(); ?>dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs"><?php echo $this->session->userdata('admin_username'); ?></span>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="<?php echo base_url($user->photo); ?>" class="user-image" alt="User Image">
+              <span class="hidden-xs"> <?php echo $user->username; ?> </span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <!-- <img src="<?php echo base_url(); ?>dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
+                <img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image">
 
                 <p>
-                  <?php echo $this->session->userdata('admin_username'); ?>
-                  <!-- <small>Member since Nov. 2012</small> -->
+								<?php echo $user->first_name.' '.$user->last_name; ?>
+                  <small>Employed since <?=date('M - Y', $user->employed_on); ?></small>
                 </p>
               </li>
+              <!-- /Menu Body -->
+             
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="<?php echo base_url('#'); ?>" class="btn btn-default btn-flat">Profile</a>
+                  <a href="<?=base_url('profile/index/'.$user->id.''); ?>" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="<?php echo base_url('auth/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?=base_url('auth/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>
-            <a href="<?php echo base_url('assets/theme/'); ?>#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
           </li>
         </ul>
       </div>
@@ -113,16 +249,13 @@
     <section class="sidebar">
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <div class="row">
-					<div class="pull-left image">
-						<span><i class="fa fa-circle"></i></span>
-						<!-- <img src="<?php echo base_url('assets/theme/'); ?>dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
+					<div class="pull-left image">						
+						<img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image"> <!-- height="50" width="50" -->
 					</div>
 					<div class="pull-left info">
-						<p><?php echo $this->session->userdata('admin_username'); ?></p>
+						<p><?php echo $user->first_name.' '.$user->last_name; ?></p>
 						<a href="<?php echo base_url('assets/theme/'); ?>#"><i class="fa fa-circle text-success"></i> Online</a>
 					</div>
-				</div>
       </div>
       <!-- search form -->
       <!-- <form action="#" method="get" class="sidebar-form">

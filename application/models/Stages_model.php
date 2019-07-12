@@ -8,7 +8,7 @@ class Stages_model extends CI_Model
 
     public $table = 'stages';
     public $id = 'id';
-    public $order = 'DESC';
+    public $order = 'ASC';
 
     function __construct()
     {
