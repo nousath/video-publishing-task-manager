@@ -254,7 +254,7 @@
 					</div>
 					<div class="pull-left info">
 						<p><?php echo $user->first_name.' '.$user->last_name; ?></p>
-						<a href="<?php echo base_url('assets/theme/'); ?>#"><i class="fa fa-circle text-success"></i> Online</a>
+						<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
 					</div>
       </div>
       <!-- search form -->
