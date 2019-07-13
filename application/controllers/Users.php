@@ -17,6 +17,7 @@ class Users extends App_Controller{
 			'users'  => $this->User_model->get_all_users(),
 			'content_header' => 'Users List',
 		);
+		
         $this->load->view('layouts/main',$data);
     }
 
@@ -41,7 +42,8 @@ class Users extends App_Controller{
                                     'created_on' => time(),
                                     'job_title' => $group->name,
                                     'salary' => $this->input->post('salary'),
-                                    'job_describtion' => $this->input->post('job_describtion'),
+									'job_describtion' => $this->input->post('job_describtion'),
+									'usertype' => $this->input->post('group'),
                                     );
 
             $group = array($this->input->post('group')); // Sets user to admin.
@@ -55,6 +57,7 @@ class Users extends App_Controller{
             $data = array(
 				'content' => 'users/add',
 				'title' => 'New User',
+				'content_header' => 'Create User',
 				'groups' => $this->Group_model->get_all_groups(),
 			); 
             $this->load->view('layouts/main',$data);

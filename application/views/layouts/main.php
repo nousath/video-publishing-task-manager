@@ -27,7 +27,10 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/sweetalert.css'); ?>" >
 	
 	<!-- DataTables -->
-  <link rel="stylesheet" href="<?php echo base_url('assets/theme/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css'); ?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/theme/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css'); ?>">
+	
+	<!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="<?php echo base_url('assets/theme/'); ?>plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,8 +43,6 @@
   <link rel="stylesheet"
         href="<?php echo base_url('assets/theme/'); ?>https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-			<!-- jQuery 3 -->
-	<script src="<?php echo base_url('assets/theme/'); ?>bower_components/jquery/dist/jquery.min.js"></script>
 
 	<style>
 		tr[data-href] {
@@ -51,7 +52,7 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
+<?php $user = $this->ion_auth->user()->row(); ?>
   <header class="main-header">
 
     <!-- Logo -->
@@ -69,38 +70,185 @@
         <span class="sr-only">Toggle navigation</span>
       </a>
       <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
+			<div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="fa fa-envelope-o"></i>
+							<?php 
+								$number_of_unread_messages = $this->Messages_model->count_unread_messages($user->id, 0); 
+								$messages = $this->Messages_model->get_by_user($user->id, 5);
+
+								// create excerpt
+								function excerpt($title) {
+									$new = substr($title, 0, 27);
+					
+									if (strlen($title) > 30) {
+											return $new.'...';
+									} else {
+											return $title;
+									}
+								}
+
+								function message_subject_excerpt($title) {
+									$new = substr($title, 0, 15);
+					
+									if (strlen($title) > 18) {
+											return $new.'...';
+									} else {
+											return $title;
+									}
+								}
+
+								
+
+								if($number_of_unread_messages > 0){
+									echo '<span class="label label-success">'.$number_of_unread_messages.'</span>
+									<ul class="dropdown-menu">
+										<li class="header">You have '.$number_of_unread_messages.' messages</li>
+										<li>
+											<!-- inner menu: contains the actual data -->
+											<ul class="menu">
+											<!-- start message -->
+												';
+
+
+												foreach ($messages as $message ) {
+													$send_message_time = new DateTime(date('d-m-Y H:i:s', $message->send_at));
+													$view_message_time = new DateTime("NOW");
+
+													$how_long = $send_message_time->diff($view_message_time);
+
+													if($how_long->d > 0 ){
+
+														$time_ago = $how_long->d.' days '.$how_long->h.' hours '.$how_long->i.' minutes';
+						
+													}else{
+														$time_ago = $how_long->h .' hours '. $how_long->i.' minutes';
+													}
+						
+
+													$sender = $this->ion_auth->user($message->send_from)->row();
+
+													echo '<li>
+																<a href="'.base_url('messages/read/'.$message->id.'').'">
+																	<div class="pull-left">
+																		<img src="'.base_url($sender->photo).'" class="img-circle" alt="User Image">
+																	</div>
+																	<h4>
+																		'.message_subject_excerpt($message->subject).'
+																		<small><i class="fa fa-clock-o"></i> '.$time_ago.'</small>
+																	</h4>
+																	<p>'.excerpt($message->body).'</p>
+																</a>
+															</li>';
+												}
+
+										echo '
+												<!-- end message -->
+											
+											</ul>
+										</li>
+										<li class="footer"><a href="'.base_url('messages').'">See All Messages</a></li>
+									</ul>';
+								}
+
+
+							?>
+
+              
+            </a>
+          </li>
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="fa fa-bell-o"></i>
+							<?php 
+								$number_of_unread_notifications = $this->Notifications_model->count_unread_notifications($user->id, 0); 
+								$notifications = $this->Notifications_model->get_by_user($user->id, 5);
+
+								// create excerpt
+								// function excerpt($title) {
+								// 	$new = substr($title, 0, 27);
+					
+								// 	if (strlen($title) > 30) {
+								// 			return $new.'...';
+								// 	} else {
+								// 			return $title;
+								// 	}
+								// }
+
+
+							?>
+							<?php if($number_of_unread_notifications > 0){
+								echo '<span class="label label-warning">'.$number_of_unread_notifications.'</span>
+											<ul class="dropdown-menu">
+												<li class="header">You have '.$number_of_unread_notifications.' notifications</li>
+												<li>
+													<!-- inner menu: contains the actual data -->
+													<ul class="menu">';
+													
+													foreach ($notifications as $notification ) {
+														if($notification->read_status == 0){
+															echo '<li style="background-color: #D7D9DF;">
+																		<a href="'.base_url('notifications/'.$notification->id.'').'">
+																			<i class="fa fa-clock-o text-aqua"></i><strong> '.date('M, d -', $notification->created_at).'</strong> '.excerpt($notification->body).'
+																		</a>
+																	</li>';
+														}else{
+															echo '<li>
+																		<a href="'.base_url('notifications/'.$notification->id.'').'">
+																			<i class="fa fa-clock-o text-aqua"></i><strong> '.date('M, d -', $notification->created_at).'</strong> '.excerpt($notification->body).'
+																		</a>
+																	</li>';
+														}
+														
+													}
+
+										echo '</ul>
+														</li>
+														<li class="footer"><a href="'.base_url('notifications').'">View all</a></li>
+
+												</ul>';
+							}
+							?>
+								
+            </a>
+          </li>
+         
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
-            <a href="<?php echo base_url(); ?>#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?php echo base_url(); ?>dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs"><?php echo $this->session->userdata('admin_username'); ?></span>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="<?php echo base_url($user->photo); ?>" class="user-image" alt="User Image">
+              <span class="hidden-xs"> <?php echo $user->username; ?> </span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <!-- <img src="<?php echo base_url(); ?>dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
+                <img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image">
 
                 <p>
-                  <?php echo $this->session->userdata('admin_username'); ?>
-                  <!-- <small>Member since Nov. 2012</small> -->
+								<?php echo $user->first_name.' '.$user->last_name; ?>
+                  <small>Employed since <?=date('M - Y', $user->employed_on); ?></small>
                 </p>
               </li>
+              <!-- /Menu Body -->
+             
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="<?php echo base_url('#'); ?>" class="btn btn-default btn-flat">Profile</a>
+                  <a href="<?=base_url('profile/index/'.$user->id.''); ?>" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="<?php echo base_url('auth/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?=base_url('auth/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>
-            <a href="<?php echo base_url('assets/theme/'); ?>#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
           </li>
         </ul>
       </div>
@@ -113,16 +261,13 @@
     <section class="sidebar">
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <div class="row">
-					<div class="pull-left image">
-						<span><i class="fa fa-circle"></i></span>
-						<!-- <img src="<?php echo base_url('assets/theme/'); ?>dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
+					<div class="pull-left image">						
+						<img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image"> <!-- height="50" width="50" -->
 					</div>
 					<div class="pull-left info">
-						<p><?php echo $this->session->userdata('admin_username'); ?></p>
-						<a href="<?php echo base_url('assets/theme/'); ?>#"><i class="fa fa-circle text-success"></i> Online</a>
+						<p><?php echo $user->first_name.' '.$user->last_name; ?></p>
+						<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
 					</div>
-				</div>
       </div>
       <!-- search form -->
       <!-- <form action="#" method="get" class="sidebar-form">
@@ -232,6 +377,8 @@
 </div>
 <!-- ./wrapper -->
 
+			<!-- jQuery 3 -->
+			<script src="<?php echo base_url('assets/theme/'); ?>bower_components/jquery/dist/jquery.min.js"></script>
 
 	<!-- Bootstrap 3.3.7 -->
 	<script src="<?php echo base_url('assets/theme/'); ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -258,10 +405,11 @@
 
 	<!-- Datepicker -->
 	<script src="<?php echo base_url('assets/theme/js/datapicker/bootstrap-datepicker.js'); ?>"></script>
-
+	
 	<!-- DataTables -->
 	<script src="<?php echo base_url('assets/theme/bower_components/datatables.net/js/jquery.dataTables.min.js'); ?> "></script>
 	<script src="<?php echo base_url('assets/theme/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js'); ?> "></script>
+
 
 	<!-- Datatable -->
 	  <script src="<?php echo base_url('assets/theme/js/'); ?>data-table/bootstrap-table.js"></script>
@@ -273,11 +421,30 @@
     <script src="<?php echo base_url('assets/theme/js/'); ?>data-table/colResizable-1.5.source.js"></script>
 		<script src="<?php echo base_url('assets/theme/js/'); ?>data-table/bootstrap-table-export.js"></script>
 
-		<script>
-			// $(document).ready(function () {
+		<!-- Bootstrap WYSIHTML5 -->
+	<script src="<?=base_url('assets/theme/'); ?>plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
-			// });
-		</script>
+	  <script>
+			$(function () {
+				//Add text editor
+				$("#compose-textarea").wysihtml5();
+			});
+
+
+
+		$(function () {
+			$('#example1').DataTable()
+			$('#mailTable').DataTable({
+			'paging'      : true,
+			'lengthChange': false,
+			'searching'   : false,
+			'ordering'    : true,
+			'info'        : true,
+			'autoWidth'   : false
+			})
+		})
+	</script>
+
 
 
 

@@ -15,7 +15,24 @@ class App_Controller extends MY_Controller {
 		if (!$this->ion_auth->logged_in()){
 			redirect('auth/login');
 		}
+
+
 	}
+
+
+	// public function text_excerpt($title) {
+    //     $new = substr($title, 0, 10);
+
+    //     if (strlen($title) > 13) {
+    //         return $new.'...';
+    //     } else {
+    //         return $title;
+    //     }
+    // }
+
+	// public function count_unread_user_notifications($user_id, $read_status){
+		
+	// }
 
 
 	public function logged_in(){
@@ -60,7 +77,12 @@ class App_Controller extends MY_Controller {
         if ( ! $this->upload->do_upload('photo'))
         {
             $error = $this->upload->display_errors();
-			return $error;
+			// echo '<script>
+			// 		alert('.$error.');
+			// 	</script>';
+
+			// echo $error;
+			exit($error);
         }
         else
         {
@@ -71,7 +93,9 @@ class App_Controller extends MY_Controller {
 			$path = $config['upload_path'].'/'.$config['file_name'].'.'.$type;
             return ($data == true) ? $path : false;            
         }
-    }
+	}
+	
+	
 
 }
 
