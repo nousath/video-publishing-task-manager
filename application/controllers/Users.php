@@ -57,6 +57,7 @@ class Users extends App_Controller{
             $data = array(
 				'content' => 'users/add',
 				'title' => 'New User',
+				'content_header' => 'Create User',
 				'groups' => $this->Group_model->get_all_groups(),
 			); 
             $this->load->view('layouts/main',$data);

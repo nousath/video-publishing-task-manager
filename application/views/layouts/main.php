@@ -27,7 +27,10 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/sweetalert.css'); ?>" >
 	
 	<!-- DataTables -->
-  <link rel="stylesheet" href="<?php echo base_url('assets/theme/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css'); ?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/theme/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css'); ?>">
+	
+	<!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="<?php echo base_url('assets/theme/'); ?>plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,8 +43,6 @@
   <link rel="stylesheet"
         href="<?php echo base_url('assets/theme/'); ?>https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-			<!-- jQuery 3 -->
-	<script src="<?php echo base_url('assets/theme/'); ?>bower_components/jquery/dist/jquery.min.js"></script>
 
 	<style>
 		tr[data-href] {
@@ -74,87 +75,10 @@
           <!-- Messages: style can be found in dropdown.less-->
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">4</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <!-- end message -->
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        AdminLTE Design Team
-                        <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Developers
-                        <small><i class="fa fa-clock-o"></i> Today</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Sales Department
-                        <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Reviewers
-                        <small><i class="fa fa-clock-o"></i> 2 days</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
-            </ul>
-          </li>
-          <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="fa fa-bell-o"></i>
+							<i class="fa fa-envelope-o"></i>
 							<?php 
-								$number_of_unread_notifications = $this->Notifications_model->count_unread_notifications($user->id, 0); 
-								$notifications = $this->Notifications_model->get_by_user($user->id, 5);
+								$number_of_unread_messages = $this->Messages_model->count_unread_messages($user->id, 0); 
+								$messages = $this->Messages_model->get_by_user($user->id, 5);
 
 								// create excerpt
 								function excerpt($title) {
@@ -166,6 +90,94 @@
 											return $title;
 									}
 								}
+
+								function message_subject_excerpt($title) {
+									$new = substr($title, 0, 15);
+					
+									if (strlen($title) > 18) {
+											return $new.'...';
+									} else {
+											return $title;
+									}
+								}
+
+								
+
+								if($number_of_unread_messages > 0){
+									echo '<span class="label label-success">'.$number_of_unread_messages.'</span>
+									<ul class="dropdown-menu">
+										<li class="header">You have '.$number_of_unread_messages.' messages</li>
+										<li>
+											<!-- inner menu: contains the actual data -->
+											<ul class="menu">
+											<!-- start message -->
+												';
+
+
+												foreach ($messages as $message ) {
+													$send_message_time = new DateTime(date('d-m-Y H:i:s', $message->send_at));
+													$view_message_time = new DateTime("NOW");
+
+													$how_long = $send_message_time->diff($view_message_time);
+
+													if($how_long->d > 0 ){
+
+														$time_ago = $how_long->d.' days '.$how_long->h.' hours '.$how_long->i.' minutes';
+						
+													}else{
+														$time_ago = $how_long->h .' hours '. $how_long->i.' minutes';
+													}
+						
+
+													$sender = $this->ion_auth->user($message->send_from)->row();
+
+													echo '<li>
+																<a href="'.base_url('messages/read/'.$message->id.'').'">
+																	<div class="pull-left">
+																		<img src="'.base_url($sender->photo).'" class="img-circle" alt="User Image">
+																	</div>
+																	<h4>
+																		'.message_subject_excerpt($message->subject).'
+																		<small><i class="fa fa-clock-o"></i> '.$time_ago.'</small>
+																	</h4>
+																	<p>'.excerpt($message->body).'</p>
+																</a>
+															</li>';
+												}
+
+										echo '
+												<!-- end message -->
+											
+											</ul>
+										</li>
+										<li class="footer"><a href="'.base_url('messages').'">See All Messages</a></li>
+									</ul>';
+								}
+
+
+							?>
+
+              
+            </a>
+          </li>
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="fa fa-bell-o"></i>
+							<?php 
+								$number_of_unread_notifications = $this->Notifications_model->count_unread_notifications($user->id, 0); 
+								$notifications = $this->Notifications_model->get_by_user($user->id, 5);
+
+								// create excerpt
+								// function excerpt($title) {
+								// 	$new = substr($title, 0, 27);
+					
+								// 	if (strlen($title) > 30) {
+								// 			return $new.'...';
+								// 	} else {
+								// 			return $title;
+								// 	}
+								// }
 
 
 							?>
@@ -365,6 +377,8 @@
 </div>
 <!-- ./wrapper -->
 
+			<!-- jQuery 3 -->
+			<script src="<?php echo base_url('assets/theme/'); ?>bower_components/jquery/dist/jquery.min.js"></script>
 
 	<!-- Bootstrap 3.3.7 -->
 	<script src="<?php echo base_url('assets/theme/'); ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -391,10 +405,11 @@
 
 	<!-- Datepicker -->
 	<script src="<?php echo base_url('assets/theme/js/datapicker/bootstrap-datepicker.js'); ?>"></script>
-
+	
 	<!-- DataTables -->
 	<script src="<?php echo base_url('assets/theme/bower_components/datatables.net/js/jquery.dataTables.min.js'); ?> "></script>
 	<script src="<?php echo base_url('assets/theme/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js'); ?> "></script>
+
 
 	<!-- Datatable -->
 	  <script src="<?php echo base_url('assets/theme/js/'); ?>data-table/bootstrap-table.js"></script>
@@ -406,11 +421,30 @@
     <script src="<?php echo base_url('assets/theme/js/'); ?>data-table/colResizable-1.5.source.js"></script>
 		<script src="<?php echo base_url('assets/theme/js/'); ?>data-table/bootstrap-table-export.js"></script>
 
-		<script>
-			// $(document).ready(function () {
+		<!-- Bootstrap WYSIHTML5 -->
+	<script src="<?=base_url('assets/theme/'); ?>plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
-			// });
-		</script>
+	  <script>
+			$(function () {
+				//Add text editor
+				$("#compose-textarea").wysihtml5();
+			});
+
+
+
+		$(function () {
+			$('#example1').DataTable()
+			$('#mailTable').DataTable({
+			'paging'      : true,
+			'lengthChange': false,
+			'searching'   : false,
+			'ordering'    : true,
+			'info'        : true,
+			'autoWidth'   : false
+			})
+		})
+	</script>
+
 
 
 
