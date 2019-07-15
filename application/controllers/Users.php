@@ -102,7 +102,6 @@ class Users extends App_Controller{
 
 						$upload_image = $this->upload_image();
 						$upload_image = array('photo' => $upload_image);
-						
 						$this->User_model->update_user($id,$upload_image);
 					}
 		

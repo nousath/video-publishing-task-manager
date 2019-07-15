@@ -120,7 +120,7 @@ class Topics extends App_Controller
 			$data = array(
 				'topic_id' => $inserted_topic_id,
 				'user_id' => $user_id,
-				'stage_id' => 1,
+				'stage_id' => 2, // writing stage
 			);
 
 			// update -> add user's id to 

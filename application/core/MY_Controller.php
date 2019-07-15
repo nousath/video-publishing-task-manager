@@ -62,8 +62,7 @@ class App_Controller extends MY_Controller {
     * This function is invoked from another function to upload the image into the assets folder
     * and returns the image path
     */
-	public function upload_image()
-    {
+	public function upload_image(){
     	// uploads/users
         $config['upload_path'] = 'uploads/users';
         $config['file_name'] =  uniqid();
@@ -88,6 +87,32 @@ class App_Controller extends MY_Controller {
         {
             $data = array('upload_data' => $this->upload->data());
             $type = explode('.', $_FILES['photo']['name']);
+            $type = $type[count($type) - 1];
+            
+			$path = $config['upload_path'].'/'.$config['file_name'].'.'.$type;
+            return ($data == true) ? $path : false;            
+        }
+	}
+
+	public function upload_ducument(){
+    	// uploads/users
+        $config['upload_path'] = 'uploads/documents';
+        $config['file_name'] =  uniqid();
+        $config['allowed_types'] = 'docx|doc';
+        $config['max_size'] = '1024';
+
+        // $config['max_width']  = '1024';
+        // $config['max_height']  = '768';
+
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('document'))
+        {
+            $error = $this->upload->display_errors();
+			return $error;
+
+        }else{
+            $data = array('upload_data' => $this->upload->data());
+            $type = explode('.', $_FILES['document']['name']);
             $type = $type[count($type) - 1];
             
 			$path = $config['upload_path'].'/'.$config['file_name'].'.'.$type;
