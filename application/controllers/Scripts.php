@@ -5,9 +5,17 @@ if (!defined('BASEPATH'))
 
 class Scripts extends App_Controller
 {
-    // function __construct(){
-    //     parent::__construct();
-    // }
+    function __construct(){
+		parent::__construct();
+		
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype != 1 && $user->usertype != 2){
+			
+			redirect(base_url('dashboard'),'refresh');
+				
+		}
+    }
 
     public function index(){
 
@@ -37,10 +45,6 @@ class Scripts extends App_Controller
 			);
 	
 			$this->load->view('layouts/main', $data);
-		}else{
-			
-			redirect(base_url('dahsboard'),'refresh');
-			
 		}
 		
 	}
@@ -136,6 +140,17 @@ class Scripts extends App_Controller
 				);
 
 				$this->Notifications_model->insert($data);
+
+
+				// add to number of competed projects
+				$user = $this->ion_auth->user()->row();
+				$task_completed = ($approved == 1) ? $user->tasks_completed + 1 : 0;
+
+				$data = array(
+					'tasks_completed' => $task_completed,
+				);
+
+				$this->User_model->update_user($user->id, $data);
 
 				// redirect admin back to scriipts page with an alert
 				$this->session->set_flashdata('toggle_success', 'Approval status updated!');

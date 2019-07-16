@@ -41,11 +41,12 @@
 	</div>
 	<!-- /.box-header -->
 	<div class="box-body">
-		<form method="post" action="<?=base_url('messages/compose_action'); ?>">
+		<form method="post" action="<?=base_url('messages/compose_action'); ?>" id="message_form">
 			<div class="form-group">
-			<label for="varchar">Recipient <?php echo form_error('send_to') ?></label>
+			
 			<?php if($logged_in_user->usertype != 1): ?>
-				<select class="form-control" name="send_to">
+				<label for="varchar">Recipient <?php echo form_error('send_to') ?></label>
+				<select class="form-control" name="send_to" required="required">
 					<option>To:</option>
 					<?php 
 						foreach ($users as $user ) {
@@ -54,7 +55,8 @@
 					?>
 				</select>
 			<?php else: ?>
-				<select class="form-control" name="send_to">
+				<label for="varchar">Recipient <?php echo form_error('send_to') ?></label>
+				<select class="form-control" name="send_to" required="required">
 					<option>To:</option>
 					<option value="all"><strong>All Staff</strong></option>
 					<option value="writers"><strong>Writers</strong></option>
@@ -86,7 +88,7 @@
 				<p class="help-block">Max. 32MB</p>
 			</div> -->
 			</div>
-	<!-- /.box-body -->
+			<!-- /.box-body -->
 			<div class="box-footer">
 				<div class="pull-right">
 					<button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
@@ -102,3 +104,15 @@
 	<!-- /. box -->
 </div>
 <!-- /.col -->
+
+<!-- <script> onsubmit="return validateForm()"
+	function validateForm() {
+		var reciepient = document.forms["message_form"]["send_to"].value;
+		if (reciepient == "") {
+			alert("Reciepient must be selected");
+			// alert("Name must be filled out");
+			return false;
+		}
+	}
+
+</script> -->

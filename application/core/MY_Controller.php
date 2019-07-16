@@ -16,7 +16,6 @@ class App_Controller extends MY_Controller {
 			redirect('auth/login');
 		}
 
-
 	}
 
 
