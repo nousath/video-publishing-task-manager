@@ -10,19 +10,39 @@ class Scripts extends App_Controller
     // }
 
     public function index(){
-		
+
 		$user = $this->ion_auth->user()->row(); 
 
-       $data = array(
-		'scripts_by_user' => $this->Assignment_model->get_by_user_and_stage($user->id, 2),
-		'scripts' => $this->Scripts_model->get_by_user($user->id),
-		'assigned_topics' => $this->Topics_model->get_by_writer_assigned($user->id),
-		'content' => 'scripts/scripts_view',
-		'content_header' => 'Manage Script',
-		'title' => 'Manage Scripts',
-	   );
+		if($user->usertype == 1){
+			// admin view
+			$data = array(
+				'scripts' => $this->Scripts_model->get_all(),
+				'content' => 'scripts/admin_scripts_view',
+				'content_header' => 'Manage Scripts',
+				'title' => 'Manage Scripts',
+			);
+	
+			$this->load->view('layouts/main', $data);
 
-	   $this->load->view('layouts/main', $data);
+
+		}elseif($user->usertype == 2){
+			// writer view
+			$data = array(
+				'scripts_by_user' => $this->Assignment_model->get_by_user_and_stage($user->id, 2),
+				'scripts' => $this->Scripts_model->get_by_user($user->id),
+				'assigned_topics' => $this->Topics_model->get_by_writer_assigned($user->id),
+				'content' => 'scripts/scripts_view',
+				'content_header' => 'Manage Script',
+				'title' => 'Manage Scripts',
+			);
+	
+			$this->load->view('layouts/main', $data);
+		}else{
+			
+			redirect(base_url('dahsboard'),'refresh');
+			
+		}
+		
 	}
 	
 	public function upload(){

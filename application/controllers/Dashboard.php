@@ -27,7 +27,7 @@ class Dashboard extends App_Controller{
 					'title' => 'SS Media Staff - Dashboard',
 					'content' => 'dashboard/writer',
 					'content_header' => 'Dashboard',
-					'scripts_by_user' => $this->Assignment_model->get_by_user_and_stage($user->id, 2),
+					'scripts_by_user' => $this->Topics_model->get_by_writer_assigned($user->id),
 					'messages' => $this->Messages_model->get_by_user($user->id),
 				);
 				
@@ -37,8 +37,10 @@ class Dashboard extends App_Controller{
 			case 3:
 				$data = array(
 					'title' => 'SS Media Staff - Dashboard',
-					'content' => 'dashboard/dashboard.php',
+					'content' => 'dashboard/voiceartist',
 					'content_header' => 'Dashboard',
+					'audios_by_user' => $this->Topics_model->get_by_artist_assigned($user->id),
+					'messages' => $this->Messages_model->get_by_user($user->id),
 				);
 				
 				$this->load->view('layouts/main',$data);

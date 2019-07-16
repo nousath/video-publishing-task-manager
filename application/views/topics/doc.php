@@ -3,7 +3,7 @@
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header with-border">
-				<a href="<?=base_url($topic->doc); ?>" class="btn btn-info btn-sm"><i class="fa fa-download"></i> Download</a>
+				<a href="<?=base_url($topic->doc); ?>" class="btn btn-info btn-lg"><i class="fa fa-download"></i> Download Document</a>
 				<!-- <h3 class="box-title">Script Document</h3> -->
 
 				<div class="box-tools pull-right">

@@ -89,11 +89,9 @@ class Topics_model extends CI_Model
     }
 
     // update data
-    function update($id, $data)
-    {
+    function update($id, $data){
         $this->db->where($this->id, $id);
 		$this->db->update($this->table, $data);
-		return true;
     }
 
     // delete data
