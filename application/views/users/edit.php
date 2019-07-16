@@ -7,7 +7,8 @@
 			<!-- 
 				Check if logged in user is admin
 			 -->
-			<?php if (!$this->ion_auth->is_admin()): ?>
+			<?php $user = $this->ion_auth->user()->row(); ?>
+			<?php if ($user->usertype != 1): ?>
 		<!-- <div class="row"> -->
 			<form role="form" action="<?=base_url('users/edit/'.$user->id); ?>" method="post" enctype="multipart/form-data">
 			<div class="box-body">
