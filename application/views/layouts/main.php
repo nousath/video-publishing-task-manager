@@ -340,7 +340,7 @@
 				  # user is a writer
 				  echo '<ul class="sidebar-menu" data-widget="tree">
 							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
-							<li class="header">COMPONENTS</li>
+							<li class="header">SECTIONS</li>
 							<li><a href="'.base_url('scripts').'"> <i class="fa fa-file"></i> <span>Scripts</span> </a></li>
 							<li><a href="'.base_url('messages').'"> <i class="fa fa-envelope"></i> <span>Messages</span> </a></li>
 							<li><a href="'.base_url('notifications').'"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
@@ -353,13 +353,11 @@
 				  # user is a voice artist...
 				  echo '<ul class="sidebar-menu" data-widget="tree">
 							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
-							<li class="header">COMPONENTS</li>
+							<li class="header">SECTIONS</li>
 							<li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
-							<li><a href="#"> <i class="fa fa-check"></i> <span>Approved</span> </a></li>
-							<li><a href="#"> <i class="fa fa-times"></i> <span>Declined</span> </a></li>
-							<li><a href="#"> <i class="fa fa-envelope"></i> <span>Messages</span> </a></li>
-							<li><a href="#"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
-							<li><a href="'.base_url('users').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
+							<li><a href="'.base_url('messages').'"> <i class="fa fa-envelope"></i> <span>Messages</span> </a></li>
+							<li><a href="'.base_url('notifications').'"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
+							<li><a href="'.base_url('profile/index/'.$user->id.'').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
 						</ul>';
 				  break;
 
@@ -367,7 +365,7 @@
 				  # user is an editor...
 				  echo '<ul class="sidebar-menu" data-widget="tree">
 							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
-							<li class="header">COMPONENTS</li>
+							<li class="header">SECTIONS</li>
 							<li><a href="'.base_url('topics').'"> <i class="fa video-camera"></i> <span>Videos</span> </a></li>
 							<li><a href="#"> <i class="fa fa-check"></i> <span>Approved Scripts</span> </a></li>
 							<li><a href="#"> <i class="fa fa-times"></i> <span>Declined Scripts</span> </a></li>

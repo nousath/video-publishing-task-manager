@@ -12,17 +12,17 @@
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>Task completed</b> <a class="pull-right">1,322</a>
+                  <b>Tasks completed</b> <a class="pull-right"><?=$user->tasks_completed; ?></a>
                 </li>
-                <li class="list-group-item">
+                <!-- <li class="list-group-item">
                   <b>Task uncompleted</b> <a class="pull-right">543</a>
-                </li>
+                </li> -->
                 <!-- <li class="list-group-item">
                   <b>Friends</b> <a class="pull-right">13,287</a>
                 </li> -->
               </ul>
 
-              <a href="#" class="btn btn-primary btn-block"><i class="fa fa-envelope"></i><b> Send Message</b></a>
+              <a href="<?=base_url('users/edit/'.$user->id.''); ?>" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><b> Edit Profile</b></a>
             </div>
             <!-- /.box-body -->
           </div>
@@ -38,7 +38,7 @@
               <strong><i class="fa fa-book margin-r-5"></i> Bio</strong>
 
               <p class="text-muted">
-                B.S. in Computer Science from the University of Tennessee at Knoxville
+                B.S. in Computer Science from Lagos state University, Nigeria.
               </p>
 
               <hr>

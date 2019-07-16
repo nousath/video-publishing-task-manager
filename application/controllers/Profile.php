@@ -10,13 +10,13 @@
 				redirect(base_url('dashboard'),'refresh');
 				
 			}else{
-
 				$data = array(
 					'title' => 'My Profile',
 					'user' => $this->User_model->get_user($id),
 					'content' => 'users/profile',
 					'content_header' => 'User Profile',
-					'content_subheader' => ''
+					'content_subheader' => '',
+					// 'uncompleted_tasks' => $this->topic
 				);
 
 				$this->load->view('layouts/main', $data);
