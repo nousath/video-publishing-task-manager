@@ -84,7 +84,7 @@
 								// if($scripts_by_user != null){
 									foreach ($scripts as $script ) {
 										$topic = $this->Topics_model->get_by_id($script->topic_id);
-										$status = ($script->approved == 0) ? 'Not Approved' : 'Approved';
+										$status = ($script->approved == 0) ? 'Not Approved <i class="fa fa-times"></i>' : 'Approved <i class="fa fa-check"></i>';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
@@ -118,3 +118,4 @@
 	<!-- /.col -->
 </div>
 <!-- /.row -->
+

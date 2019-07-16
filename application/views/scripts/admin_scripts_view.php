@@ -17,22 +17,13 @@
 				<div class="row">
 					<div class="col-md-9">
 						<legend>Submitted Scripts</legend>
-						<?php if ($this->session->flashdata('decline_success')): ?>			
+						<?php if ($this->session->flashdata('toggle_success')): ?>			
 						<?php echo '<div class="alert alert-success">
 													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-													<strong>'.$this->session->flashdata('decline_success').'</strong>
+													<strong>'.$this->session->flashdata('toggle_success').'</strong>
 												</div>'; 
 						?>
 						<?php endif; ?>
-
-						<?php if ($this->session->flashdata('approve_success')): ?>			
-						<?php echo '<div class="alert alert-success">
-													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-													<strong>'.$this->session->flashdata('approve_success').'</strong>
-												</div>'; 
-						?>
-						<?php endif; ?>
-
 						
 						<table class="table table-hover">
 							<thead>
@@ -52,7 +43,7 @@
 									foreach ($scripts as $script ) {
 										$topic = $this->Topics_model->get_by_id($script->topic_id);
 										$submitted_by = $this->ion_auth->user($script->submitted_by)->row(); 
-										$status = ($script->approved == 0) ? '<a href="'.base_url('scripts/approve/'.$script->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('scripts/decline/'.$script->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
+										$status = ($script->approved == 0) ? '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>

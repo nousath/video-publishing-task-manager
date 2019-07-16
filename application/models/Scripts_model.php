@@ -69,7 +69,8 @@ class Scripts_model extends CI_Model
     function update($id, $data)
     {
         $this->db->where($this->id, $id);
-        $this->db->update($this->table, $data);
+		$this->db->update($this->table, $data);
+		return true;
     }
 
     // delete data

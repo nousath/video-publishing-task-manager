@@ -110,24 +110,39 @@ class Scripts extends App_Controller
 		}
 	}
 
-    public function read($id) {
-        $row = $this->Scripts_model->get_by_id($id);
-        if ($row) {
-            $data = array(
-			'id' => $row->id,
-			'topic_id' => $row->topic_id,
-			'submitted_by' => $row->submitted_by,
-			'submitted_at' => $row->submitted_at,
-			'approved' => $row->approved,
-			);
-            $this->load->view('scripts/scripts_read', $data);
-        } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('scripts'));
-        }
-    }
+   public function toggle_approve($script_id = ''){
+	   if($script_id == ''){
+		   
+		   redirect(base_url('scripts'),'refresh');
+		   
+	   }else{
+			// update aproval status for script
+			$script = $this->Scripts_model->get_by_id($script_id);
 
-    
+			$approved = ($script->approved == 0) ? 1 : 0;
+			
+			$data = array(
+				'approved' => $approved,
+			);
+
+			if($this->Scripts_model->update($script_id, $data)){
+				// send notification to user
+				$notification_template = $this->Notifications_templates_model->get_by_type('admin_response_script');
+				
+				$data = array(
+					'send_to' => $script->submitted_by,
+					'body'    => $notification_template->message,
+					'created_at' => time(),
+				);
+
+				$this->Notifications_model->insert($data);
+
+				// redirect admin back to scriipts page with an alert
+				$this->session->set_flashdata('toggle_success', 'Approval status updated!');
+				redirect(site_url('scripts'));
+			}
+	   }
+   }
     
     public function delete($id) {
         $row = $this->Scripts_model->get_by_id($id);
@@ -147,14 +162,5 @@ class Scripts extends App_Controller
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
 	}
 	
-
-	public function _rules() {
-		$this->form_validation->set_rules('topic_id', 'topic id', 'trim|required');
-		$this->form_validation->set_rules('submitted_by', 'submitted by', 'trim|required');
-		$this->form_validation->set_rules('submitted_at', 'submitted at', 'trim|required');
-		$this->form_validation->set_rules('approved', 'approved', 'trim|required');
-
-		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
-    }
 
 }
