@@ -180,9 +180,11 @@ class Users extends App_Controller{
         $user = $this->User_model->get_user($id);
 
         // check if the user exists before trying to delete it
-        if(isset($user['id']))
+        if(isset($user->id))
         {
-            $this->User_model->delete_user($id);
+			$this->User_model->delete_user($id);
+
+			$this->session->set_flashdata('delete_success', 'Staff Deleted!');
             redirect('users/index');
         }
         else
