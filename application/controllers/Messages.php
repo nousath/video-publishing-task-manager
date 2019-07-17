@@ -143,9 +143,9 @@ class Messages extends App_Controller
     }
 
     public function _rules() {
-		$this->form_validation->set_rules('send_to', 'send to', 'trim|required');
-		$this->form_validation->set_rules('subject', 'subject', 'trim|required');
-		$this->form_validation->set_rules('body', 'body', 'trim|required');
+		$this->form_validation->set_rules('send_to', 'Send to', 'trim|required');
+		$this->form_validation->set_rules('subject', 'Subject', 'trim|required');
+		$this->form_validation->set_rules('body', 'Body', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 

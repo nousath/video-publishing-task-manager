@@ -4,13 +4,23 @@
 class Users extends App_Controller{
     // function __construct()
     // {
-    //     parent::__construct();
+	// 	parent::__construct();
+		
     // } 
 
     /*
      * Listing of users
      */
-    function index(){        
+    function index(){ 
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype != 1){
+			
+			redirect(base_url('dashboard'),'refresh');
+				
+		}
+		
+		
         $data = array(
 			'title' => 'Staffs',
 			'content' => 'users/index',
@@ -24,7 +34,17 @@ class Users extends App_Controller{
     /*
      * Adding a new user
      */
-    function add(){   
+    function add(){  
+		
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype != 1){
+			
+			redirect(base_url('dashboard'),'refresh');
+				
+		}
+
+		
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('password','Password','required|min_length[6]');
@@ -102,7 +122,6 @@ class Users extends App_Controller{
 
 						$upload_image = $this->upload_image();
 						$upload_image = array('photo' => $upload_image);
-						
 						$this->User_model->update_user($id,$upload_image);
 					}
 		
@@ -181,9 +200,11 @@ class Users extends App_Controller{
         $user = $this->User_model->get_user($id);
 
         // check if the user exists before trying to delete it
-        if(isset($user['id']))
+        if(isset($user->id))
         {
-            $this->User_model->delete_user($id);
+			$this->User_model->delete_user($id);
+
+			$this->session->set_flashdata('delete_success', 'Staff Deleted!');
             redirect('users/index');
         }
         else

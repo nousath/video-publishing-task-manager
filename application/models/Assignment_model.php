@@ -8,6 +8,8 @@ class Assignment_model extends CI_Model
 
     public $table = 'assignment';
     public $id = 'id';
+    public $user_id = 'user_id';
+    public $stage_id = 'stage_id';
     public $order = 'DESC';
 
     function __construct()
@@ -27,27 +29,16 @@ class Assignment_model extends CI_Model
     {
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
-    }
-    
-    // get total rows
-    function total_rows($q = NULL) {
-        $this->db->like('id', $q);
-	$this->db->or_like('topic_id', $q);
-	$this->db->or_like('user_id', $q);
-	$this->db->from($this->table);
-        return $this->db->count_all_results();
-    }
+	}
+	
 
-    // get data with limit and search
-    function get_limit_data($limit, $start = 0, $q = NULL) {
-        $this->db->order_by($this->id, $this->order);
-        $this->db->like('id', $q);
-		$this->db->or_like('topic_id', $q);
-		$this->db->or_like('user_id', $q);
-		$this->db->limit($limit, $start);
+	function get_by_user_and_stage($user_id, $stage_id){
+		$this->db->where($this->user_id, $user_id);
+		$this->db->where($this->stage_id, $stage_id);
         return $this->db->get($this->table)->result();
-    }
-
+	}
+    
+    
     // insert data
     function insert($data)
     {

@@ -44,7 +44,7 @@
 									$colors_array = array('danger', 'info', 'primary', 'success', 'warning');
 
 									foreach ($notifications as $notification ) {
-										$pick_random_color = rand(1, count($colors_array));
+										$pick_random_color = rand(0, 4);
 										
 										echo '<div class="panel box box-'.$colors_array[$pick_random_color].'">
 											<div class="box-header with-border">

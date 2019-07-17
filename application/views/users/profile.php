@@ -12,17 +12,17 @@
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>Task completed</b> <a class="pull-right">1,322</a>
+                  <b>Tasks completed</b> <a class="pull-right"><?=$user->tasks_completed; ?></a>
                 </li>
-                <li class="list-group-item">
+                <!-- <li class="list-group-item">
                   <b>Task uncompleted</b> <a class="pull-right">543</a>
-                </li>
+                </li> -->
                 <!-- <li class="list-group-item">
                   <b>Friends</b> <a class="pull-right">13,287</a>
                 </li> -->
               </ul>
 
-              <a href="#" class="btn btn-primary btn-block"><i class="fa fa-envelope"></i><b> Send Message</b></a>
+              <a href="<?=base_url('users/edit/'.$user->id.''); ?>" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><b> Edit Profile</b></a>
             </div>
             <!-- /.box-body -->
           </div>
@@ -38,7 +38,7 @@
               <strong><i class="fa fa-book margin-r-5"></i> Bio</strong>
 
               <p class="text-muted">
-                B.S. in Computer Science from the University of Tennessee at Knoxville
+                B.S. in Computer Science from Lagos state University, Nigeria.
               </p>
 
               <hr>
@@ -68,9 +68,9 @@
         <div class="col-md-9">
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#activity" data-toggle="tab">Activity</a></li>
-              <li><a href="#timeline" data-toggle="tab">Timeline</a></li>
-              <li><a href="#settings" data-toggle="tab">Settings</a></li>
+              <li class="active"><a href="#activity" data-toggle="tab">Recent Projects</a></li>
+              <!-- <li><a href="#timeline" data-toggle="tab">Timeline</a></li> -->
+              <!-- <li><a href="#settings" data-toggle="tab">Settings</a></li> -->
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="activity">
@@ -83,16 +83,16 @@
               <!-- /.tab-pane -->
               <div class="tab-pane" id="timeline">
                 <!-- The timeline -->
-                <ul class="timeline timeline-inverse">
+                <!-- <ul class="timeline timeline-inverse"> -->
                   <!-- timeline time label -->
-                  <li class="time-label">
+                  <!-- <li class="time-label">
                         <span class="bg-red">
                           10 Feb. 2014
                         </span>
-                  </li>
+                  </li> -->
                   <!-- /.timeline-label -->
                   <!-- timeline item -->
-                  <li>
+                  <!-- <li>
                     <i class="fa fa-envelope bg-blue"></i>
 
                     <div class="timeline-item">
@@ -111,10 +111,10 @@
                         <a class="btn btn-danger btn-xs">Delete</a>
                       </div>
                     </div>
-                  </li>
+                  </li> -->
                   <!-- END timeline item -->
                   <!-- timeline item -->
-                  <li>
+                  <!-- <li>
                     <i class="fa fa-user bg-aqua"></i>
 
                     <div class="timeline-item">
@@ -123,10 +123,10 @@
                       <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request
                       </h3>
                     </div>
-                  </li>
+                  </li> -->
                   <!-- END timeline item -->
                   <!-- timeline item -->
-                  <li>
+                  <!-- <li>
                     <i class="fa fa-comments bg-yellow"></i>
 
                     <div class="timeline-item">
@@ -143,14 +143,14 @@
                         <a class="btn btn-warning btn-flat btn-xs">View comment</a>
                       </div>
                     </div>
-                  </li>
+                  </li> -->
                   <!-- END timeline item -->
                   <!-- timeline time label -->
-                  <li class="time-label">
+                  <!-- <li class="time-label">
                         <span class="bg-green">
                           3 Jan. 2014
                         </span>
-                  </li>
+                  </li> -->
                   <!-- /.timeline-label -->
                   <!-- timeline item -->
                   <!-- <li>
@@ -170,14 +170,14 @@
                     </div>
                   </li> -->
                   <!-- END timeline item -->
-                  <li>
+                  <!-- <li>
                     <i class="fa fa-clock-o bg-gray"></i>
-                  </li>
-                </ul>
+                  </li> -->
+                <!-- </ul> -->
               </div>
               <!-- /.tab-pane -->
 
-              <div class="tab-pane" id="settings">
+              <!-- <div class="tab-pane" id="settings">
                 <form class="form-horizontal">
                   <div class="form-group">
                     <label for="inputName" class="col-sm-2 control-label">Name</label>
@@ -229,7 +229,7 @@
                     </div>
                   </div>
                 </form>
-              </div>
+              </div> -->
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->

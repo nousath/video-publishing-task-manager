@@ -17,7 +17,7 @@
 			<div class="box-body">
 				<div class="row">
 					<div class="col-md-8">
-						<video controls width="250">
+						<video controls width="950" autoplay>
 							<source src="<?=base_url($topic->video)?>">
 						</video>
 					</div>
