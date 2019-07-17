@@ -316,8 +316,8 @@
 							<li class="header">COMPONENTS</li>
 							<li><a href="'.base_url('topics').'"> <i class="fa fa-file"></i> <span>Topics</span> </a></li>
 							<li><a href="'.base_url('scripts').'"> <i class="fa fa-edit"></i> <span>Scripts</span> </a></li>
-							<li><a href="#"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
-							<li><a href="#"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
+							<li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
+							<li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
 							<li><a href="'.base_url('users').'"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
 							<li><a href="'.base_url('admin/viewreports').'"> <i class="fa fa-archive"></i> <span>Reports</span> </a></li>
 						

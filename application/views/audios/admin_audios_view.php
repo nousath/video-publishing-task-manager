@@ -16,7 +16,7 @@
 			<div class="box-body">
 				<div class="row">
 					<div class="col-md-9">
-						<legend>Submitted Scripts</legend>
+						<legend>Submitted Audios</legend>
 						<?php if ($this->session->flashdata('toggle_success')): ?>			
 						<?php echo '<div class="alert alert-success">
 													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -25,7 +25,7 @@
 						?>
 						<?php endif; ?>
 						
-						<table class="table table-hover" id="example2">
+						<table class="table table-hover">
 							<thead>
 								<tr>
 									<th>SN</th>
@@ -39,17 +39,17 @@
 							<tbody>
 							<?php 
 								$sn = 1;
-								if($scripts != null){
-									foreach ($scripts as $script ) {
-										$topic = $this->Topics_model->get_by_id($script->topic_id);
-										$submitted_by = $this->ion_auth->user($script->submitted_by)->row(); 
-										$status = ($script->approved == 0) ? '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
+								if($audios != null){
+									foreach ($audios as $audio ) {
+										$topic = $this->Topics_model->get_by_id($audio->topic_id);
+										$submitted_by = $this->ion_auth->user($audio->submitted_by)->row(); 
+										$status = ($audio->approved == 0) ? '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('scripts/toggle_approve/'.$audio->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by->username.'</td>
-												<td>'.date('M d, Y H:i:s', $script->submitted_at).'</td>
-												<td><a href="'.base_url('topics/doc/'.$script->topic_id.'').'" class="btn btn-warning btn-sm btn-block"><i class="fa fa-file-word-o"></i> View/Download</a></td>
+												<td>'.date('M d, Y H:i:s', $audio->submitted_at).'</td>
+												<td><a href="'.base_url('topics/audio/'.$audio->topic_id.'').'" class="btn btn-warning btn-sm btn-block"><i class="fa fa-microphone"></i> Listen/Download</a></td>
 												<td>'.$status.'</td>
 											</tr>';
 

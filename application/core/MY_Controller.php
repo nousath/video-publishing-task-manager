@@ -118,9 +118,56 @@ class App_Controller extends MY_Controller {
             return ($data == true) ? $path : false;            
         }
 	}
+
+	public function upload_audio(){
+    	// uploads/users
+        $config['upload_path'] = 'uploads/audios';
+        $config['file_name'] =  uniqid();
+        $config['allowed_types'] = 'mp3';
+        $config['max_size'] = '20000';
+
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('audio'))
+        {
+            $error = $this->upload->display_errors();
+			return $error;
+
+        }else{
+            $data = array('upload_data' => $this->upload->data());
+            $type = explode('.', $_FILES['audio']['name']);
+            $type = $type[count($type) - 1];
+            
+			$path = $config['upload_path'].'/'.$config['file_name'].'.'.$type;
+            return ($data == true) ? $path : false;            
+        }
+	}
+
+	public function upload_video(){
+    	// uploads/video
+        $config['upload_path'] = 'uploads/videos';
+        $config['file_name'] =  uniqid();
+        $config['allowed_types'] = 'mp4';
+        $config['max_size'] = '3000000';
+
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('video'))
+        {
+            $error = $this->upload->display_errors();
+			return $error;
+
+        }else{
+            $data = array('upload_data' => $this->upload->data());
+            $type = explode('.', $_FILES['video']['name']);
+            $type = $type[count($type) - 1];
+            
+			$path = $config['upload_path'].'/'.$config['file_name'].'.'.$type;
+            return ($data == true) ? $path : false;            
+        }
+	}
 	
 	
 
 }
 
 ?>
+

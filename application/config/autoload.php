@@ -142,4 +142,5 @@ $autoload['model'] = array(
 	'Notifications_model', 
 	'Messages_model',
 	'Scripts_model',
+	'Audios_model',
 );

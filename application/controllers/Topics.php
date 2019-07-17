@@ -126,7 +126,11 @@ class Topics extends App_Controller
 			// update -> add user's id to 
 			$this->Assignment_model->insert($data);
 
-			
+			// indicate user as currently on project
+			$data = array(
+				'on_project' => 1,
+			);
+			$this->user_model->update_user($user_id, $data);
 
 			// get notification template to send
 			$notification_template = $this->Notifications_templates_model->get_by_type('new_topic');

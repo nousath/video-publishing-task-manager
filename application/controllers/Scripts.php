@@ -138,19 +138,96 @@ class Scripts extends App_Controller
 					'body'    => $notification_template->message,
 					'created_at' => time(),
 				);
-
 				$this->Notifications_model->insert($data);
 
 
 				// add to number of competed projects
 				$user = $this->ion_auth->user()->row();
 				$task_completed = ($approved == 1) ? $user->tasks_completed + 1 : 0;
-
 				$data = array(
 					'tasks_completed' => $task_completed,
 				);
-
 				$this->User_model->update_user($user->id, $data);
+
+				
+				if($approved == 1){
+					// assign topic to voice over artist
+					$voice_artists_off_projects = $this->User_model->get_by_usertype_and_project_status(3, 0);
+					if($voice_artists_off_projects == null){
+						// all voice artist have ongoing projects
+						$all_voice_artists = $this->User_model->get_by_usertype(3);
+						foreach ($all_voice_artists as $voice_artist ) {
+							$data = array(
+								'topic_id' => $script->topic_id,
+								'user_id' => $voice_artist->id,
+								'stage_id' => 3, // writing stage
+							);
+							$this->Assignment_model->insert($data);
+	
+							// indicate user as currently on project
+							$data = array(
+								'on_project' => 1,
+							);
+							$this->User_model->update_user($voice_artist->id, $data);
+
+							// set user in charge of topic
+							$data = array(
+								'user2_id' => $voice_artist->id,
+							);
+							$this->Topics_model->update($script->topic_id, $data);
+	
+							// get notification template to send
+							$notification_template = $this->Notifications_templates_model->get_by_type('new_script');
+							
+							$data = array(
+								'send_to' => $voice_artist->id,
+								'body'    => $notification_template->message,
+								'created_at' => time(),
+							);
+							$this->Notifications_model->insert($data);
+	
+							break;
+						}
+	
+					}else{
+						// at least one voice artist is without task
+						foreach ($voice_artists_off_projects as $voice_artist ) {
+	
+							$data = array(
+								'topic_id' => $script->topic_id,
+								'user_id' => $voice_artist->id,
+								'stage_id' => 3, // writing stage
+							);
+							$this->Assignment_model->insert($data);
+	
+							// indicate user as currently on project
+							$data = array(
+								'on_project' => 1,
+							);
+							$this->User_model->update_user($voice_artist->id, $data);
+
+							// set user in charge of topic
+							$data = array(
+								'user2_id' => $voice_artist->id,
+							);
+							$this->Topics_model->update($script->topic_id, $data);
+	
+							// get notification template to send
+							$notification_template = $this->Notifications_templates_model->get_by_type('new_script');
+							
+							$data = array(
+								'send_to' => $voice_artist->id,
+								'body'    => $notification_template->message,
+								'created_at' => time(),
+							);
+							$this->Notifications_model->insert($data);
+	
+							break;
+							
+						}
+					}
+				}
+
 
 				// redirect admin back to scriipts page with an alert
 				$this->session->set_flashdata('toggle_success', 'Approval status updated!');

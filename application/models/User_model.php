@@ -5,6 +5,7 @@ class User_model extends CI_Model
 {
 	public $usertype = 'usertype';
 	public $table = 'users';
+	public $on_project = 'on_project';
 
 
     function __construct()
@@ -15,6 +16,12 @@ class User_model extends CI_Model
 
 	function get_by_usertype($usertype){
 		$this->db->where($this->usertype, $usertype);
+        return $this->db->get($this->table)->result();
+	}
+
+	function get_by_usertype_and_project_status($usertype, $on_project){
+		$this->db->where($this->usertype, $usertype);
+		$this->db->where($this->on_project, $on_project);
         return $this->db->get($this->table)->result();
 	}
 
