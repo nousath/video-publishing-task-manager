@@ -115,6 +115,14 @@ class Scripts extends App_Controller
 	}
 
    public function toggle_approve($script_id = ''){
+
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype == 1){
+			redirect(base_url('dashboard'),'refresh');
+		}
+
+
 	   if($script_id == ''){
 		   
 		   redirect(base_url('scripts'),'refresh');
@@ -144,8 +152,10 @@ class Scripts extends App_Controller
 				// add to number of competed projects
 				$user = $this->ion_auth->user()->row();
 				$task_completed = ($approved == 1) ? $user->tasks_completed + 1 : 0;
+				$on_project = ($approved == 1) ? 0 : 1;
 				$data = array(
 					'tasks_completed' => $task_completed,
+					'on_project' => $on_project,
 				);
 				$this->User_model->update_user($user->id, $data);
 

@@ -4,13 +4,23 @@
 class Users extends App_Controller{
     // function __construct()
     // {
-    //     parent::__construct();
+	// 	parent::__construct();
+		
     // } 
 
     /*
      * Listing of users
      */
-    function index(){        
+    function index(){ 
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype != 1){
+			
+			redirect(base_url('dashboard'),'refresh');
+				
+		}
+		
+		
         $data = array(
 			'title' => 'Staffs',
 			'content' => 'users/index',
@@ -24,7 +34,17 @@ class Users extends App_Controller{
     /*
      * Adding a new user
      */
-    function add(){   
+    function add(){  
+		
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype != 1){
+			
+			redirect(base_url('dashboard'),'refresh');
+				
+		}
+
+		
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('password','Password','required|min_length[6]');

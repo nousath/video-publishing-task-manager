@@ -143,4 +143,5 @@ $autoload['model'] = array(
 	'Messages_model',
 	'Scripts_model',
 	'Audios_model',
+	'Videos_model',
 );

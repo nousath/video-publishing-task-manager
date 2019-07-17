@@ -50,15 +50,19 @@ class Dashboard extends App_Controller{
 			case 4:
 				$data = array(
 					'title' => 'SS Media Staff - Dashboard',
-					'content' => 'dashboard/dashboard.php',
+					'content' => 'dashboard/videoeditor',
 					'content_header' => 'Dashboard',
+					'videos_by_user' => $this->Topics_model->get_by_editor_assigned($user->id),
+					'messages' => $this->Messages_model->get_by_user($user->id),
 				);
 				
 				$this->load->view('layouts/main',$data);
 				break;
 			
 			default:
-				# code...
+				
+				redirect('auth/login','refresh');
+				
 				break;
 		}
 

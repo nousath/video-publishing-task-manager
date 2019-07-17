@@ -51,7 +51,7 @@
 
 <form action="<?=base_url('auth/login') ?>" method="post">
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="Username/Email" name="identity" id="identity" value="<?=$identity; ?>" required>
+        <input type="text" class="form-control" placeholder="Email" name="identity" id="identity" value="<?=$identity; ?>" required>
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">

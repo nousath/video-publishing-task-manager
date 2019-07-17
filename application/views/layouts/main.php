@@ -319,20 +319,14 @@
 							<li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
 							<li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
 							<li><a href="'.base_url('users').'"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
-							<li><a href="'.base_url('admin/viewreports').'"> <i class="fa fa-archive"></i> <span>Reports</span> </a></li>
+							<li><a href="#"> <i class="fa fa-archive"></i> <span>Reports</span> </a></li>
 						
 				
 							<li class="header">SYSTEM</li>
-							<li><a href="'.base_url('reports').'"> <i class="fa fa-shield"></i> <span>Admins</span> </a></li>
-							<li><a href="'.base_url('groups').'"> <i class="fa fa-users"></i> <span>Groups</span> </a></li>
-							<li><a href="'.base_url('admin/users').'"> <i class="fa fa-hdd-o"></i> <span>Backup</span></a></li>
-							<li><a href="'.base_url().'"><i class="fa fa-book"></i> <span>Manual</span></a></li>
-							<li><a href="'.base_url('reports').'"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
-							
-							<!-- <li class="header">LABELS</li>
-							<li><a href="'.base_url('assets/theme/').'"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-							<li><a href="'.base_url('assets/theme/').'"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-							<li><a href="'.base_url('assets/theme/').'"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li> -->
+							<li><a href="#"> <i class="fa fa-shield"></i> <span>Admins</span> </a></li>
+							<li><a href="#"> <i class="fa fa-hdd-o"></i> <span>Backup</span></a></li>
+							<li><a href="#"> <i class="fa fa-book"></i> <span>Manual</span></a></li>
+							<li><a href="#"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 						</ul>';
 				  break;
 
@@ -366,12 +360,10 @@
 				  echo '<ul class="sidebar-menu" data-widget="tree">
 							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
 							<li class="header">SECTIONS</li>
-							<li><a href="'.base_url('topics').'"> <i class="fa video-camera"></i> <span>Videos</span> </a></li>
-							<li><a href="#"> <i class="fa fa-check"></i> <span>Approved Scripts</span> </a></li>
-							<li><a href="#"> <i class="fa fa-times"></i> <span>Declined Scripts</span> </a></li>
-							<li><a href="#"> <i class="fa fa-envelope"></i> <span>Messages</span> </a></li>
-							<li><a href="#"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
-							<li><a href="'.base_url('users').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
+							<li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
+							<li><a href="'.base_url('messages').'"> <i class="fa fa-envelope"></i> <span>Messages</span> </a></li>
+							<li><a href="'.base_url('notifications').'"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
+							<li><a href="'.base_url('profile/index/'.$user->id.'').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
 						</ul>';
 				  break;
 

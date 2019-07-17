@@ -49,8 +49,7 @@ class App_Controller extends MY_Controller {
 	}
 
 
-	public function password_hash($pass = '')
-	{
+	public function password_hash($pass = ''){
 		if($pass) {
 			$password = password_hash($pass, PASSWORD_DEFAULT);
 			return $password;
