@@ -3,6 +3,7 @@
  
 class User_model extends CI_Model
 {
+	public $id = 'id';
 	public $usertype = 'usertype';
 	public $table = 'users';
 	public $on_project = 'on_project';
@@ -27,19 +28,9 @@ class User_model extends CI_Model
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	function get_num_all(){
+        return $this->db->get($this->table)->num_rows();
+    }
 
     
     /*

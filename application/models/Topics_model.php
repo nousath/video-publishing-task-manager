@@ -24,6 +24,11 @@ class Topics_model extends CI_Model
     function get_all(){
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
+	}
+	
+    function get_num_all(){
+        $this->db->order_by($this->id, $this->order);
+        return $this->db->get($this->table)->num_rows();
     }
 
     // get data by id
