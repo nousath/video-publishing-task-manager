@@ -19,7 +19,7 @@ class Dashboard extends App_Controller{
 					'number_of_topics' => $this->Topics_model->get_num_all(),
 					'number_of_staff' => $this->User_model->get_num_all(),
 					'number_of_messages' => $this->Messages_model->number_of_messages_to_user($user->id),
-					'number_of_notifications' => $this->Notifications_model->number_of_notifications_to_user($user->id),
+					'number_of_channels' => $this->Channels_model->get_num_all(),
 				);
 				
 				$this->load->view('layouts/main',$data);
