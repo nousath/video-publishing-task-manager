@@ -29,16 +29,16 @@
 						
 
 
-						<form action="<?=base_url('scripts/assign_to_artist/'.$topic->id.''); ?>" method="POST" role="form">
+						<form action="<?=base_url('scripts/assign_to_artist'); ?>" method="POST" role="form">
 							<legend>Assign Script to Artist</legend>
 
 							<div class="form-group">
-								<label for="document" class="control-label"><span class="text text-danger">*</span> Topic</label>
-								<input type="text" class="form-control" name="topic" id="topic" value="<?=$topic->topic; ?>" required="required" disabled/>
+								<label for="document" class="control-label"><span class="text text-danger">*</span> Topic <?php echo form_error('topic') ?></label>
+								<input type="text" class="form-control" name="topic" id="topic" value="<?=$selected_topic->topic; ?>" required="required" disabled/>
 							</div>
 
 							<div class="form-group">
-								<label for="document" class="control-label"><span class="text text-danger">*</span> Voice-Over Artists</label>
+								<label for="document" class="control-label"><span class="text text-danger">*</span> Voice-Over Artists <?php echo form_error('user') ?></label>
 								<select name="user" id="user" class="form-control" required>
 									<option value=""></option>
 									<?php 
@@ -50,6 +50,9 @@
 									
 								</select>
 							</div>
+
+							<!-- $topic->id -->
+							<input type="hidden" id="topic_id" name="topic_id" value="<?=$selected_topic->id;?>">
 						
 							<button type="submit" class="btn btn-info btn-sm">Submit <i class="fa fa-upload"></i></button>
 						</form>

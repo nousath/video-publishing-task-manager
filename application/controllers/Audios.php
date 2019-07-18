@@ -64,7 +64,7 @@ class Audios extends App_Controller
 
 		$topic = $this->Topics_model->get_by_id($topic_id);
 		$data = array(
-			'topic' => $topic,
+			'selected_topic' => $topic,
 			'editors' => $this->User_model->get_by_usertype_and_channel(4, $topic->channel_id),
 			'content' => 'audios/assign_form',
 			'content_header' => 'Assign Audio',
@@ -74,51 +74,48 @@ class Audios extends App_Controller
 		$this->load->view('layouts/main', $data);
 	}
 	
-	public function assign_to_editor($topic_id = ''){
+	public function assign_to_editor(){
 		// ensure that only admin is allowed
 		$user = $this->ion_auth->user()->row(); 
 		if($user->usertype != 1){
 			redirect(base_url('dashboard'),'refresh');
 		}
 
-		// ensure that topic id is present on the url
-		if($topic_id == ''){
-			redirect(base_url('audios'),'refresh');			
-		}else{
-			$this->_assignment_rules();
+		
+		$this->_assignment_rules();
 
-			if ($this->form_validation->run() == FALSE) {
-				$this->assign();
-			} else {
-				// insert into assignment table
-				$data = array(
-					'topic_id' => $this->input->post('topic',TRUE),
-					'user_id' => $this->input->post('user',TRUE),
-					'stage_id' => 4,
-				);
-				$this->Assignment_model->insert($data);
+		if ($this->form_validation->run() == FALSE) {
+			$this->assign();
+		} else {
+			// insert into assignment table
+			$data = array(
+				'topic_id' => $this->input->post('topic_id',TRUE),
+				'user_id' => $this->input->post('user',TRUE),
+				'stage_id' => 4,
+			);
+			$this->Assignment_model->insert($data);
 
-				// update user2_id in topics table
-				$data =  array(
-					'user3_id' => $this->input->post('user',TRUE),
-				);
-				$this->Topics_model->update($topic_id, $data);
+			// update user2_id in topics table
+			$data =  array(
+				'user3_id' => $this->input->post('user',TRUE),
+			);
+			$this->Topics_model->update($this->input->post('topic_id',TRUE), $data);
 
-				// Send notification to user
-				$notification_template = $this->Notifications_templates_model->get_by_type('new_audio');
-			
-				$data = array(
-					'send_to' => $this->input->post('user',TRUE),
-					'body'    => $notification_template->message,
-					'created_at' => time(),
-				);
-				$this->Notifications_model->insert($data);
+			// Send notification to user
+			$notification_template = $this->Notifications_templates_model->get_by_type('new_audio');
+		
+			$data = array(
+				'send_to' => $this->input->post('user',TRUE),
+				'body'    => $notification_template->message,
+				'created_at' => time(),
+			);
+			$this->Notifications_model->insert($data);
 
-				$user_assigned = $this->ion_auth->user($this->input->post('user',TRUE))->row();
-				$this->session->set_flashdata('assingment_success', 'Topic assigned to '.$user_assigned->username.' ');
-				redirect(site_url('audios'));
-			}
+			$user_assigned = $this->ion_auth->user($this->input->post('user',TRUE))->row();
+			$this->session->set_flashdata('assingment_success', 'Topic assigned to '.$user_assigned->username.' ');
+			redirect(site_url('audios'));
 		}
+		
 	}
 	
 	public function toggle_approve($audio_id = ''){
@@ -337,7 +334,7 @@ class Audios extends App_Controller
 	}
 
 	public function _assignment_rules() {
-		$this->form_validation->set_rules('topic', 'Topic', 'trim|required');
+		$this->form_validation->set_rules('topic', 'Topic', 'trim');
 		$this->form_validation->set_rules('user', 'user', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
