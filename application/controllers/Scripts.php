@@ -48,6 +48,78 @@ class Scripts extends App_Controller
 		}
 		
 	}
+
+	public function assign($topic_id = ''){
+		
+		// ensure that only admin is allowed
+		$user = $this->ion_auth->user()->row(); 
+		if($user->usertype != 1){
+			redirect(base_url('dashboard'),'refresh');
+		}
+
+		// ensure topic id is present
+		if($topic_id == ''){
+			redirect(base_url('scripts'),'refresh');	
+		}
+
+		$topic = $this->Topics_model->get_by_id($topic_id);
+		$data = array(
+			'topic' => $topic,
+			'artists' => $this->User_model->get_by_usertype_and_channel(3, $topic->channel_id),
+			'content' => 'scripts/assign_form',
+			'content_header' => 'Assign Script',
+			'title' => 'Assign Scripts',
+		);
+
+		$this->load->view('layouts/main', $data);
+	}
+
+	public function assign_to_artist($topic_id = ''){
+		// ensure that only admin is allowed
+		$user = $this->ion_auth->user()->row(); 
+		if($user->usertype != 1){
+			redirect(base_url('dashboard'),'refresh');
+		}
+
+		// ensure that topic id is present on the url
+		if($topic_id == ''){
+			redirect(base_url('scripts'),'refresh');			
+		}else{
+			$this->_assignment_rules();
+
+			if ($this->form_validation->run() == FALSE) {
+				$this->assign();
+			} else {
+				// insert into assignment table
+				$data = array(
+					'topic_id' => $this->input->post('topic',TRUE),
+					'user_id' => $this->input->post('user',TRUE),
+					'stage_id' => 3,
+				);
+				$this->Assignment_model->insert($data);
+
+				// update user2_id in topics table
+				$data =  array(
+					'user2_id' => $this->input->post('user',TRUE),
+				);
+				$this->Topics_model->update($topic_id, $data);
+
+				// Send notification to user
+				$notification_template = $this->Notifications_templates_model->get_by_type('new_script');
+			
+				$data = array(
+					'send_to' => $this->input->post('user',TRUE),
+					'body'    => $notification_template->message,
+					'created_at' => time(),
+				);
+				$this->Notifications_model->insert($data);
+
+				$user_assigned = $this->ion_auth->user($this->input->post('user',TRUE))->row();
+				$this->session->set_flashdata('assingment_success', 'Topic assigned to '.$user_assigned->username.' ');
+				redirect(site_url('scripts'));
+			}
+		}
+	}
 	
 	public function upload(){
 		$this->_upload_rules();
@@ -160,83 +232,83 @@ class Scripts extends App_Controller
 				$this->User_model->update_user($user->id, $data);
 
 				
-				if($approved == 1){
-					// assign topic to voice over artist
-					$voice_artists_off_projects = $this->User_model->get_by_usertype_and_project_status(3, 0);
-					if($voice_artists_off_projects == null){
-						// all voice artist have ongoing projects
-						$all_voice_artists = $this->User_model->get_by_usertype(3);
-						foreach ($all_voice_artists as $voice_artist ) {
-							$data = array(
-								'topic_id' => $script->topic_id,
-								'user_id' => $voice_artist->id,
-								'stage_id' => 3, // writing stage
-							);
-							$this->Assignment_model->insert($data);
+				// if($approved == 1){
+				// 	// assign topic to voice over artist
+				// 	$voice_artists_off_projects = $this->User_model->get_by_usertype_and_project_status(3, 0);
+				// 	if($voice_artists_off_projects == null){
+				// 		// all voice artist have ongoing projects
+				// 		$all_voice_artists = $this->User_model->get_by_usertype(3);
+				// 		foreach ($all_voice_artists as $voice_artist ) {
+				// 			$data = array(
+				// 				'topic_id' => $script->topic_id,
+				// 				'user_id' => $voice_artist->id,
+				// 				'stage_id' => 3, // writing stage
+				// 			);
+				// 			$this->Assignment_model->insert($data);
 	
-							// indicate user as currently on project
-							$data = array(
-								'on_project' => 1,
-							);
-							$this->User_model->update_user($voice_artist->id, $data);
+				// 			// indicate user as currently on project
+				// 			$data = array(
+				// 				'on_project' => 1,
+				// 			);
+				// 			$this->User_model->update_user($voice_artist->id, $data);
 
-							// set user in charge of topic
-							$data = array(
-								'user2_id' => $voice_artist->id,
-							);
-							$this->Topics_model->update($script->topic_id, $data);
+				// 			// set user in charge of topic
+				// 			$data = array(
+				// 				'user2_id' => $voice_artist->id,
+				// 			);
+				// 			$this->Topics_model->update($script->topic_id, $data);
 	
-							// get notification template to send
-							$notification_template = $this->Notifications_templates_model->get_by_type('new_script');
+				// 			// get notification template to send
+				// 			$notification_template = $this->Notifications_templates_model->get_by_type('new_script');
 							
-							$data = array(
-								'send_to' => $voice_artist->id,
-								'body'    => $notification_template->message,
-								'created_at' => time(),
-							);
-							$this->Notifications_model->insert($data);
+				// 			$data = array(
+				// 				'send_to' => $voice_artist->id,
+				// 				'body'    => $notification_template->message,
+				// 				'created_at' => time(),
+				// 			);
+				// 			$this->Notifications_model->insert($data);
 	
-							break;
-						}
+				// 			break;
+				// 		}
 	
-					}else{
-						// at least one voice artist is without task
-						foreach ($voice_artists_off_projects as $voice_artist ) {
+				// 	}else{
+				// 		// at least one voice artist is without task
+				// 		foreach ($voice_artists_off_projects as $voice_artist ) {
 	
-							$data = array(
-								'topic_id' => $script->topic_id,
-								'user_id' => $voice_artist->id,
-								'stage_id' => 3, // writing stage
-							);
-							$this->Assignment_model->insert($data);
+				// 			$data = array(
+				// 				'topic_id' => $script->topic_id,
+				// 				'user_id' => $voice_artist->id,
+				// 				'stage_id' => 3, // writing stage
+				// 			);
+				// 			$this->Assignment_model->insert($data);
 	
-							// indicate user as currently on project
-							$data = array(
-								'on_project' => 1,
-							);
-							$this->User_model->update_user($voice_artist->id, $data);
+				// 			// indicate user as currently on project
+				// 			$data = array(
+				// 				'on_project' => 1,
+				// 			);
+				// 			$this->User_model->update_user($voice_artist->id, $data);
 
-							// set user in charge of topic
-							$data = array(
-								'user2_id' => $voice_artist->id,
-							);
-							$this->Topics_model->update($script->topic_id, $data);
+				// 			// set user in charge of topic
+				// 			$data = array(
+				// 				'user2_id' => $voice_artist->id,
+				// 			);
+				// 			$this->Topics_model->update($script->topic_id, $data);
 	
-							// get notification template to send
-							$notification_template = $this->Notifications_templates_model->get_by_type('new_script');
+				// 			// get notification template to send
+				// 			$notification_template = $this->Notifications_templates_model->get_by_type('new_script');
 							
-							$data = array(
-								'send_to' => $voice_artist->id,
-								'body'    => $notification_template->message,
-								'created_at' => time(),
-							);
-							$this->Notifications_model->insert($data);
+				// 			$data = array(
+				// 				'send_to' => $voice_artist->id,
+				// 				'body'    => $notification_template->message,
+				// 				'created_at' => time(),
+				// 			);
+				// 			$this->Notifications_model->insert($data);
 	
-							break;
+				// 			break;
 							
-						}
-					}
-				}
+				// 		}
+				// 	}
+				// }
 
 
 				// redirect admin back to scriipts page with an alert
@@ -263,6 +335,12 @@ class Scripts extends App_Controller
 		$this->form_validation->set_rules('selected_topic', 'Topic', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
 	}
+
+	public function _assignment_rules() {
+		$this->form_validation->set_rules('topic', 'Topic', 'trim|required');
+		$this->form_validation->set_rules('user', 'user', 'trim|required');
+		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+    }
 	
 
 }

@@ -22,7 +22,13 @@ class Topics extends App_Controller
 		);
 
         $this->load->view('layouts/main', $data);
-    }
+	}
+	
+	public function get_by_channel(){
+		if ($this->input->post('channel_id')) {
+			echo $this->User_model->get_by_channel($this->input->post('channel_id'), 2);
+		}
+	}
 
     public function doc($id = ''){
 		if($id == ''){
@@ -88,6 +94,7 @@ class Topics extends App_Controller
 			'title' => 'New Topic',
 			'users' => $this->User_model->get_by_usertype(2),
 			'stages' => $this->Stages_model->get_all(),
+			'channels' => $this->Channels_model->get_all(),
 		);
 
         $this->load->view('layouts/main', $data);
@@ -104,6 +111,7 @@ class Topics extends App_Controller
 			// $assign = $this->input->post('assignto',TRUE);
 
 			$data = array(
+				'channel_id' => $this->input->post('channel',TRUE),
 				'topic' => $this->input->post('topic',TRUE),
 				'user_id' => $this->input->post('assignto',TRUE),
 				'stage_id' => $this->input->post('stage',TRUE),
@@ -222,13 +230,13 @@ class Topics extends App_Controller
 	// 	$writers = $this->User_model->get_by_usertype(4);
 	// }
 
-	public function assign_to_voiceartist(){
+	// public function assign_to_voiceartist(){
 		
-	}
+	// }
 
-	public function assign_to_editor(){
+	// public function assign_to_editor(){
 		
-	}
+	// }
 
     public function _rules() 
     {

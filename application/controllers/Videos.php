@@ -116,7 +116,7 @@ class Videos extends App_Controller
 	public function toggle_approve($video_id = ''){
 		$user = $this->ion_auth->user()->row(); 
 
-		if($user->usertype == 1){
+		if($user->usertype != 1){
 			redirect(base_url('dashboard'),'refresh');
 		}
 
@@ -167,6 +167,42 @@ class Videos extends App_Controller
 				 $this->session->set_flashdata('toggle_success', 'Approval status updated!');
 				 redirect(site_url('videos'));
 			 }
+		}
+	}
+
+	public function publish($topic_id = ''){
+		$user = $this->ion_auth->user()->row(); 
+		if($user->usertype != 1){
+			redirect(base_url('dashboard'),'refresh');
+		}
+
+		if($topic_id == ''){
+			redirect(base_url('videos'),'refresh');
+		}else{
+			$data = array(
+				'stage_id' => 5,
+			);
+			$this->Topics_model->update($topic_id, $data);
+			$this->session->set_flashdata('video_published', 'Video marked as Published');
+			redirect(site_url('videos'));
+		}
+	}
+
+	public function reserve($topic_id = ''){
+		$user = $this->ion_auth->user()->row(); 
+		if($user->usertype != 1){
+			redirect(base_url('dashboard'),'refresh');
+		}
+
+		if($topic_id == ''){
+			redirect(base_url('videos'),'refresh');
+		}else{
+			$data = array(
+				'stage_id' => 1,
+			);
+			$this->Topics_model->update($topic_id, $data);
+			$this->session->set_flashdata('video_reserved', 'Video Reserved');
+			redirect(site_url('videos'));
 		}
 	}
 

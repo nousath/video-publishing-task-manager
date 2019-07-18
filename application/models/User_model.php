@@ -6,6 +6,7 @@ class User_model extends CI_Model
 	public $id = 'id';
 	public $usertype = 'usertype';
 	public $table = 'users';
+	public $channel_id = 'channel_id';
 	public $on_project = 'on_project';
 
 
@@ -13,6 +14,32 @@ class User_model extends CI_Model
     {
         parent::__construct();
 	}
+
+	// get data by state
+    function get_by_channel($channel_id, $usertype = ''){
+        if($usertype != ''){
+			$this->db->where($this->channel_id, $channel_id);
+			$this->db->where($this->usertype, $usertype);
+			$query = $this->db->get($this->table);
+			$output = '<option value=""> </option>';
+
+			foreach ($query->result() as $row) {
+				$output .= '<option value="'.$row->id.'">'.$row->username.'</option>';
+			}
+
+			return $output;
+		}else{
+			$this->db->where($this->channel_id, $channel_id);
+			$query = $this->db->get($this->table);
+			$output = '<option value=""> </option>';
+
+			foreach ($query->result() as $row) {
+				$output .= '<option value="'.$row->id.'">'.$row->username.'</option>';
+			}
+
+			return $output;
+		}
+    }
 	
 
 	function get_by_usertype($usertype){
@@ -26,7 +53,11 @@ class User_model extends CI_Model
         return $this->db->get($this->table)->result();
 	}
 
-
+	function get_by_usertype_and_channel($usertype, $channel_id){
+		$this->db->where($this->usertype, $usertype);
+		$this->db->where($this->channel_id, $channel_id);
+        return $this->db->get($this->table)->result();
+	}
 
 	function get_num_all(){
         return $this->db->get($this->table)->num_rows();

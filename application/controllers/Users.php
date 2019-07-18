@@ -45,8 +45,6 @@ class Users extends App_Controller{
 		}
 
 		
-        $this->load->library('form_validation');
-
 		$this->form_validation->set_rules('password','Password','required|min_length[6]');
 		$this->form_validation->set_rules('username','Username','required|min_length[6]');
 		$this->form_validation->set_rules('email','Email','required|valid_emails');
@@ -62,6 +60,7 @@ class Users extends App_Controller{
                                     'created_on' => time(),
                                     'job_title' => $group->name,
                                     'salary' => $this->input->post('salary'),
+                                    'channel_id' => $this->input->post('channel'),
 									'job_describtion' => $this->input->post('job_describtion'),
 									'usertype' => $this->input->post('group'),
                                     );
@@ -79,6 +78,7 @@ class Users extends App_Controller{
 				'title' => 'New User',
 				'content_header' => 'Create User',
 				'groups' => $this->Group_model->get_all_groups(),
+				'channels' => $this->Channels_model->get_all(),
 			); 
             $this->load->view('layouts/main',$data);
         }

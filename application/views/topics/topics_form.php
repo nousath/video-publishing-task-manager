@@ -19,24 +19,31 @@
 					<div class="col-md-8">
 						<p>Fields marked (<span class="text text-danger">*</span>) are compulsory.</p>
 						<form action="<?=base_url('topics/create_action'); ?>" method="post">
-							<div class="form-group form-group-lg">
-								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Title <?php echo form_error('topic') ?></label>
-								<input type="text" class="form-control" name="topic" id="topic" placeholder="For example: Henry Ford's 7 Secrets To Success" value="<?php echo $topic; ?>" />
-							</div>
-
-							<div class="form-group form-group-lg">
-								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Assign Topic To <?php echo form_error('assignto') ?></label>
-								<select name="assignto" id="assignto" class="form-control" required>
+							<div class="form-group">
+								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Channel <?php echo form_error('channel') ?></label>
+								<select name="channel" id="channel" class="form-control" required>
 									<option></option>
 									<?php 
-										foreach ($users as $user ) {
-											echo '<option value="'.$user->id.'">'.$user->username.'</option>';
+										foreach ($channels as $channel ) {
+											echo '<option value="'.$channel->id.'">'.$channel->name.'</option>';
 										}
 									?>
 								</select>
 							</div>
 
-							<div class="form-group form-group-lg">
+							<div class="form-group">
+								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Title <?php echo form_error('topic') ?></label>
+								<input type="text" class="form-control" name="topic" id="topic" placeholder="For example: Henry Ford's 7 Secrets To Success" value="<?php echo $topic; ?>" />
+							</div>
+
+							<div class="form-group">
+								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Assign Topic To <?php echo form_error('assignto') ?></label>
+								<select name="assignto" id="assignto" class="form-control" required>
+									<option></option>
+								</select>
+							</div>
+
+							<div class="form-group">
 								<label for="varchar">Stage This Topic<?php echo form_error('stage') ?></label>
 								<select name="stage" id="stage" class="form-control">
 									<option></option>
@@ -72,3 +79,25 @@
 <!-- /.row -->
 
 
+
+<script>
+// load LGA dynamically 
+	$(document).ready(function () {
+		$('#channel').change(function () { 
+			
+			var channel_id = $('#channel').val();
+
+			if(channel_id != ''){
+				$.ajax({
+					url: '<?=base_url();?>topics/get_by_channel',
+					type: "POST",
+					data: {channel_id:channel_id},
+					success: function (data) {
+						$('#assignto').html(data);
+					}
+				});
+			}
+		});
+	});
+
+</script>

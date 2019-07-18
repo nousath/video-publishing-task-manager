@@ -24,6 +24,14 @@
 												</div>'; 
 						?>
 						<?php endif; ?>
+
+						<?php if ($this->session->flashdata('assingment_success')): ?>			
+						<?php echo '<div class="alert alert-success">
+													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+													<strong>'.$this->session->flashdata('assingment_success').'</strong>
+												</div>'; 
+						?>
+						<?php endif; ?>
 						
 						<table class="table table-hover" id="example2">
 							<thead>
@@ -33,7 +41,7 @@
 									<th>Submitted By</th>
 									<th>Submitted At</th>
 									<th>File</th>
-									<th>Approve/Decline</th>
+									<th>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -43,14 +51,16 @@
 									foreach ($scripts as $script ) {
 										$topic = $this->Topics_model->get_by_id($script->topic_id);
 										$submitted_by = $this->ion_auth->user($script->submitted_by)->row(); 
-										$status = ($script->approved == 0) ? '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
+										// $status = ($script->approved == 0) ? '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
+										$status = ($script->approved == 0) ? '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '';
+										$assign = ($script->approved == 1 && $topic->assigned == 0) ? '<a href="'.base_url('scripts/assign/'.$topic->id.'').'" class="btn btn-info btn-sm">Assign to Artists  <i class="fa fa-share"></i></a>' : '';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by->username.'</td>
 												<td>'.date('M d, Y H:i:s', $script->submitted_at).'</td>
-												<td><a href="'.base_url('topics/doc/'.$script->topic_id.'').'" class="btn btn-warning btn-sm btn-block"><i class="fa fa-file-word-o"></i> View/Download</a></td>
-												<td>'.$status.'</td>
+												<td><a href="'.base_url('topics/doc/'.$script->topic_id.'').'" class="btn btn-warning btn-sm btn-block">View/Download <i class="fa fa-file-word-o"></i></a></td>
+												<td>'.$status.' '.$assign.'</td>
 											</tr>';
 
 											$sn++;

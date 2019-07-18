@@ -32,6 +32,9 @@
 	<!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="<?php echo base_url('assets/theme/'); ?>plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
+  <!-- jQuery 3 -->
+  <script src="<?php echo base_url('assets/theme/'); ?>bower_components/jquery/dist/jquery.min.js"></script>
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!-- [if lt IE 9]>
@@ -58,7 +61,7 @@
     <!-- Logo -->
     <a href="<?php echo base_url(); ?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>SS</b>MS</span>
+      <span class="logo-mini"><b>SS</b>ms</span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>SS</b> MediaStaff</span>
     </a>
@@ -265,7 +268,13 @@
 						<img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image"> <!-- height="50" width="50" -->
 					</div>
 					<div class="pull-left info">
-						<p><?php echo $user->first_name.' '.$user->last_name; ?></p>
+						<p>
+						<?php
+							$name_of_user = ($user->first_name == '' && $user->first_name == '') ? $user->username : $user->first_name.' '.$user->last_name;
+						 echo $name_of_user; 
+						 
+						 ?>
+						 </p>
 						<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
 					</div>
       </div>
@@ -313,7 +322,8 @@
 				  
 				  echo '<ul class="sidebar-menu" data-widget="tree">
 							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
-							<li class="header">COMPONENTS</li>
+							<li class="header">SECTIONS</li>
+							<li><a href="'.base_url('channels').'"> <i class="fa fa-television"></i> <span>Channels</span> </a></li>
 							<li><a href="'.base_url('topics').'"> <i class="fa fa-file"></i> <span>Topics</span> </a></li>
 							<li><a href="'.base_url('scripts').'"> <i class="fa fa-edit"></i> <span>Scripts</span> </a></li>
 							<li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
@@ -445,8 +455,7 @@
 </div>
 <!-- ./wrapper -->
 
-			<!-- jQuery 3 -->
-			<script src="<?php echo base_url('assets/theme/'); ?>bower_components/jquery/dist/jquery.min.js"></script>
+			
 
 	<!-- Bootstrap 3.3.7 -->
 	<script src="<?php echo base_url('assets/theme/'); ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

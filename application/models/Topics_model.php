@@ -14,11 +14,12 @@ class Topics_model extends CI_Model
     public $user2_id = 'user2_id';
     public $user3_id = 'user3_id';
     public $assigned = 'assigned';
+    public $channel_id = 'channel_id';
 
     function __construct()
     {
         parent::__construct();
-    }
+	}
 
     // get all
     function get_all(){
@@ -35,6 +36,16 @@ class Topics_model extends CI_Model
     function get_by_id($id){
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
+	}
+
+	function get_by_channel($channel_id){
+        $this->db->where($this->channel_id, $channel_id);
+        return $this->db->get($this->table)->result();
+	}
+
+	function num_by_channel($channel_id){
+        $this->db->where($this->channel_id, $channel_id);
+        return $this->db->get($this->table)->num_rows();
 	}
 	
 	function get_by_writer_assigned($writer_id){

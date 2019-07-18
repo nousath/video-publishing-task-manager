@@ -47,7 +47,79 @@ class Audios extends App_Controller
 	
 			$this->load->view('layouts/main', $data);
 		}
-    }  
+	}  
+
+	public function assign($topic_id = ''){
+		
+		// ensure that only admin is allowed
+		$user = $this->ion_auth->user()->row(); 
+		if($user->usertype != 1){
+			redirect(base_url('dashboard'),'refresh');
+		}
+
+		// ensure topic id is present
+		if($topic_id == ''){
+			redirect(base_url('audios'),'refresh');	
+		}
+
+		$topic = $this->Topics_model->get_by_id($topic_id);
+		$data = array(
+			'topic' => $topic,
+			'editors' => $this->User_model->get_by_usertype_and_channel(4, $topic->channel_id),
+			'content' => 'audios/assign_form',
+			'content_header' => 'Assign Audio',
+			'title' => 'Assign Audios',
+		);
+
+		$this->load->view('layouts/main', $data);
+	}
+	
+	public function assign_to_editor($topic_id = ''){
+		// ensure that only admin is allowed
+		$user = $this->ion_auth->user()->row(); 
+		if($user->usertype != 1){
+			redirect(base_url('dashboard'),'refresh');
+		}
+
+		// ensure that topic id is present on the url
+		if($topic_id == ''){
+			redirect(base_url('audios'),'refresh');			
+		}else{
+			$this->_assignment_rules();
+
+			if ($this->form_validation->run() == FALSE) {
+				$this->assign();
+			} else {
+				// insert into assignment table
+				$data = array(
+					'topic_id' => $this->input->post('topic',TRUE),
+					'user_id' => $this->input->post('user',TRUE),
+					'stage_id' => 4,
+				);
+				$this->Assignment_model->insert($data);
+
+				// update user2_id in topics table
+				$data =  array(
+					'user3_id' => $this->input->post('user',TRUE),
+				);
+				$this->Topics_model->update($topic_id, $data);
+
+				// Send notification to user
+				$notification_template = $this->Notifications_templates_model->get_by_type('new_audio');
+			
+				$data = array(
+					'send_to' => $this->input->post('user',TRUE),
+					'body'    => $notification_template->message,
+					'created_at' => time(),
+				);
+				$this->Notifications_model->insert($data);
+
+				$user_assigned = $this->ion_auth->user($this->input->post('user',TRUE))->row();
+				$this->session->set_flashdata('assingment_success', 'Topic assigned to '.$user_assigned->username.' ');
+				redirect(site_url('audios'));
+			}
+		}
+	}
 	
 	public function toggle_approve($audio_id = ''){
 		$user = $this->ion_auth->user()->row(); 
@@ -95,83 +167,83 @@ class Audios extends App_Controller
 				 $this->User_model->update_user($user->id, $data);
  
 				 
-				 if($approved == 1){
-					 // assign topic to video editor
-					 $video_editors_off_projects = $this->User_model->get_by_usertype_and_project_status(4, 0);
-					 if($video_editors_off_projects == null){
-						 // all video editors have ongoing projects
-						 $all_video_editors = $this->User_model->get_by_usertype(4);
-						 foreach ($all_video_editors as $editor ) {
-							 $data = array(
-								 'topic_id' => $audio->topic_id,
-								 'user_id' => $editor->id,
-								 'stage_id' => 4, // writing stage
-							 );
-							 $this->Assignment_model->insert($data);
+				//  if($approved == 1){
+				// 	 // assign topic to video editor
+				// 	 $video_editors_off_projects = $this->User_model->get_by_usertype_and_project_status(4, 0);
+				// 	 if($video_editors_off_projects == null){
+				// 		 // all video editors have ongoing projects
+				// 		 $all_video_editors = $this->User_model->get_by_usertype(4);
+				// 		 foreach ($all_video_editors as $editor ) {
+				// 			 $data = array(
+				// 				 'topic_id' => $audio->topic_id,
+				// 				 'user_id' => $editor->id,
+				// 				 'stage_id' => 4, // writing stage
+				// 			 );
+				// 			 $this->Assignment_model->insert($data);
 	 
-							 // indicate user as currently on project
-							 $data = array(
-								 'on_project' => 1,
-							 );
-							 $this->User_model->update_user($editor->id, $data);
+				// 			 // indicate user as currently on project
+				// 			 $data = array(
+				// 				 'on_project' => 1,
+				// 			 );
+				// 			 $this->User_model->update_user($editor->id, $data);
  
-							 // set user in charge of topic
-							 $data = array(
-								 'user3_id' => $editor->id,
-							 );
-							 $this->Topics_model->update($audio->topic_id, $data);
+				// 			 // set user in charge of topic
+				// 			 $data = array(
+				// 				 'user3_id' => $editor->id,
+				// 			 );
+				// 			 $this->Topics_model->update($audio->topic_id, $data);
 	 
-							 // get notification template to send
-							 $notification_template = $this->Notifications_templates_model->get_by_type('new_audio');
+				// 			 // get notification template to send
+				// 			 $notification_template = $this->Notifications_templates_model->get_by_type('new_audio');
 							 
-							 $data = array(
-								 'send_to' => $editor->id,
-								 'body'    => $notification_template->message,
-								 'created_at' => time(),
-							 );
-							 $this->Notifications_model->insert($data);
+				// 			 $data = array(
+				// 				 'send_to' => $editor->id,
+				// 				 'body'    => $notification_template->message,
+				// 				 'created_at' => time(),
+				// 			 );
+				// 			 $this->Notifications_model->insert($data);
 	 
-							 break;
-						 }
+				// 			 break;
+				// 		 }
 	 
-					 }else{
-						 // at least one voice artist is without task
-						 foreach ($video_editors_off_projects as $editor ) {
+				// 	 }else{
+				// 		 // at least one voice artist is without task
+				// 		 foreach ($video_editors_off_projects as $editor ) {
 	 
-							 $data = array(
-								 'topic_id' => $audio->topic_id,
-								 'user_id' => $editor->id,
-								 'stage_id' => 4, // writing stage
-							 );
-							 $this->Assignment_model->insert($data);
+				// 			 $data = array(
+				// 				 'topic_id' => $audio->topic_id,
+				// 				 'user_id' => $editor->id,
+				// 				 'stage_id' => 4, // writing stage
+				// 			 );
+				// 			 $this->Assignment_model->insert($data);
 	 
-							 // indicate user as currently on project
-							 $data = array(
-								 'on_project' => 1,
-							 );
-							 $this->User_model->update_user($editor->id, $data);
+				// 			 // indicate user as currently on project
+				// 			 $data = array(
+				// 				 'on_project' => 1,
+				// 			 );
+				// 			 $this->User_model->update_user($editor->id, $data);
  
-							 // set user in charge of topic
-							 $data = array(
-								 'user3_id' => $editor->id,
-							 );
-							 $this->Topics_model->update($audio->topic_id, $data);
+				// 			 // set user in charge of topic
+				// 			 $data = array(
+				// 				 'user3_id' => $editor->id,
+				// 			 );
+				// 			 $this->Topics_model->update($audio->topic_id, $data);
 	 
-							 // get notification template to send
-							 $notification_template = $this->Notifications_templates_model->get_by_type('new_script');
+				// 			 // get notification template to send
+				// 			 $notification_template = $this->Notifications_templates_model->get_by_type('new_script');
 							 
-							 $data = array(
-								 'send_to' => $editor->id,
-								 'body'    => $notification_template->message,
-								 'created_at' => time(),
-							 );
-							 $this->Notifications_model->insert($data);
+				// 			 $data = array(
+				// 				 'send_to' => $editor->id,
+				// 				 'body'    => $notification_template->message,
+				// 				 'created_at' => time(),
+				// 			 );
+				// 			 $this->Notifications_model->insert($data);
 	 
-							 break;
+				// 			 break;
 							 
-						 }
-					 }
-				 }
+				// 		 }
+				// 	 }
+				//  }
  
  
 				 // redirect admin back to scriipts page with an alert
@@ -263,5 +335,11 @@ class Audios extends App_Controller
 		$this->form_validation->set_rules('selected_topic', 'Topic', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
 	}
+
+	public function _assignment_rules() {
+		$this->form_validation->set_rules('topic', 'Topic', 'trim|required');
+		$this->form_validation->set_rules('user', 'user', 'trim|required');
+		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+    }
 
 }

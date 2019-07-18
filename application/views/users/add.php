@@ -30,7 +30,7 @@
 					</div>
 				
 					<div class="col-md-6">
-						<label for="job_title" class="control-label"><span class="text-danger">*</span>User Group</label>
+						<label for="job_title" class="control-label"><span class="text-danger">*</span>Staff Category</label>
 						<div class="form-group">
 							<select name="group" class="form-control" id="group" required>
 								<option></option>
@@ -42,6 +42,20 @@
 							</select>
 						</div>
 					</div>
+					<div class="col-md-6">
+						<label for="channel" class="control-label"><span class="text-danger">*</span>Staff Channel</label>
+						<div class="form-group">
+							<select name="channel" class="form-control" id="channel" required>
+								<option></option>
+								<?php								
+									foreach ($channels as $channel) {
+										echo '<option value="'.$channel->id.'">'.$channel->name.'</option>';
+									}
+								?>
+							</select>
+						</div>
+					</div>
+
 					<div class="col-md-6">
 						<label for="salary" class="control-label"><span class="text-danger">*</span>Salary</label>
 						<div class="form-group">
