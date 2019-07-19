@@ -145,4 +145,5 @@ $autoload['model'] = array(
 	'Audios_model',
 	'Videos_model',
 	'Channels_model',
+	'Settings_model',
 );

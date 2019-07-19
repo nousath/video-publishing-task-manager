@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?=$title ?></title>
+  <?php $settings = $this->Settings_model->get_by_id(1); ?>
+  <title><?=$title.' | '. $settings->tagline; ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -61,9 +62,9 @@
     <!-- Logo -->
     <a href="<?php echo base_url(); ?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>SS</b>ms</span>
+      <span class="logo-mini"><b><?=$settings->system_name_prefix; ?></b>ms</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>SS</b> MediaStaff</span>
+      <span class="logo-lg"><b><?=$settings->system_name_prefix; ?></b> <?=$settings->system_name; ?></span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
@@ -334,7 +335,7 @@
 				
 							<li class="header">SYSTEM</li>
 							<li><a href="#"> <i class="fa fa-shield"></i> <span>Admins</span> </a></li>
-							<li><a href="#"> <i class="fa fa-hdd-o"></i> <span>Backup</span></a></li>
+							<li><a href="#"> <i class="fa fa-database"></i> <span>Backup</span></a></li>
 							<li><a href="#"> <i class="fa fa-book"></i> <span>Manual</span></a></li>
 							<li><a href="#"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 						</ul>';
@@ -394,7 +395,7 @@
     <section class="content-header">
       <h1>
         <?=$content_header; ?>
-        <small><?php echo $subheader = (!empty($content_subheader)) ? $content_subheader : 'Success Secrets TV'; ?></small>
+        <small><?=$settings->header; ?></small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo base_url(); ?>#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -440,9 +441,9 @@
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Version</b> 1.1.0
+      <b>Software version</b> 1.1.0
     </div>
-    <strong>Copyright &copy;<?=date('Y'); ?> | <a href="#">Success Secrets Media Staff</a> | </strong> All rights
+    <strong>Copyright &copy;<?=date('Y'); ?> <a href="#"><?=$settings->footer; ?></a> | </strong> All rights
     reserved.
   </footer>
 
