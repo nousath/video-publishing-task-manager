@@ -46,7 +46,7 @@
 							<div class="form-group">
 								<label for="varchar">Stage This Topic<?php echo form_error('stage') ?></label>
 								<select name="stage" id="stage" class="form-control">
-									<option></option>
+									<option value="1"></option>
 									<?php 
 										foreach ($stages as $stage ) {
 											echo '<option value="'.$stage->id.'">'.$stage->name.'</option>';
