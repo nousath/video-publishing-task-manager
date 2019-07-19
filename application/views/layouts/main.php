@@ -337,7 +337,7 @@
 							<li><a href="#"> <i class="fa fa-shield"></i> <span>Admins</span> </a></li>
 							<li><a href="#"> <i class="fa fa-database"></i> <span>Backup</span></a></li>
 							<li><a href="#"> <i class="fa fa-book"></i> <span>Manual</span></a></li>
-							<li><a href="#"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
+							<li><a href="'.base_url('settings').'"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 						</ul>';
 				  break;
 
