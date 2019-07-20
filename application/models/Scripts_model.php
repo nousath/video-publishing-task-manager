@@ -27,6 +27,12 @@ class Scripts_model extends CI_Model
 		$this->db->where($this->submitted_by, $user_id);
         return $this->db->get($this->table)->result();
 	}
+
+	function get_by_days($days){
+		// $query = $this->db->query("SELECT * FROM audios WHERE DATEDIFF(NOW(), FROM_UNIXTIME(submitted_at)) >= 30");
+		$this->db->where("DATEDIFF(NOW(), FROM_UNIXTIME(submitted_at)) >= $days");
+		return $this->db->get($this->table)->result();
+    }
 	
 
     // get data by id

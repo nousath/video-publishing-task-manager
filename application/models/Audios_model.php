@@ -9,6 +9,7 @@ class Audios_model extends CI_Model
     public $table = 'audios';
     public $id = 'id';
     public $submitted_by = 'submitted_by';
+    public $submitted_at = 'submitted_at';
     public $order = 'DESC';
 
     function __construct()
@@ -34,7 +35,14 @@ class Audios_model extends CI_Model
     {
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
+	}
+	
+    function get_by_days($days){
+		// $query = $this->db->query("SELECT * FROM audios WHERE DATEDIFF(NOW(), FROM_UNIXTIME(submitted_at)) >= 30");
+		$this->db->where("DATEDIFF(NOW(), FROM_UNIXTIME(submitted_at)) >= $days");
+		return $this->db->get($this->table)->result();
     }
+
 
     // insert data
     function insert($data)

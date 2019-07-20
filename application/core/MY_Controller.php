@@ -8,7 +8,6 @@ class MY_Controller extends CI_Controller{
 }
 
 class App_Controller extends MY_Controller {
-	// var $permission = array();
 
 	public function __construct() {
 		parent::__construct();
@@ -16,23 +15,46 @@ class App_Controller extends MY_Controller {
 			redirect('auth/login');
 		}
 
-	}
-
-
-	// public function text_excerpt($title) {
-    //     $new = substr($title, 0, 10);
-
-    //     if (strlen($title) > 13) {
-    //         return $new.'...';
-    //     } else {
-    //         return $title;
-    //     }
-    // }
-
-	// public function count_unread_user_notifications($user_id, $read_status){
+		// delete audios older than 30 days
+		$get_days = $this->Settings_model->get_by_id(1);
+		if($get_days->delete_audios_in != 0){
+			$audios = $this->Audios_model->get_by_days($get_days->delete_audios_in);
+			if($audios != null){
+				foreach ($audios as $audio ) {
+					$topic = $this->Topics_model->get_by_id($audio->topic_id);
+					delete_files_from_server(base_url($topic->audio));
+				}
+			}
+		}
 		
-	// }
 
+		// delete scripts older than 30 days
+		if($get_days->delete_docs_in != 0){
+			$get_days = $this->Settings_model->get_by_id(1);
+			$scripts = $this->Scripts_model->get_by_days($get_days->delete_docs_in);
+			if($scripts != null){
+				foreach ($scripts as $script ) {
+					$topic = $this->Topics_model->get_by_id($script->topic_id);
+					delete_files_from_server(base_url($topic->doc));
+				}
+			}
+		}
+		
+
+		// delete videos older than 30 days
+		if($get_days->delete_videos_in != 0){
+			$get_days = $this->Settings_model->get_by_id(1);
+			$videos = $this->Videos_model->get_by_days($get_days->delete_videos_in);
+			if($videos != null){
+				foreach ($videos as $video ) {
+					$topic = $this->Topics_model->get_by_id($video->topic_id);
+					delete_files_from_server(base_url($topic->audio));
+				}
+			}
+		}
+		
+
+	}
 
 	public function logged_in(){
 		$session_data = $this->session->userdata();
@@ -57,9 +79,10 @@ class App_Controller extends MY_Controller {
 	}
 
 	/*
-    * This function is invoked from another function to upload the image into the assets folder
-    * and returns the image path
-    */
+    * This functions are invoked from another function to upload files like image, docs, vids and audios the uploads folder
+    * and returns the file path
+	*/
+	
 	public function upload_image(){
     	// uploads/users
         $config['upload_path'] = 'uploads/users';
@@ -164,8 +187,20 @@ class App_Controller extends MY_Controller {
         }
 	}
 	
-	
-
+	public function delete_files_from_server($files){
+		// check if file(s) is present
+		if($files != '' || $files != null){
+			
+			// delete file
+			if (is_readable($files) && unlink($files)) {
+				return true;
+			} else {
+				return "The file was not found or not readable and could not be deleted";
+			}
+			
+		} 
+		
+	}
 }
 
 ?>
