@@ -53,24 +53,68 @@
 									<td><?=$settings->footer;?></td>
 								</tr>
 								<tr>
-									<td class="text text-primary"><strong>Delete documents After</strong></td>
-									<td><?=$settings->delete_docs_in?> days</td>
+									<td class="text text-primary"><strong>Delete Scripts After</strong></td>
+									<td>
+										<?php 
+											if($settings->delete_docs_in == 0){
+												echo "Never delete scripts";
+											}else{
+												echo $settings->delete_docs_in." days";
+											}
+										?> 
+									</td>
 								</tr>
 								<tr>
 									<td class="text text-primary"><strong>Delete audios After</strong></td>
-									<td><?=$settings->delete_audios_in;?> days</td>
+									<td>
+										<?php 
+											if($settings->delete_audios_in == 0){
+												echo "Never delete audios";
+											}else{
+												echo $settings->delete_audios_in." days";
+											}
+										?> 
+									</td>
 								</tr>	
 								<tr>
 									<td class="text text-primary"><strong>Delete videos After</strong></td>
-									<td><?=$settings->delete_videos_in;?> days</td>
+									<td>
+										<?php 
+											if($settings->delete_videos_in == 0){
+												echo "Never delete videos";
+											}else{
+												echo $settings->delete_videos_in." days";
+											}
+										?> 
+									</td>
 								</tr>
 								<tr>
 									<td class="text text-primary"><strong>Backup Database After</strong></td>
-									<td><?=$settings->backup_in;?> days</td>
+									<td>
+										<?php 
+											if($settings->backup_in == 0){
+												echo "Never Backup database";
+											}else{
+												echo $settings->backup_in." days";
+											}
+										?> 
+									</td>
 								</tr>
 								<tr>
 									<td class="text text-primary"><strong>Software Version</strong></td>
 									<td><?=$settings->software_version;?> </td>
+								</tr>
+								<tr>
+									<td class="text text-primary"><strong>Software Mode</strong></td>
+									<td>
+										<?php 
+											if($settings->app_mode == 0){
+												echo "Software currently on maintainance mode";
+											}elseif($settings->app_mode == 1){
+												echo "Software is currently LIVE";
+											}
+										?> 
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -140,8 +184,16 @@
 					</div>
 
 					<div class="form-group">
-						<label for="">Delete documents After</label>
-						<span class="label label-primary"><?=$settings->delete_docs_in; ?> days</span>
+						<label for="">Delete scripts After</label>
+						<span class="label label-primary">
+							<?php 
+								if($settings->delete_docs_in == 0){
+									echo "Never delete scripts";
+								}else{
+									echo $settings->delete_docs_in." days";
+								}
+							?> 
+						</span>
 						<select class="form-control" id="delete_docs_in" name="delete_docs_in">
 							<option value="30"><option>
 							<option value="0">Never Delete Documents<option>
@@ -155,7 +207,15 @@
 
 					<div class="form-group">
 						<label for="">Delete Audios After</label>
-						<span class="label label-primary"><?=$settings->delete_audios_in; ?> days</span>
+						<span class="label label-primary">
+							<?php 
+								if($settings->delete_audios_in == 0){
+									echo "Never delete audios";
+								}else{
+									echo $settings->delete_audios_in." days";
+								}
+							?> 
+						</span>
 						<select class="form-control" id="delete_audios_in" name="delete_audios_in">
 							<option value="30"><option>
 							<option value="0">Never Delete Audios<option>
@@ -169,7 +229,15 @@
 					
 					<div class="form-group">
 						<label for="">Delete Videos After</label>
-						<span class="label label-primary"><?=$settings->delete_videos_in; ?> days</span>
+						<span class="label label-primary">
+							<?php 
+								if($settings->delete_videos_in == 0){
+									echo "Never delete videos";
+								}else{
+									echo $settings->delete_videos_in." days";
+								}
+							?> 
+						</span>
 						<select class="form-control" id="delete_videos_in" name="delete_videos_in">
 							<option value="30"><option>
 							<option value="0">Never Delete Videos<option>
@@ -183,7 +251,15 @@
 
 					<div class="form-group">
 						<label for="">Backup Database After</label>
-						<span class="label label-primary"><?=$settings->backup_in; ?> days</span>
+						<span class="label label-primary">
+							<?php 
+								if($settings->backup_in == 0){
+									echo "Never backup database";
+								}else{
+									echo $settings->backup_in." days";
+								}
+							?> 
+						</span>
 						<select class="form-control" id="backup_in" name="backup_in">
 							<option value="30"><option>
 							<option value="0">Never Backup Database<option>
