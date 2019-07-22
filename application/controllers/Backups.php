@@ -75,7 +75,7 @@ class Backups extends App_Controller
 
         if ($row) {
 
-			$file = base_url($row->path);
+			$file = FCPATH.$row->path;
 			
 			if($file != '' || $file != null){
 				// delete file
