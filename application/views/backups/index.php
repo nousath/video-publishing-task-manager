@@ -58,8 +58,8 @@
 						?>
 						<?php endif; ?>
 
-						<a href="<?=base_url('backups/built_backup'); ?>" class="btn btn-primary btn-flat btn-lg">CREATE NEW BACKUP <i class="fa fa-database"></i></a>
-						<small>Automatic Backups are created every week.</small>
+						<a href="<?=base_url('backups/built_backup'); ?>" class="btn btn-primary btn-flat btn-lg">CREATE NEW BACKUP <i class="fa fa-database"></i></a><br>
+						<small>Automatic Backups are created based on specified duration of days under settings.</small>
 						<hr>
 
 						<table class="table table-hover">

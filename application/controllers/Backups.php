@@ -48,7 +48,6 @@ class Backups extends App_Controller
 			$this->session->set_flashdata('backup_unsuccessful', 'Backup unsuccessful or File could not be written');
 			redirect(site_url('backups'));
 		}
-		
 	}
 
 	public function download($id = ''){

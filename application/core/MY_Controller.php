@@ -15,6 +15,7 @@ class App_Controller extends MY_Controller {
 			redirect('auth/login');
 		}
 
+
 		// delete audios older than 30 days
 		$get_days = $this->Settings_model->get_by_id(1);
 		if($get_days->delete_audios_in != 0){
@@ -22,7 +23,7 @@ class App_Controller extends MY_Controller {
 			if($audios != null){
 				foreach ($audios as $audio ) {
 					$topic = $this->Topics_model->get_by_id($audio->topic_id);
-					delete_files_from_server(base_url($topic->audio));
+					delete_files_from_server(FCPATH.$topic->audio);
 				}
 			}
 		}
@@ -35,7 +36,7 @@ class App_Controller extends MY_Controller {
 			if($scripts != null){
 				foreach ($scripts as $script ) {
 					$topic = $this->Topics_model->get_by_id($script->topic_id);
-					delete_files_from_server(base_url($topic->doc));
+					delete_files_from_server(FCPATH.$topic->doc);
 				}
 			}
 		}
@@ -48,13 +49,13 @@ class App_Controller extends MY_Controller {
 			if($videos != null){
 				foreach ($videos as $video ) {
 					$topic = $this->Topics_model->get_by_id($video->topic_id);
-					delete_files_from_server(base_url($topic->audio));
+					delete_files_from_server(FCPATH.$topic->audio);
 				}
 			}
 		}
 
 
-		
+		$this->auto_backup($get_days->backup_in);
 
 	}
 
@@ -202,6 +203,32 @@ class App_Controller extends MY_Controller {
 			
 		} 
 		
+	}
+
+	public function auto_backup($days){
+		// get the last backup recorded
+		$last_backup = $this->Backups_model->get_last_inserted_row();
+		if($last_backup != null && $last_backup != ''){
+
+			// compare and execute backup
+			$duration = $this->Backups_model->get_days_from_last_inserted($last_backup->created_at, $days);
+
+			if($duration == true){
+				$this->load->helper('file');
+				$this->load->dbutil();
+				$backup = $this->dbutil->backup();
+				$date = time();
+				if(write_file(FCPATH.'/uploads/backups/BACKUP-'.$date.'.sql.zip', $backup)){
+					$data = array(
+						'name' => 'BACKUP-'.$date,
+						'path' => 'uploads/backups/BACKUP-'.$date.'.sql.zip',
+						'created_at' => time(),
+					);
+					$this->Backups_model->insert($data);
+				
+				}
+			}
+		}
 	}
 
 }
