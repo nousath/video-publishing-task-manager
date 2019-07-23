@@ -25,7 +25,7 @@ class Channels extends App_Controller
 			'name' => set_value('name'),
 			'content' => 'channels/index',
 			'content_header' => 'Channels',
-			'title' => 'Manage Chennels',
+			'title' => 'Manage Channels',
 			'channels' => $this->Channels_model->get_all(),
 		);
 
