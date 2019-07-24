@@ -21,7 +21,7 @@
                   <b>Friends</b> <a class="pull-right">13,287</a>
                 </li> -->
               </ul>
-
+              <a href="<?=base_url('ratings'); ?>" class="btn btn-warning btn-block btn-xs"><i class="fa fa-star"></i><b> Rate Staff</b></a>
               <a href="<?=base_url('users/edit/'.$user->id.''); ?>" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><b> Edit Profile</b></a>
             </div>
             <!-- /.box-body -->

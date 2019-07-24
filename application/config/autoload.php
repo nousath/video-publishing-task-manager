@@ -152,4 +152,5 @@ $autoload['model'] = array(
 	'Channels_model',
 	'Settings_model',
 	'Backups_model',
+	'Ratings_model',
 );

@@ -50,8 +50,8 @@
 									<td>'.$u->tasks_completed.'</td>							
 									<td>'.date('d/m/Y H:i:s', $u->last_login).'</td>							
 									<td>
-										<a href="'.site_url('users/edit/'.$u->id).'" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-										<a href="'.site_url('users/remove/'.$u->id).'" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
+										<a href="'.site_url('users/edit/'.$u->id).'" class="btn btn-info btn-xs">Edit <span class="fa fa-pencil"></span></a> 
+										<a href="'.site_url('users/remove/'.$u->id).'" class="btn btn-danger btn-xs">Delete <span class="fa fa-trash"></span></a>
 									</td>
 								</tr>
 							';
@@ -73,3 +73,4 @@
 		});
 	});
 </script>
+
