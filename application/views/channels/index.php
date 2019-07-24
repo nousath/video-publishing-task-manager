@@ -34,10 +34,10 @@
 						?>
 						<?php endif; ?>
 
-						<?php if ($this->session->flashdata('delete_unsuccessful')): ?>			
-						<?php echo '<div class="alert alert-success">
+						<?php if ($this->session->flashdata('delete_fail')): ?>			
+						<?php echo '<div class="alert alert-danger">
 													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-													<strong>'.$this->session->flashdata('delete_unsuccessful').'</strong>
+													<strong>'.$this->session->flashdata('delete_fail').'</strong>
 												</div>'; 
 						?>
 						<?php endif; ?>

@@ -75,16 +75,30 @@ class Channels extends App_Controller
       
     public function delete($id) 
     {
-        $row = $this->Channels_model->get_by_id($id);
+        $channel = $this->Channels_model->get_by_id($id);
 
-        if ($row) {
-            $this->Channels_model->delete($id);
-            $this->session->set_flashdata('delete_successful', 'Channel Deleted!');
-            redirect(site_url('channels'));
+        if ($channel) {
+			$result = $this->User_model->users_by_channel($channel->id);
+			if(!empty($result)){
+				$this->session->set_flashdata('delete_fail', 'Cannot delete channel '.strtoupper($channel->name).', because there are users/employees under it');
+				redirect('channels');
+			}else{
+				$result = $this->Topics_model->get_by_channel($channel->id);
+				if(!empty($result)){
+					$this->session->set_flashdata('delete_fail', 'Cannot delete channel '.strtoupper($channel->name).', because there are Topics/Scripts, Audios or Videos under it');
+					redirect('channels');
+				}else{
+					$this->Channels_model->delete($id);
+            		$this->session->set_flashdata('delete_successful', 'Channel Deleted!');
+            		redirect(site_url('channels'));
+				}
+			}
+            
         } else {
-            $this->session->set_flashdata('delete_unsuccessful', 'Record Not Found');
+            $this->session->set_flashdata('delete_fail', 'Record Not Found');
             redirect(site_url('channels'));
-        }
+		}
+		
     }
 
     public function _rules() {

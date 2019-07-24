@@ -39,7 +39,13 @@ class User_model extends CI_Model
 
 			return $output;
 		}
-    }
+	}
+	
+	function users_by_channel($channel_id){
+		$this->db->where($this->channel_id, $channel_id);
+		$this->db->order_by('id', 'DESC');
+		return $this->db->get('users')->result();
+	}
 	
 
 	function get_by_usertype($usertype){
