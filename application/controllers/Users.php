@@ -202,10 +202,79 @@ class Users extends App_Controller{
         // check if the user exists before trying to delete it
         if(isset($user->id))
         {
-			$this->User_model->delete_user($id);
+			switch ($user->usertype) {
+				case 2:
+					$result = $this->Topics_model->get_by_writer_assigned($user->id);
+					
+					if(!empty($result)){
+						$this->session->set_flashdata('delete_fail', 'Delete unsuccesful because '.strtoupper($user->username).' has been assigned a topic');
+            			redirect('users/index');
+					}else{
+						// delete assignent to user
+						$this->Assignment_model->delete_by_user($user->id);
 
-			$this->session->set_flashdata('delete_success', 'Staff Deleted!');
-            redirect('users/index');
+						// delete messages to and from user
+						$this->Messages_model->delete_by_tofrom($user->id);
+
+						// delete notifications to and from user
+						$this->Notifications_model->delete_by_to($user->id);
+
+						// delete user
+						$this->User_model->delete_user($id);
+						$this->session->set_flashdata('delete_success', 'Staff Deleted!');
+            			redirect('users/index');
+					}
+					break;
+
+				case 3:
+					$result = $this->Topics_model->get_by_artist_assigned($user->id);
+					if(!empty($result)){
+						$this->session->set_flashdata('delete_fail', 'Delete unsuccesful because '.strtoupper($user->username).' has been assigned a script');
+						redirect('users/index');
+					}else{
+						// delete assignent to user
+						$this->Assignment_model->delete_by_user($user->id);
+
+						// delete messages to and from user
+						$this->Messages_model->delete_by_tofrom($user->id);
+
+						// delete notifications to and from user
+						$this->Notifications_model->delete_by_to($user->id);
+						
+						// delete user
+						$this->User_model->delete_user($id);
+						$this->session->set_flashdata('delete_success', 'Staff Deleted!');
+						redirect('users/index');
+					}
+					break;
+
+				case 4:
+						$result = $this->Topics_model->get_by_editor_assigned($user->id);
+						if(!empty($result)){
+							$this->session->set_flashdata('delete_fail', 'Delete unsuccesful because '.strtoupper($user->username).' has been assigned a voice over');
+							redirect('users/index');
+						}else{
+							// delete assignent to user
+							$this->Assignment_model->delete_by_user($user->id);
+
+							// delete messages to and from user
+							$this->Messages_model->delete_by_tofrom($user->id);
+
+							// delete notifications to and from user
+							$this->Notifications_model->delete_by_to($user->id);
+							
+							// delete user
+							$this->User_model->delete_user($id);
+							$this->session->set_flashdata('delete_success', 'Staff Deleted!');
+							redirect('users/index');
+						}
+					break;
+				
+				default:
+					redirect('users/index');
+					break;
+			}
+			
         }
         else
             show_error('The user you are trying to delete does not exist.');

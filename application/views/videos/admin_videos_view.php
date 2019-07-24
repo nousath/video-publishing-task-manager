@@ -58,13 +58,19 @@
 								if($videos != null){
 									foreach ($videos as $video ) {
 										$topic = $this->Topics_model->get_by_id($video->topic_id);
-										$submitted_by = $this->ion_auth->user($video->submitted_by)->row(); 
+										$user = $this->ion_auth->user($video->submitted_by)->row();
+										if($user =='' || $video->submitted_by == ''){
+											$submitted_by = 'User Deleted';
+										}else{
+											$submittedby = $this->ion_auth->user($video->submitted_by)->row(); 
+											$submitted_by = $submittedby->username;
+										}
 										$status = ($video->approved == 0) ? '<a href="'.base_url('videos/toggle_approve/'.$video->id.'').'" class="btn btn-success btn-sm">Approve Video  <i class="fa fa-toggle-on"></i></a>' : '';
 										$publish = ($video->approved == 1) ? '<a href="'.base_url('videos/publish/'.$topic->id.'').'" class="btn btn-success btn-sm">Mark as Published  <i class="fa fa-check"></i></a> <a href="'.base_url('videos/reserve/'.$topic->id.'').'" class="btn btn-info btn-sm">Set as Reserve  <i class="fa fa-archive"></i></a>' : '';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
-												<td>'.$submitted_by->username.'</td>
+												<td>'.$submitted_by.'</td>
 												<td>'.date('M d, Y H:i:s', $video->submitted_at).'</td>
 												<td><a href="'.base_url('topics/video/'.$video->topic_id.'').'" class="btn btn-warning btn-sm btn-block"><i class="fa fa-video-camera"></i> Watch/Download</a></td>
 												<td>'.$status.' '.$publish.'</td>

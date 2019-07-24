@@ -16,6 +16,15 @@
 			?>
 			<?php endif; ?>
 
+			<?php if ($this->session->flashdata('delete_fail')): ?>			
+			<?php echo '<div class="alert alert-danger">
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+										<strong>'.$this->session->flashdata('delete_fail').'</strong>
+									</div>'; 
+			?>
+			<?php endif; ?>
+
+
                 <table class="table table-striped text-left" id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="false" data-click-to-select="true" data-toolbar="#toolbar">
 					<thead>	
 						<tr>

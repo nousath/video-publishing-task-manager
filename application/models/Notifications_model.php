@@ -85,6 +85,11 @@ class Notifications_model extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
-    }
+	}
+	
+	function delete_by_to($id){
+		$this->db->where($this->send_to, $id);
+        $this->db->delete($this->table);
+	}
 
 }

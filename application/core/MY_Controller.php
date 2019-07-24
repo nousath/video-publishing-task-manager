@@ -15,6 +15,9 @@ class App_Controller extends MY_Controller {
 			redirect('auth/login');
 		}
 
+		$get_days = $this->Settings_model->get_by_id(1);
+		$this->auto_backup($get_days->backup_in);
+
 
 		// delete audios older than 30 days
 		$get_days = $this->Settings_model->get_by_id(1);
@@ -24,6 +27,8 @@ class App_Controller extends MY_Controller {
 				foreach ($audios as $audio ) {
 					$topic = $this->Topics_model->get_by_id($audio->topic_id);
 					delete_files_from_server(FCPATH.$topic->audio);
+					// delete row from db
+					$this->Audios_model->delete($audio->id);
 				}
 			}
 		}
@@ -37,6 +42,8 @@ class App_Controller extends MY_Controller {
 				foreach ($scripts as $script ) {
 					$topic = $this->Topics_model->get_by_id($script->topic_id);
 					delete_files_from_server(FCPATH.$topic->doc);
+					// delete row from db
+					$this->Scripts_model->delete($script->id);
 				}
 			}
 		}
@@ -50,12 +57,11 @@ class App_Controller extends MY_Controller {
 				foreach ($videos as $video ) {
 					$topic = $this->Topics_model->get_by_id($video->topic_id);
 					delete_files_from_server(FCPATH.$topic->audio);
+					// delete row from db
+					$this->Videos_model->delete($video->id);
 				}
 			}
 		}
-
-
-		$this->auto_backup($get_days->backup_in);
 
 	}
 
