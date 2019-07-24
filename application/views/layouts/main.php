@@ -330,11 +330,11 @@
 							<li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
 							<li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
 							<li><a href="'.base_url('users').'"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
+							<li><a href="'.base_url('ratings').'"> <i class="fa fa-star"></i> <span>Ratings</span> </a></li>
 							<li><a href="#"> <i class="fa fa-archive"></i> <span>Reports</span> </a></li>
 						
 				
 							<li class="header">SYSTEM</li>
-							<li><a href="#"> <i class="fa fa-shield"></i> <span>Admins</span> </a></li>
 							<li><a href="'.base_url('backups').'"> <i class="fa fa-database"></i> <span>Backup</span></a></li>
 							<li><a href="'.base_url('manual').'"> <i class="fa fa-book"></i> <span>Manual</span></a></li>
 							<li><a href="'.base_url('settings').'"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
