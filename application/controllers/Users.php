@@ -68,8 +68,8 @@ class Users extends App_Controller{
             $group = array($this->input->post('group')); // Sets user to admin.
 
             $this->ion_auth->register($username, $password, $email, $additional_data, $group);
-
-            redirect('users/index');
+			$this->session->set_flashdata('message', 'New user '.$username.' created!');
+            redirect('users');
         }
         else
         {            
@@ -92,14 +92,13 @@ class Users extends App_Controller{
 		// --------------------------------
 		// check if logged in user is admin
 		// --------------------------------
+		$user = $this->ion_auth->user()->row(); 
 
-		if (!$this->ion_auth->is_admin()){
+		if($user->usertype != 1 ){
 			// check if the user exists before trying to edit it
 			$user_data = $this->User_model->get_user($id);
         
-			if(isset($user_data->id)){
-				$this->load->library('form_validation');
-	
+			if(isset($user_data->id)){	
 				$this->form_validation->set_rules('first_name','First name','trim');
 				$this->form_validation->set_rules('last_name','Last name','trim');
 				$this->form_validation->set_rules('phone','Phone number','trim');
@@ -127,10 +126,8 @@ class Users extends App_Controller{
 		
 	
 					$this->User_model->update_user($id,$data);            
-					redirect('users/index');
-	
-					// $this->User_model->update_user($id, $data);            
-					// redirect('users/index');
+					$this->session->set_flashdata('message', 'User updated!');
+            		redirect('users');
 				}
 				else{
 					$data = array(
@@ -138,6 +135,7 @@ class Users extends App_Controller{
 						'content' => 'users/edit',
 						'user'  => $this->User_model->get_user($id),
 						'content_header' => 'Edit User',
+						'channels' => $this->Channels_model->get_all(),
 					);
 					$this->load->view('layouts/main',$data);
 				}
@@ -146,52 +144,85 @@ class Users extends App_Controller{
 				show_error('The user you are trying to edit does not exist.');
 
 		}else {
-			// --------------------------------
-			// check if logged in user is admin
-			// --------------------------------
-		
-
-
-			// check if the user exists before trying to edit it
-			$user_data = $this->User_model->get_user($id);
-        
-			if(isset($user_data->id)){
-				$this->load->library('form_validation');
-	
-				$this->form_validation->set_rules('password','Password','required|min_length[6]');
-				$this->form_validation->set_rules('username','Username','required|min_length[6]');
-				$this->form_validation->set_rules('email','Email','required|valid_emails');
-			
-				if($this->form_validation->run())     
-				{   
-					$params = array(
-						'username' => $this->input->post('username'),
-						'email' => $this->input->post('email'),
-						'first_name' => $this->input->post('first_name'),
-						'last_name' => $this->input->post('last_name'),
-						'employed_on' => $this->input->post('employed_on'),
-						'salary' => $this->input->post('salary'),
-						'dob' => $this->input->post('dob'),
-						'photo' => $this->upload_image(),
-						'phone' => $this->input->post('phone'),
+			$user = $this->ion_auth->user($id)->row();
+			if ($user) {
+				$data = array(
+					'id' => set_value('id', $user->id),
+					'username' => set_value('username', $user->username),
+					'email' => set_value('email', $user->email),
+					'first_name' => set_value('first_name', $user->first_name),
+					'last_name' => set_value('last_name', $user->last_name),
+					'job_title' => set_value('job_title', $user->job_title),
+					'employed_on' => set_value('employed_on', $user->employed_on),
+					'salary' => set_value('salary', $user->salary),
+					'dob' => set_value('dob', $user->dob),
+					'phone' => set_value('phone', $user->phone),
+					'channels' => $this->Channels_model->get_all(),
+					'content' => 'users/edit',
+					'content_header' => 'Edit',
+					'title' => 'Edit User',
 					);
-	
-					$this->User_model->update_user($id,$params);            
-					redirect('users/index');
-				}
-				else{
-					$data = array(
-						'title' => 'Edit User',
-						'content' => 'users/edit',
-						'user'  => $this->User_model->get_user($id)
-					);
-					$this->load->view('layouts/main',$data);
-				}
+				$this->load->view('layouts/main', $data);
+			} else {
+				$this->session->set_flashdata('message', 'Record Not Found');
+				redirect(site_url('users'));
 			}
-			else
-				show_error('The user you are trying to edit does not exist.');	
+				
 		}
-    } 
+	} 
+	
+	function edit_action(){
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype != 1 ){
+			// user
+			if (!$this->input->post('id')) {
+				$this->edit($this->input->post('id',TRUE));
+			} else {
+				$data = array(
+					'email' => $this->input->post('email'),
+					'first_name' => $this->input->post('first_name'),
+					'last_name' => $this->input->post('last_name'),
+					'employed_on' => $this->input->post('employed_on'),
+					'dob' => $this->input->post('dob'),
+					'phone' => $this->input->post('phone'),
+				);
+
+				if($_FILES['photo']['size'] > 0) {
+
+					$upload_image = $this->upload_image();
+					$upload_image = array('photo' => $upload_image);
+					$this->User_model->update_user($this->input->post('id'),$upload_image);
+				}
+	
+				
+				$this->User_model->update_user($this->input->post('id'),$data);            
+				$this->session->set_flashdata('message', 'Profile!');
+				redirect(base_url('dashboard'));
+			}
+		}else{
+			// admin
+			if (!$this->input->post('id')) {
+				$this->edit($this->input->post('id',TRUE));
+			} else {
+				$data = array(
+					'first_name' => $this->input->post('first_name'),
+					'last_name' => $this->input->post('last_name'),
+					'job_title' => $this->input->post('job_title'),
+					'salary' => $this->input->post('salary'),
+					'channel_id' => $this->input->post('channel'),
+					'job_describtion' => $this->input->post('job_describtion'),
+					'employed_on' => $this->input->post('employed_on'),
+					'salary' => $this->input->post('salary'),
+					'dob' => $this->input->post('dob'),
+					'phone' => $this->input->post('phone'),
+				);
+				$this->User_model->update_user($this->input->post('id'),$data);            
+				$this->session->set_flashdata('message', 'User updated!');
+				redirect(base_url('users'));
+			}
+		}
+	}
 
     /*
      * Deleting user

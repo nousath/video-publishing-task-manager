@@ -5,12 +5,17 @@ if (!defined('BASEPATH'))
 
 class Topics extends App_Controller
 {
-    // function __construct()
-    // {
-    //     parent::__construct();
-    //     $this->load->model('Topics_model');
-    //     $this->load->library('form_validation');
-    // }
+    function __construct()
+    {
+        parent::__construct();
+        $user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype != 1 ){
+			
+			redirect(base_url('dashboard'),'refresh');
+				
+		}
+    }
 
     public function index()
     {
@@ -164,51 +169,36 @@ class Topics extends App_Controller
 
         if ($row) {
             $data = array(
-                'button' => 'Update',
                 'action' => site_url('topics/update_action'),
 				'id' => set_value('id', $row->id),
 				'topic' => set_value('topic', $row->topic),
-				'stage_id' => set_value('stage_id', $row->stage_id),
-				'user_id' => set_value('user_id', $row->user_id),
-				'assigned' => set_value('assigned', $row->assigned),
-				'script' => set_value('script', $row->script),
-				'doc' => set_value('doc', $row->doc),
-				'audio' => set_value('audio', $row->audio),
-				'video' => set_value('video', $row->video),
-				'created_by' => set_value('created_by', $row->created_by),
-				'created_at' => set_value('created_at', $row->created_at),
+				'channels' => $this->Channels_model->get_all(),
+				'content' => 'topics/edit_form',
+				'content_header' => 'Topic',
+				'title' => 'Edit Topic',
 				);
-            $this->load->view('topics/topics_form', $data);
+            $this->load->view('layouts/main', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('topics'));
         }
     }
     
-    public function update_action() 
-    {
-        $this->_rules();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('id', TRUE));
-        } else {
-            $data = array(
-		'topic' => $this->input->post('topic',TRUE),
-		'stage_id' => $this->input->post('stage_id',TRUE),
-		'user_id' => $this->input->post('user_id',TRUE),
-		'assigned' => $this->input->post('assigned',TRUE),
-		'script' => $this->input->post('script',TRUE),
-		'doc' => $this->input->post('doc',TRUE),
-		'audio' => $this->input->post('audio',TRUE),
-		'video' => $this->input->post('video',TRUE),
-		'created_by' => $this->input->post('created_by',TRUE),
-		'created_at' => $this->input->post('created_at',TRUE),
-	    );
-
-            $this->Topics_model->update($this->input->post('id', TRUE), $data);
-            $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('topics'));
-        }
+	public function update_action() 
+	{
+		if($this->input->post('topic',TRUE)){
+			$data = array(
+				'topic' => $this->input->post('topic',TRUE),
+				'channel_id' => $this->input->post('channel',TRUE),
+			);
+	
+			$this->Topics_model->update($this->input->post('id', TRUE), $data);
+			$this->session->set_flashdata('message', 'Topic updated!');
+			redirect(site_url('topics'));
+		}else{
+			redirect(site_url('topics'));
+		}
+        
     }
     
     public function delete($id) 
@@ -248,7 +238,5 @@ class Topics extends App_Controller
 
 }
 
-/* End of file Topics.php */
-/* Location: ./application/controllers/Topics.php */
-/* Please DO NOT modify this information : */
+
 

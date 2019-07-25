@@ -33,6 +33,16 @@
 						?>
 						<?php endif; ?>
 
+						<?php if ($this->session->flashdata('message')): ?>			
+						<?php echo '<div class="alert alert-success">
+													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+													<strong>'.$this->session->flashdata('message').'</strong>
+												</div>'; 
+						?>
+						<?php endif; ?>
+
+
+
 						<div class="table-responsive">
 							<table class="table table-hover" id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="false" data-click-to-select="true" data-toolbar="#toolbar">
 								<thead>
@@ -41,7 +51,6 @@
 										<th>Title</th>
 										<th>Stage</th>
 										<th>Assigned To</th>
-										<th>Status</th>
 										<th>Doc</th>
 										<th>Audio</th>
 										<th>Video</th>
@@ -73,7 +82,6 @@
 												<td>'.$topic->topic.'</td>
 												<td>'.$stage->name.'</td>
 												<td>'.$user->username.'</td>
-												<td>'.$assigned.'</td>
 												<td>
 													'.$doc.'
 												</td>
@@ -86,6 +94,7 @@
 												<td>'.$created_by->username.'</td>
 												<td>'.date('d/m/Y H:i:s', $topic->created_at).'</td>
 												<td>
+													<a class="btn btn-info btn-xs" href="'.base_url('topics/update/'.$topic->id.'').'"><i class="fa fa-edit"></i> Edit</a>
 													<a class="btn btn-danger btn-xs" href="'.base_url('topics/delete/'.$topic->id.'').'"><i class="fa fa-trash"></i> Delete</a>
 												</td>
 											</tr>';
