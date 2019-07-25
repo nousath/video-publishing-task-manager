@@ -39,13 +39,20 @@ class User_model extends CI_Model
 
 			return $output;
 		}
-    }
+	}
+	
+	function users_by_channel($channel_id){
+		$this->db->where($this->channel_id, $channel_id);
+		$this->db->order_by('id', 'DESC');
+		return $this->db->get('users')->result();
+	}
 	
 
 	function get_by_usertype($usertype){
 		$this->db->where($this->usertype, $usertype);
         return $this->db->get($this->table)->result();
 	}
+	
 
 	function get_by_usertype_and_project_status($usertype, $on_project){
 		$this->db->where($this->usertype, $usertype);
@@ -75,11 +82,12 @@ class User_model extends CI_Model
     /*
      * Get all users
      */
-    function get_all_users()
-    {
-        $this->db->order_by('id', 'desc');
-        return $this->db->get('users')->result();
-    }
+	
+	function get_all_users(){	
+		$this->db->where("usertype != 1");
+		$this->db->order_by('id', 'DESC');
+		 return $this->db->get('users')->result();
+	}
         
     /*
      * function to add new user

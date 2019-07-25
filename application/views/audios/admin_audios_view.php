@@ -50,14 +50,22 @@
 								if($audios != null){
 									foreach ($audios as $audio ) {
 										$topic = $this->Topics_model->get_by_id($audio->topic_id);
-										$submitted_by = $this->ion_auth->user($audio->submitted_by)->row(); 
+										$user = $this->ion_auth->user($audio->submitted_by)->row();
+										if($user =='' || $audio->submitted_by == ''){
+											$submitted_by = 'User Deleted';
+										}else{
+											$submittedby = $this->ion_auth->user($audio->submitted_by)->row(); 
+											$submitted_by = $submittedby->username;
+										}
+										
+										
 										// $status = ($audio->approved == 0) ? '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
 										$status = ($audio->approved == 0) ? '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-success btn-sm">Approve Audio  <i class="fa fa-toggle-on"></i></a>' : '';
 										$assign = ($audio->approved == 1 && $topic->assigned == 0) ? '<a href="'.base_url('audios/assign/'.$topic->id.'').'" class="btn btn-info btn-sm">Assign to Editor  <i class="fa fa-share"></i></a>' : '';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
-												<td>'.$submitted_by->username.'</td>
+												<td>'.$submitted_by.'</td>
 												<td>'.date('M d, Y H:i:s', $audio->submitted_at).'</td>
 												<td><a href="'.base_url('topics/audio/'.$audio->topic_id.'').'" class="btn btn-warning btn-sm btn-block">Listen/Download <i class="fa fa-microphone"></i></a></td>
 												<td>'.$status.' '.$assign.'</td>

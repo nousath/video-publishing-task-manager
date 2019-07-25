@@ -18,6 +18,9 @@
 			<div class="box-body">
 				<div class="row">
 					<div class="col-md-12">
+						<iframe src='https://docs.google.com/viewer?url=<?=base_url($topic->doc); ?>&embedded=true' frameborder='0' width='1000px' height='623px'>
+						</iframe> 
+
 						<!-- <iframe src='https://docs.google.com/viewer?url=<?=base_url($topic->doc); ?>&embedded=true' frameborder='0'>
 						</iframe>
 
