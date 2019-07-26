@@ -121,7 +121,7 @@ class Audios extends App_Controller
 	public function toggle_approve($audio_id = ''){
 		$user = $this->ion_auth->user()->row(); 
 
-		if($user->usertype == 1){
+		if($user->usertype != 1){
 			redirect(base_url('dashboard'),'refresh');
 		}
 

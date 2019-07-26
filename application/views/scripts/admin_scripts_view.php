@@ -59,7 +59,7 @@
 										}
 										// $status = ($script->approved == 0) ? '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
 										$status = ($script->approved == 0) ? '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '';
-										$assign = ($script->approved == 1 && $topic->assigned == 0) ? '<a href="'.base_url('scripts/assign/'.$topic->id.'').'" class="btn btn-info btn-sm">Assign to Artists  <i class="fa fa-share"></i></a>' : '';
+										$assign = ($script->approved == 1 ) ? '<a href="'.base_url('scripts/assign/'.$topic->id.'').'" class="btn btn-info btn-sm">Assign to Artists  <i class="fa fa-share"></i></a>' : '';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>

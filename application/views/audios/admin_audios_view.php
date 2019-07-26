@@ -61,7 +61,7 @@
 										
 										// $status = ($audio->approved == 0) ? '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
 										$status = ($audio->approved == 0) ? '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-success btn-sm">Approve Audio  <i class="fa fa-toggle-on"></i></a>' : '';
-										$assign = ($audio->approved == 1 && $topic->assigned == 0) ? '<a href="'.base_url('audios/assign/'.$topic->id.'').'" class="btn btn-info btn-sm">Assign to Editor  <i class="fa fa-share"></i></a>' : '';
+										$assign = ($audio->approved == 1 ) ? '<a href="'.base_url('audios/assign/'.$topic->id.'').'" class="btn btn-info btn-sm">Assign to Editor  <i class="fa fa-share"></i></a>' : '';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>

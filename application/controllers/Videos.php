@@ -224,4 +224,20 @@ class Videos extends App_Controller
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
 	}
 
+	public function manual(){
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype != 1){
+			redirect(base_url('dashboard'),'refresh');
+		}else{
+			$data = array(
+				'content' => 'videos/manual',
+				'content_header' => 'Manual',
+				'title' => 'Watch video guides',
+			);
+	
+			$this->load->view('layouts/main', $data);
+		}
+	}
+
 }

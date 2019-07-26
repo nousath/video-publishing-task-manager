@@ -187,7 +187,7 @@ class Scripts extends App_Controller
 
 		$user = $this->ion_auth->user()->row(); 
 
-		if($user->usertype == 1){
+		if($user->usertype != 1){
 			redirect(base_url('dashboard'),'refresh');
 		}
 
