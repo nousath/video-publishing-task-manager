@@ -19,7 +19,7 @@ class Audios extends App_Controller
 
     }
 
-    public function index(){
+    public function index($audio_id = ''){
 		$user = $this->ion_auth->user()->row(); 
 
 		if($user->usertype == 1){
@@ -35,17 +35,32 @@ class Audios extends App_Controller
 
 
 		}elseif($user->usertype == 3){
-			// writer view
-			$data = array(
-				'audios_by_user' => $this->Assignment_model->get_by_user_and_stage($user->id, 3),
-				'audios' => $this->Audios_model->get_by_user($user->id),
-				'assigned_scripts' => $this->Topics_model->get_by_artist_assigned($user->id),
-				'content' => 'audios/audios_view',
-				'content_header' => 'Manage Script',
-				'title' => 'Manage Scripts',
-			);
-	
-			$this->load->view('layouts/main', $data);
+			// artist view
+			if($audio_id == ''){
+				$data = array(
+					'audios_by_user' => $this->Assignment_model->get_by_user_and_stage($user->id, 3),
+					'audios' => $this->Audios_model->get_by_user($user->id),
+					'assigned_scripts' => $this->Topics_model->get_by_artist_assigned($user->id),
+					'content' => 'audios/audios_view',
+					'content_header' => 'Manage Audio',
+					'title' => 'Manage Audio',
+				);
+		
+				$this->load->view('layouts/main', $data);
+			}else{
+				$data = array(
+					'content' => 'audios/comments',
+					'content_header' => 'Comments',
+					'audio' => $this->Audios_model->get_by_id($audio_id),
+					'user' => $this->ion_auth->user()->row(),
+					'audio_id' => $audio_id,
+					'comments' => $this->Comments_model->get_comments(2, $audio_id),
+					'title' => 'Comments on this audios',
+				);
+		
+				$this->load->view('layouts/main', $data);
+			}
+			
 		}
 	}  
 

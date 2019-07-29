@@ -17,7 +17,7 @@ class Scripts extends App_Controller
 		}
     }
 
-    public function index(){
+    public function index($doc_id = ''){
 
 		$user = $this->ion_auth->user()->row(); 
 
@@ -35,16 +35,31 @@ class Scripts extends App_Controller
 
 		}elseif($user->usertype == 2){
 			// writer view
-			$data = array(
-				'scripts_by_user' => $this->Assignment_model->get_by_user_and_stage($user->id, 2),
-				'scripts' => $this->Scripts_model->get_by_user($user->id),
-				'assigned_topics' => $this->Topics_model->get_by_writer_assigned($user->id),
-				'content' => 'scripts/scripts_view',
-				'content_header' => 'Manage Script',
-				'title' => 'Manage Scripts',
-			);
-	
-			$this->load->view('layouts/main', $data);
+			if($doc_id == ''){
+				$data = array(
+					'scripts_by_user' => $this->Assignment_model->get_by_user_and_stage($user->id, 2),
+					'scripts' => $this->Scripts_model->get_by_user($user->id),
+					'assigned_topics' => $this->Topics_model->get_by_writer_assigned($user->id),
+					'content' => 'scripts/scripts_view',
+					'content_header' => 'Manage Script',
+					'title' => 'Manage Scripts',
+				);
+		
+				$this->load->view('layouts/main', $data);
+			}else{
+				$data = array(
+					'content' => 'scripts/comments',
+					'content_header' => 'Comments',
+					'script' => $this->Scripts_model->get_by_id($doc_id),
+					'user' => $this->ion_auth->user()->row(),
+					'doc_id' => $doc_id,
+					'comments' => $this->Comments_model->get_comments(1, $doc_id),
+					'title' => 'Comments on this scripts',
+				);
+		
+				$this->load->view('layouts/main', $data);
+			}
+			
 		}
 		
 	}

@@ -17,7 +17,7 @@ class Videos extends App_Controller
 		}
     }
 
-    public function index(){
+    public function index($video_id = ''){
 		$user = $this->ion_auth->user()->row(); 
 
 		if($user->usertype == 1){
@@ -34,16 +34,32 @@ class Videos extends App_Controller
 
 		}elseif($user->usertype == 4){
 			// writer view
-			$data = array(
-				'videos_by_user' => $this->Assignment_model->get_by_user_and_stage($user->id, 4),
-				'videos' => $this->Videos_model->get_by_user($user->id),
-				'assigned_audios' => $this->Topics_model->get_by_editor_assigned($user->id),
-				'content' => 'videos/videos_view',
-				'content_header' => 'Manage Videos',
-				'title' => 'Manage Videos',
-			);
-	
-			$this->load->view('layouts/main', $data);
+
+			if($video_id == ''){
+				$data = array(
+					'videos_by_user' => $this->Assignment_model->get_by_user_and_stage($user->id, 4),
+					'videos' => $this->Videos_model->get_by_user($user->id),
+					'assigned_audios' => $this->Topics_model->get_by_editor_assigned($user->id),
+					'content' => 'videos/videos_view',
+					'content_header' => 'Manage Videos',
+					'title' => 'Manage Videos',
+				);
+		
+				$this->load->view('layouts/main', $data);
+			}else{
+				$data = array(
+					'content' => 'videos/comments',
+					'content_header' => 'Comments',
+					'video' => $this->Videos_model->get_by_id($video_id),
+					'user' => $this->ion_auth->user()->row(),
+					'video_id' => $video_id,
+					'comments' => $this->Comments_model->get_comments(3, $video_id),
+					'title' => 'Comments on this video',
+				);
+		
+				$this->load->view('layouts/main', $data);
+			}
+			
 		}
 	}
 	

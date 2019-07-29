@@ -35,8 +35,8 @@ class Topics extends App_Controller
 		}
 	}
 
-    public function doc($id = ''){
-		if($id == ''){
+    public function doc($id = '', $doc_id = ''){
+		if($id == '' ||  $doc_id == ''){
 			
 			redirect(base_url('topics'),'refresh');
 			
@@ -45,6 +45,10 @@ class Topics extends App_Controller
 				'title' => 'Document',
 				'content' => 'topics/doc',
 				'topic'  => $this->Topics_model->get_by_id($id),
+				'doc_id' => $doc_id,
+				'comments' => $this->Comments_model->get_comments(1, $doc_id),
+				'user' => $this->ion_auth->user()->row(),
+				'comment' => set_value('comment'),
 				'content_header' => 'View Script',
 			);
 	
@@ -54,8 +58,8 @@ class Topics extends App_Controller
 	}
 	
 
-	public function audio($id = ''){
-		if($id == ''){
+	public function audio($id = '', $audio_id){
+		if($id == '' || $audio_id == ''){
 			
 			redirect(base_url('topics'),'refresh');
 			
@@ -65,6 +69,11 @@ class Topics extends App_Controller
 				'content' => 'topics/audio',
 				'topic'  => $this->Topics_model->get_by_id($id),
 				'content_header' => 'Audio',
+				'audio_id' => $audio_id,
+				'comments' => $this->Comments_model->get_comments(2, $audio_id),
+				'user' => $this->ion_auth->user()->row(),
+				'comment' => set_value('comment'),
+
 			);
 	
 			$this->load->view('layouts/main', $data);
@@ -72,8 +81,8 @@ class Topics extends App_Controller
        
 	}
 
-	public function video($id = ''){
-		if($id == ''){
+	public function video($id = '', $video_id = ''){
+		if($id == '' || $video_id == ''){
 			
 			redirect(base_url('topics'),'refresh');
 			
@@ -82,7 +91,12 @@ class Topics extends App_Controller
 				'title' => 'Video',
 				'content' => 'topics/video',
 				'topic'  => $this->Topics_model->get_by_id($id),
-				'content_header' => 'Vedeo',
+				'content_header' => 'Video',
+				'video_id' => $video_id,
+				'comments' => $this->Comments_model->get_comments(3, $video_id),
+				'user' => $this->ion_auth->user()->row(),
+				'comment' => set_value('comment'),
+
 			);
 	
 			$this->load->view('layouts/main', $data);

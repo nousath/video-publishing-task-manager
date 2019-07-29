@@ -106,7 +106,7 @@
 									<th>SN</th>
 									<th>Topic</th>
 									<th>Submitted At</th>
-									<th>Video Status</th>
+									<!-- <th>Video Status</th> -->
 								</tr>
 							</thead>
 							<tbody>
@@ -115,12 +115,12 @@
 								// if($scripts_by_user != null){
 									foreach ($videos as $video ) {
 										$topic = $this->Topics_model->get_by_id($video->topic_id);
-										$status = ($video->approved == 0) ? 'Not Approved <i class="fa fa-times"></i>' : 'Approved <i class="fa fa-check"></i>';
+										// $status = ($video->approved == 0) ? 'Not Approved <i class="fa fa-times"></i>' : 'Approved <i class="fa fa-check"></i>';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.date('M d, Y H:i:s', $video->submitted_at).'</td>
-												<td>'.$status.'</td>
+												<td><a class="btn btn-danger btn-flat" href="'.base_url("videos/index/$video->id").'">Comments <i class="fa fa-comments"></i></a></td>
 											</tr>';
 
 											$sn++;
