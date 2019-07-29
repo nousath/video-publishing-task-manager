@@ -3,8 +3,10 @@
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header with-border">
-				<a href="<?=base_url($topic->doc); ?>" class="btn btn-info btn-lg"><i class="fa fa-download"></i> Download Document</a>
-				<!-- <h3 class="box-title">Script Document</h3> -->
+				<?php 
+					$topic = $this->Topics_model->get_by_id($video->topic_id);
+				?>
+				<h3 class="box-title"><?=$topic->topic; ?></h3>
 
 				<div class="box-tools pull-right">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -17,13 +19,14 @@
 
 			<div class="box-body">
 				<div class="row">
-					<div class="col-md-10">
-						<iframe src='https://docs.google.com/viewer?url=<?=base_url($topic->doc); ?>&embedded=true' frameborder='0' width='1000px' height='623px'>
-						</iframe> 
-	
-						
-						 <!-- DIRECT CHAT PRIMARY -->
-						 <div class="box box-primary direct-chat direct-chat-primary">
+					<div class="col-md-8">
+
+
+
+
+
+					 <!-- DIRECT CHAT PRIMARY -->
+					 <div class="box box-primary direct-chat direct-chat-primary">
 							<div class="box-header with-border">
 								<h3 class="box-title">Comments</h3>
 								<div class="box-tools pull-right">
@@ -61,19 +64,20 @@
 
 										<?php else: ?>
 											<?php 
-												$writer_user = $this->ion_auth->user($comment->comment_from)->row();
+												$admin_user = $this->ion_auth->user($comment->comment_from)->row();
+
 											?>
 											<!-- Message to the right -->
 											<div class="direct-chat-msg right">
 												<div class="direct-chat-info clearfix">
 													<?php 
-														$name_of_user = ($writer_user->first_name == '' && $writer_user->first_name == '') ? $writer_user->username : $writer_user->first_name.' '.$writer_user->last_name;
+														$name_of_user = ($admin_user->first_name == '' && $admin_user->first_name == '') ? $admin_user->username : $admin_user->first_name.' '.$admin_user->last_name;
 													?>
 													<span class="direct-chat-name pull-right"><?=$name_of_user; ?></span>
 													<span class="direct-chat-timestamp pull-left"><?=date('d M, Y H:i:s', $comment->created_at); ?></span>
 												</div>
 												<!-- /.direct-chat-info -->
-												<img class="direct-chat-img" src="<?=base_url($writer_user->photo);?>" alt="Message User Image"><!-- /.direct-chat-img -->
+												<img class="direct-chat-img" src="<?=base_url($admin_user->photo);?>" alt="Message User Image"><!-- /.direct-chat-img -->
 												<div class="direct-chat-text">
 												<?=$comment->comment; ?>
 												</div>
@@ -91,19 +95,19 @@
 								<form action="<?=base_url('comments/create_action'); ?>" method="post">
 									<div class="input-group">
 										<span class="input-group-btn">
-											<a href="<?=base_url('scripts'); ?>" class="btn btn-default btn-flat" title="Back to scripts"><i class="fa fa-chevron-left"></i></a>
+											<a href="<?=base_url('videos'); ?>" class="btn btn-default btn-flat" title="Back to videos"><i class="fa fa-chevron-left"></i></a>
 										</span>
-
 										<input type="text" name="comment" id="comment" placeholder="Type Comment ..." class="form-control" required>
 										
-										<input type="hidden" name="media_type" id="media_type" class="form-control" value="1">
-										<input type="hidden" name="media_id" id="media_id" class="form-control" value="<?=$doc_id;?>">
+										<input type="hidden" name="media_type" id="media_type" class="form-control" value="3">
+										<input type="hidden" name="media_id" id="media_id" class="form-control" value="<?=$video_id;?>">
 										<input type="hidden" name="topic_id" id="topic_id" class="form-control" value="<?=$topic->id;?>">
 										
 										<span class="input-group-btn">
-											<button type="submit" class="btn btn-primary btn-flat" title="submit comment"><i class="fa fa-plus"></i></button>
+											<button type="submit" class="btn btn-primary btn-flat" title="Submit comment" ><i class="fa fa-plus"></i></button>
 										</span>
 									</div>
+									
 								</form>
 							</div>
 							<!-- /.box-footer-->
@@ -112,7 +116,15 @@
 
 
 
+
+
+
+						
 					</div>
+
+
+
+					
 					<!-- /.col -->
 				</div>
 				<!-- /.row -->

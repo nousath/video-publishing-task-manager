@@ -153,4 +153,5 @@ $autoload['model'] = array(
 	'Settings_model',
 	'Backups_model',
 	'Ratings_model',
+	'Comments_model',
 );

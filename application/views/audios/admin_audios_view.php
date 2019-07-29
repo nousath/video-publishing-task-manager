@@ -67,7 +67,7 @@
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by.'</td>
 												<td>'.date('M d, Y H:i:s', $audio->submitted_at).'</td>
-												<td><a href="'.base_url('topics/audio/'.$audio->topic_id.'').'" class="btn btn-warning btn-sm btn-block">Listen/Download <i class="fa fa-microphone"></i></a></td>
+												<td><a href="'.base_url("topics/audio/$audio->topic_id/$audio->id").'" class="btn btn-warning btn-sm btn-block">Listen/Download <i class="fa fa-microphone"></i></a></td>
 												<td>'.$status.' '.$assign.'</td>
 											</tr>';
 

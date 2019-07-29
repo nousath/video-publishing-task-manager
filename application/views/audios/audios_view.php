@@ -108,7 +108,7 @@
 									<th>SN</th>
 									<th>Topic</th>
 									<th>Submitted At</th>
-									<th>Audio Status</th>
+									<!-- <th>Audio Status</th> -->
 								</tr>
 							</thead>
 							<tbody>
@@ -117,12 +117,12 @@
 								// if($scripts_by_user != null){
 									foreach ($audios as $audio ) {
 										$topic = $this->Topics_model->get_by_id($audio->topic_id);
-										$status = ($audio->approved == 0) ? 'Not Approved <i class="fa fa-times"></i>' : 'Approved <i class="fa fa-check"></i>';
+										// $status = ($audio->approved == 0) ? 'Not Approved <i class="fa fa-times"></i>' : 'Approved <i class="fa fa-check"></i>';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.date('M d, Y H:i:s', $audio->submitted_at).'</td>
-												<td>'.$status.'</td>
+												<td><a class="btn btn-danger btn-flat" href="'.base_url("audios/index/$audio->id").'">Comments <i class="fa fa-comments"></i></a></td>
 											</tr>';
 
 											$sn++;

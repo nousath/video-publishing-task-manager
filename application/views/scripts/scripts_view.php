@@ -1,3 +1,13 @@
+<?php
+	function display_chats(){
+		
+	}
+?>
+
+
+
+
+
 
 <div class="row">
 	<div class="col-md-12">
@@ -75,7 +85,7 @@
 									<th>SN</th>
 									<th>Topic</th>
 									<th>Submitted At</th>
-									<th>Script Status</th>
+									<!-- <th>Script Status</th> -->
 								</tr>
 							</thead>
 							<tbody>
@@ -84,19 +94,19 @@
 								// if($scripts_by_user != null){
 									foreach ($scripts as $script ) {
 										$topic = $this->Topics_model->get_by_id($script->topic_id);
-										$status = ($script->approved == 0) ? 'Not Approved <i class="fa fa-times"></i>' : 'Approved <i class="fa fa-check"></i>';
+										// $status = ($script->approved == 0) ? 'Not Approved <i class="fa fa-times"></i>' : 'Approved <i class="fa fa-check"></i>';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.date('M d, Y H:i:s', $script->submitted_at).'</td>
-												<td>'.$status.'</td>
+												<td><a class="btn btn-danger btn-flat" href="'.base_url("scripts/index/$script->id").'">Comments <i class="fa fa-comments"></i></a></td>
 											</tr>';
 
 											$sn++;
 									}
 								// }
 							?>
-							</tbody>
+							</tbody> 
 						</table>
 						
 					</div>
@@ -118,4 +128,6 @@
 	<!-- /.col -->
 </div>
 <!-- /.row -->
+
+
 
