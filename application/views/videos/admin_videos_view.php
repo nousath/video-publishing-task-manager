@@ -15,7 +15,7 @@
 
 			<div class="box-body">
 				<div class="row">
-					<div class="col-md-10">
+					<div class="col-md-12">
 						<legend>Submitted Videos</legend>
 						<?php if ($this->session->flashdata('toggle_success')): ?>			
 						<?php echo '<div class="alert alert-success">
@@ -37,6 +37,14 @@
 						<?php echo '<div class="alert alert-success">
 													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 													<strong>'.$this->session->flashdata('video_reserved').'</strong>
+												</div>'; 
+						?>
+						<?php endif; ?>
+
+						<?php if ($this->session->flashdata('reserve_message')): ?>			
+						<?php echo '<div class="alert alert-success">
+													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+													<strong>'.$this->session->flashdata('reserve_message').'</strong>
 												</div>'; 
 						?>
 						<?php endif; ?>
@@ -65,15 +73,16 @@
 											$submittedby = $this->ion_auth->user($video->submitted_by)->row(); 
 											$submitted_by = $submittedby->username;
 										}
-										$status = ($video->approved == 0) ? '<a href="'.base_url('videos/toggle_approve/'.$video->id.'').'" class="btn btn-success btn-sm">Approve Video  <i class="fa fa-toggle-on"></i></a>' : '';
-										$publish = ($video->approved == 1) ? '<a href="'.base_url('videos/publish/'.$topic->id.'').'" class="btn btn-success btn-sm">Mark as Published  <i class="fa fa-check"></i></a> <a href="'.base_url('videos/reserve/'.$topic->id.'').'" class="btn btn-info btn-sm">Set as Reserve  <i class="fa fa-archive"></i></a>' : '';
+										$status = ($video->approved == 0) ? '<a href="'.base_url('videos/toggle_approve/'.$video->id.'').'" class="btn btn-success btn-xs">Approve Video  <i class="fa fa-toggle-on"></i></a>' : '';
+										$publish = '<a href="'.base_url('videos/publish/'.$topic->id.'').'" class="btn btn-success btn-xs">Mark as Published  <i class="fa fa-check"></i></a>';
+										$reserve_button = ($video->is_reserved == 0) ? '<a href="'.base_url('reserves/do_reserve/'.$video->id.'/3').'" class="btn btn-primary btn-xs">Reserve Video  <i class="fa fa-archive"></i></a>' : '';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by.'</td>
 												<td>'.date('M d, Y H:i:s', $video->submitted_at).'</td>
-												<td><a href="'.base_url("topics/video/$video->topic_id/$video->id").'" class="btn btn-warning btn-sm btn-block"><i class="fa fa-video-camera"></i> Watch/Download</a></td>
-												<td>'.$status.' '.$publish.'</td>
+												<td><a href="'.base_url("topics/video/$video->topic_id/$video->id").'" class="btn btn-warning btn-xs btn-block"><i class="fa fa-video-camera"></i> Watch/Download</a></td>
+												<td>'.$status.' '.$publish.' '.$reserve_button.'</td>
 											</tr>';
 
 											$sn++;

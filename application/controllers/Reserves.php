@@ -34,7 +34,46 @@ class Reserves extends App_Controller
 		}else{
 			// load single reserved topic.
 		}
-	}  
+	} 
+	
+	public function do_reserve($media_id = '', $media_type = ''){
+		if($media_id == ''){
+			redirect(base_url('dashboard'),'refresh');
+		}else{
+			switch ($media_type) {
+				case 1:
+					$data = array(
+						'is_reserved' => 1
+					);
+					$this->Scripts_model->update($media_id, $data);
+					$this->session->set_flashdata('reserve_message', 'Script reserved');
+					redirect(base_url('scripts'),'refresh');
+					break;
+
+				case 2:
+					$data = array(
+						'is_reserved' => 1
+					);
+					$this->Audios_model->update($media_id, $data);
+					$this->session->set_flashdata('reserve_message', 'Audio reserved');
+					redirect(base_url('audios'),'refresh');
+					break;
+
+					case 3:
+					$data = array(
+						'is_reserved' => 1
+					);
+					$this->Videos_model->update($media_id, $data);
+					$this->session->set_flashdata('reserve_message', 'Video reserved');
+					redirect(base_url('videos'),'refresh');
+					break;
+				
+				default:
+					redirect(base_url('dashboard'),'refresh');
+					break;
+			}
+		}
+	}
 
 	public function scripts(){
 		$data = array(
