@@ -24,7 +24,7 @@ class Scripts extends App_Controller
 		if($user->usertype == 1){
 			// admin view
 			$data = array(
-				'scripts' => $this->Scripts_model->get_all(),
+				'scripts' => $this->Scripts_model->get_by_reserved(0),
 				'content' => 'scripts/admin_scripts_view',
 				'content_header' => 'Manage Scripts',
 				'title' => 'Manage Scripts',
@@ -113,6 +113,7 @@ class Scripts extends App_Controller
 			// update user2_id in topics table 
 			$data =  array(
 				'user2_id' => $this->input->post('user',TRUE),
+				'is_reserved' => 0,
 			);
 			$this->Topics_model->update($this->input->post('topic_id',TRUE), $data);
 

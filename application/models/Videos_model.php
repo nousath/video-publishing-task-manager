@@ -9,7 +9,8 @@ class Videos_model extends CI_Model
     public $table = 'videos';
     public $id = 'id';
 	public $order = 'DESC';
-    public $submitted_by = 'submitted_by';
+	public $submitted_by = 'submitted_by';
+	public $is_reserved = 'is_reserved';
 	
 
     function __construct()
@@ -26,6 +27,11 @@ class Videos_model extends CI_Model
 	
 	function get_by_user($user_id){
 		$this->db->where($this->submitted_by, $user_id);
+        return $this->db->get($this->table)->result();
+	}
+
+	function get_by_reserved($is_reserved){
+		$this->db->where($this->is_reserved, $is_reserved);
         return $this->db->get($this->table)->result();
 	}
 

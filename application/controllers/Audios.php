@@ -25,7 +25,7 @@ class Audios extends App_Controller
 		if($user->usertype == 1){
 			// admin view
 			$data = array(
-				'audios' => $this->Audios_model->get_all(),
+				'audios' => $this->Audios_model->get_by_reserved(0),
 				'content' => 'audios/admin_audios_view',
 				'content_header' => 'Manage Audios',
 				'title' => 'Manage Audios',
@@ -113,6 +113,7 @@ class Audios extends App_Controller
 			// update user2_id in topics table
 			$data =  array(
 				'user3_id' => $this->input->post('user',TRUE),
+				'is_reserved' => 0,
 			);
 			$this->Topics_model->update($this->input->post('topic_id',TRUE), $data);
 

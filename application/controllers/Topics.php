@@ -17,16 +17,57 @@ class Topics extends App_Controller
 		}
     }
 
-    public function index()
+    public function index($topic_id = '')
     {
+		
 		$data = array(
 			'title' => 'Topics',
 			'content' => 'topics/index',
-			'topics'  => $this->Topics_model->get_all(),
+			'topics'  => $this->Topics_model->get_all(1, true),
 			'content_header' => 'Topics List',
 		);
 
-        $this->load->view('layouts/main', $data);
+		$this->load->view('layouts/main', $data);
+		
+	}
+
+
+	public function assign_to_writer(){
+		
+		if($this->input->post('topic_id',TRUE) && $this->input->post('user',TRUE)){
+
+			$data = array(
+				'topic_id' => $this->input->post('topic_id',TRUE),
+				'user_id' => $this->input->post('user',TRUE),
+				'stage_id' => 2,
+			);
+			$this->Assignment_model->insert($data);
+
+			// update user_id in topics table 
+			$data =  array(
+				'user_id' => $this->input->post('user',TRUE),
+				'stage_id' => 2,
+				'is_reserved' => 0,
+			);
+			$this->Topics_model->update($this->input->post('topic_id',TRUE), $data);
+
+			// Send notification to user
+			$notification_template = $this->Notifications_templates_model->get_by_type('new_topic');
+		
+			$data = array(
+				'send_to' => $this->input->post('user',TRUE),
+				'body'    => $notification_template->message,
+				'created_at' => time(),
+			);
+			$this->Notifications_model->insert($data);
+
+			$user_assigned = $this->ion_auth->user($this->input->post('user',TRUE))->row();
+			$this->session->set_flashdata('assingment_success', 'Topic assigned to '.$user_assigned->username.' ');
+			redirect(site_url('reserves'));
+		
+		}else {
+			echo "one or more fields empty!";
+		}
 	}
 	
 	public function get_by_channel(){
@@ -140,36 +181,44 @@ class Topics extends App_Controller
 
 			$this->Topics_model->insert($data);
 			$inserted_topic_id = $this->db->insert_id();
+			$stage_id = $this->input->post('stage',TRUE);
+			if($stage_id != 1){
+				// Topic is reserved
+				$data = array(
+					'is_reserved' => 0,
+				);
+				$this->Topics_model->update_user($inserted_topic_id, $data);
 
-			// register assignment of topic to writer
-			$user_id = $this->input->post('assignto',TRUE);
+				// register assignment of topic to writer
+				$user_id = $this->input->post('assignto',TRUE);
 
-			$data = array(
-				'topic_id' => $inserted_topic_id,
-				'user_id' => $user_id,
-				'stage_id' => 2, // writing stage
-			);
+				$data = array(
+					'topic_id' => $inserted_topic_id,
+					'user_id' => $user_id,
+					'stage_id' => 2, // writing stage
+				);
 
-			// update -> add user's id to 
-			$this->Assignment_model->insert($data);
+				// update -> add user's id to 
+				$this->Assignment_model->insert($data);
 
-			// indicate user as currently on project
-			$data = array(
-				'on_project' => 1,
-			);
-			$this->User_model->update_user($user_id, $data);
+				// indicate user as currently on project
+				$data = array(
+					'on_project' => 1,
+				);
+				$this->User_model->update_user($user_id, $data);
 
-			// get notification template to send
-			$notification_template = $this->Notifications_templates_model->get_by_type('new_topic');
-			
-			$data = array(
-				'send_to' => $user_id,
-				'body'    => $notification_template->message,
-				'created_at' => time(),
-			);
+				// get notification template to send
+				$notification_template = $this->Notifications_templates_model->get_by_type('new_topic');
+				
+				$data = array(
+					'send_to' => $user_id,
+					'body'    => $notification_template->message,
+					'created_at' => time(),
+				);
 
-			// send notification to user
-			$this->Notifications_model->insert($data);
+				// send notification to user
+				$this->Notifications_model->insert($data);
+			}
 
 
             $this->session->set_flashdata('success_message', 'Topic has been created');
@@ -228,24 +277,12 @@ class Topics extends App_Controller
             redirect(site_url('topics'));
         }
 	}
-	
-	// public function assign_to_writer(){
-	// 	$topics = $this->Topics_model->get_by_stage_and_assigned(5, 0);
-	// 	$writers = $this->User_model->get_by_usertype(4);
-	// }
 
-	// public function assign_to_voiceartist(){
-		
-	// }
-
-	// public function assign_to_editor(){
-		
-	// }
 
     public function _rules() 
     {
 		$this->form_validation->set_rules('topic', 'Topic', 'trim|required');
-		$this->form_validation->set_rules('stage_id', 'stage id', 'trim');
+		$this->form_validation->set_rules('stage_id', 'stage id', 'trim|required');
 		$this->form_validation->set_rules('assigned', 'assigned', 'trim');
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }

@@ -14,6 +14,7 @@ class Topics_model extends CI_Model
     public $user2_id = 'user2_id';
     public $user3_id = 'user3_id';
     public $assigned = 'assigned';
+    public $is_reserved = 'is_reserved';
     public $channel_id = 'channel_id';
 
     function __construct()
@@ -22,9 +23,23 @@ class Topics_model extends CI_Model
 	}
 
     // get all
-    function get_all(){
-        $this->db->order_by($this->id, $this->order);
-        return $this->db->get($this->table)->result();
+    function get_all($stage_id = '',  $is_equal_to = ''){
+		if($stage_id == '' && $is_equal_to == ''){
+			$this->db->order_by($this->id, $this->order);
+			return $this->db->get($this->table)->result();
+		}else{
+			if($is_equal_to == true){
+				$this->db->where($this->stage_id, $stage_id);
+				$this->db->where($this->is_reserved, 1);
+				$this->db->order_by($this->id, $this->order);
+				return $this->db->get($this->table)->result();
+			}elseif($is_equal_to == false){
+				$this->db->where("stage_id != $stage_id");
+				$this->db->order_by($this->id, $this->order);
+				return $this->db->get($this->table)->result();
+			}
+			
+		}
 	}
 	
     function get_num_all(){

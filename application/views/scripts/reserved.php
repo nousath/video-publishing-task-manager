@@ -15,7 +15,7 @@
 
 			<div class="box-body">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-9">
 						<legend>Submitted Scripts</legend>
 						<?php if ($this->session->flashdata('toggle_success')): ?>			
 						<?php echo '<div class="alert alert-success">
@@ -29,14 +29,6 @@
 						<?php echo '<div class="alert alert-success">
 													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 													<strong>'.$this->session->flashdata('assingment_success').'</strong>
-												</div>'; 
-						?>
-						<?php endif; ?>
-
-						<?php if ($this->session->flashdata('reserve_message')): ?>			
-						<?php echo '<div class="alert alert-success">
-													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-													<strong>'.$this->session->flashdata('reserve_message').'</strong>
 												</div>'; 
 						?>
 						<?php endif; ?>
@@ -66,16 +58,15 @@
 											$submitted_by = $submittedby->username;
 										}
 										// $status = ($script->approved == 0) ? '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
-										$status = ($script->approved == 0) ? '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-success btn-xs btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '';
-										$assign = ($script->approved == 1 ) ? '<a href="'.base_url('scripts/assign/'.$topic->id.'').'" class="btn btn-info btn-xs">Assign to Artists  <i class="fa fa-share"></i></a>' : '';
-										$reserve_button = ($script->is_reserved == 0) ? '<a href="'.base_url('reserves/do_reserve/'.$script->id.'/1').'" class="btn btn-primary btn-xs">Reserve Script  <i class="fa fa-archive"></i></a>' : '';
+										$status = ($script->approved == 0) ? '<a href="'.base_url('scripts/toggle_approve/'.$script->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '';
+										$assign = ($script->approved == 1 ) ? '<a href="'.base_url('scripts/assign/'.$topic->id.'').'" class="btn btn-info btn-sm">Assign to Artists  <i class="fa fa-share"></i></a>' : '';
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by.'</td>
 												<td>'.date('M d, Y H:i:s', $script->submitted_at).'</td>
-												<td><a href="'.base_url('topics/doc/'.$script->topic_id.'/'.$script->id.'').'" class="btn btn-warning btn-xs btn-block">View/Download <i class="fa fa-file-word-o"></i></a></td>
-												<td>'.$status.' '.$assign.' '.$reserve_button.'</td>
+												<td><a href="'.base_url('topics/doc/'.$script->topic_id.'/'.$script->id.'').'" class="btn btn-warning btn-sm btn-block">View/Download <i class="fa fa-file-word-o"></i></a></td>
+												<td>'.$status.' '.$assign.'</td>
 											</tr>';
 
 											$sn++;

@@ -9,7 +9,9 @@ class Audios_model extends CI_Model
     public $table = 'audios';
     public $id = 'id';
     public $submitted_by = 'submitted_by';
-    public $submitted_at = 'submitted_at';
+	public $submitted_at = 'submitted_at';
+    public $is_reserved = 'is_reserved';
+	
     public $order = 'DESC';
 
     function __construct()
@@ -41,7 +43,12 @@ class Audios_model extends CI_Model
 		// $query = $this->db->query("SELECT * FROM audios WHERE DATEDIFF(NOW(), FROM_UNIXTIME(submitted_at)) >= 30");
 		$this->db->where("DATEDIFF(NOW(), FROM_UNIXTIME(submitted_at)) >= $days");
 		return $this->db->get($this->table)->result();
-    }
+	}
+	
+	function get_by_reserved($is_reserved){
+		$this->db->where($this->is_reserved, $is_reserved);
+        return $this->db->get($this->table)->result();
+	}
 
 
     // insert data
