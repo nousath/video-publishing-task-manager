@@ -44,8 +44,8 @@
 							</div>
 
 							<div class="form-group">
-								<label for="varchar">Stage This Topic<?php echo form_error('stage') ?></label>
-								<select name="stage" id="stage" class="form-control">
+								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Set Stage<?php echo form_error('stage') ?></label>
+								<select name="stage" id="stage" class="form-control" required>
 									<option value="1"></option>
 									<?php 
 										foreach ($stages as $stage ) {

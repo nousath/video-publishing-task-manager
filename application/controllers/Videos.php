@@ -23,7 +23,7 @@ class Videos extends App_Controller
 		if($user->usertype == 1){
 			// admin view
 			$data = array(
-				'videos' => $this->Videos_model->get_all(),
+				'videos' => $this->Videos_model->get_by_reserved(0),
 				'content' => 'videos/admin_videos_view',
 				'content_header' => 'Manage Videos',
 				'title' => 'Manage Videos',
@@ -215,6 +215,7 @@ class Videos extends App_Controller
 		}else{
 			$data = array(
 				'stage_id' => 1,
+				'is_reserved' => 1,
 			);
 			$this->Topics_model->update($topic_id, $data);
 			$this->session->set_flashdata('video_reserved', 'Video Reserved');
