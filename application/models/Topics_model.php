@@ -16,7 +16,7 @@ class Topics_model extends CI_Model
     public $assigned = 'assigned';
     public $is_reserved = 'is_reserved';
     public $channel_id = 'channel_id';
-
+	public $is_draft = 'is_draft';
     function __construct()
     {
         parent::__construct();
@@ -76,7 +76,12 @@ class Topics_model extends CI_Model
 	function get_by_editor_assigned($editor_id){
         $this->db->where($this->user3_id, $editor_id);
         return $this->db->get($this->table)->result();
-    }
+	}
+	
+	function get_drafts($drafts_id){
+		$this->db->where($this->is_draft, $drafts_id);
+		return $this->db->get($this->table)->result();
+	}
     
    
     // insert data

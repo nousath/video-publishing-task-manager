@@ -145,6 +145,18 @@ class Topics extends App_Controller
        
 	}
 
+	public function drafts(){
+		$data = array(
+			'topics'  => $this->Topics_model->get_drafts(1, true),
+			'content' => 'topics/drafts',
+			'content_header' => 'Drafts',
+			'title' => 'Drafts',
+		);
+	
+		$this->load->view('layouts/main', $data);
+
+	}
+
     public function add() {
         $data = array(
 			'channel' => set_value('channel'),
