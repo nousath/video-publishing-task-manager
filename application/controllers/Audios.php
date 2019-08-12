@@ -64,6 +64,43 @@ class Audios extends App_Controller
 		}
 	}  
 
+	public function decline($audio_id = ''){
+
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype != 1){
+			redirect(base_url('dashboard'),'refresh');
+		}
+
+
+		if($audio_id == ''){
+			
+			redirect(base_url('scripts'),'refresh');
+			
+		}else{
+			// update aproval status for script
+			$script = $this->Audios_model->get_by_id($audio_id);
+			
+			$data = array(
+				'approved' => 0,
+			);
+
+			if($this->Audios_model->update($audio_id, $data)){
+				$notification_template = $this->Notifications_templates_model->get_by_type('admin_response_script');
+				$data = array(
+					'send_to' => $script->submitted_by,
+					'body'    => $notification_template->message,
+					'created_at' => time(),
+				);
+				$this->Notifications_model->insert($data);
+
+				// redirect admin back to scriipts page with an alert
+				$this->session->set_flashdata('audio_declined', 'Audio declined!');
+				redirect(site_url('scripts'));
+			}
+		}
+	}
+
 	public function assign($topic_id = ''){
 		
 		// ensure that only admin is allowed
@@ -295,47 +332,53 @@ class Audios extends App_Controller
 
 				/* update topic table: insert document link
 				---------------------------------------- */
-				$data = array(
-					'audio' => $upload
-				);
 
-				$topic_id = $this->input->post('selected_topic');
-
-				$this->Topics_model->update($topic_id, $data);
-				
-
-				/* create row to audios table, insert document details
-				--------------------------------------------------- */
-
-				$user = $this->ion_auth->user()->row(); 
-
-				$data = array(
-					'topic_id' => $topic_id,
-					'submitted_by' => $user->id,
-					'submitted_at' => time(),
-				);
-
-				$this->Audios_model->insert($data);
-
-				/* send notification to admin 
-				--------------------------*/
-
-				// get notification template to send
-				$notification_template = $this->Notifications_templates_model->get_by_type('audio_submitted');
-				
-				// get list of admins
-				$admins = $this->User_model->get_by_usertype(1);
-
-				// loop through admins and send notifications to all
-				foreach ($admins as $admin ) {
+				$selected_topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
+				if($selected_topic->audio == ''){
 					$data = array(
-						'send_to' => $admin->id,
-						'body'    => $user->username.' '.$notification_template->message,
-						'created_at' => time(),
+						'audio' => $upload
 					);
-
-					// send notification to user
-					$this->Notifications_model->insert($data);
+	
+					$topic_id = $this->input->post('selected_topic');
+	
+					$this->Topics_model->update($topic_id, $data);
+					
+	
+					/* create row to audios table, insert document details
+					--------------------------------------------------- */
+	
+					$user = $this->ion_auth->user()->row(); 
+	
+					$data = array(
+						'topic_id' => $topic_id,
+						'submitted_by' => $user->id,
+						'submitted_at' => time(),
+					);
+	
+					$this->Audios_model->insert($data);
+	
+					/* send notification to admin 
+					--------------------------*/
+	
+					// get notification template to send
+					$notification_template = $this->Notifications_templates_model->get_by_type('audio_submitted');
+					
+					// get list of admins
+					$admins = $this->User_model->get_by_usertype(1);
+	
+					// loop through admins and send notifications to all
+					foreach ($admins as $admin ) {
+						$data = array(
+							'send_to' => $admin->id,
+							'body'    => $user->username.' '.$notification_template->message,
+							'created_at' => time(),
+						);
+	
+						// send notification to user
+						$this->Notifications_model->insert($data);
+					}
+				}else{
+					
 				}
 
 				$this->session->set_flashdata('upload_success', 'Your audio has been submitted');

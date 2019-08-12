@@ -40,6 +40,14 @@
 												</div>'; 
 						?>
 						<?php endif; ?>
+
+						<?php if ($this->session->flashdata('audio_declined')): ?>			
+						<?php echo '<div class="alert alert-danger">
+													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+													<strong>'.$this->session->flashdata('audio_declined').'</strong>
+												</div>'; 
+						?>
+						<?php endif; ?>
 						
 						<table class="table table-hover">
 							<thead>
@@ -70,6 +78,7 @@
 										// $status = ($audio->approved == 0) ? '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-success btn-sm btn-block">Approve Script  <i class="fa fa-toggle-on"></i></a>' : '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-danger btn-sm btn-block">Decline Script  <i class="fa fa-toggle-off"></i></a>';
 										$status = ($audio->approved == 0) ? '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-success btn-xs">Approve Audio  <i class="fa fa-toggle-on"></i></a>' : '';
 										$assign = ($audio->approved == 1 ) ? '<a href="'.base_url('audios/assign/'.$topic->id.'').'" class="btn btn-info btn-xs">Assign to Editor  <i class="fa fa-share"></i></a>' : '';
+										$decline = ($audio->approved == 0) ? '<a href="'.base_url('audios/decline/'.$audio->id.'').'" class="btn btn-danger btn-xs">Decline Audio  <i class="fa fa-toggle-off"></i></a>' : '';
 										$reserve_button = ($audio->is_reserved == 0) ? '<a href="'.base_url('reserves/do_reserve/'.$audio->id.'/2').'" class="btn btn-primary btn-xs">Reserve Audio  <i class="fa fa-archive"></i></a>' : '';
 										echo '<tr>
 												<td>'.$sn.'</td>
@@ -77,7 +86,7 @@
 												<td>'.$submitted_by.'</td>
 												<td>'.date('M d, Y H:i:s', $audio->submitted_at).'</td>
 												<td><a href="'.base_url("topics/audio/$audio->topic_id/$audio->id").'" class="btn btn-warning btn-xs btn-block">Listen/Download <i class="fa fa-microphone"></i></a></td>
-												<td>'.$status.' '.$assign.' '.$reserve_button.'</td>
+												<td>'.$status.' '.$decline.' '.$assign.' '.$reserve_button.'</td>
 											</tr>';
 
 											$sn++;
