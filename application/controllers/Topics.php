@@ -23,7 +23,7 @@ class Topics extends App_Controller
 		$data = array(
 			'title' => 'Topics',
 			'content' => 'topics/index',
-			'topics'  => $this->Topics_model->get_all(1, true),
+			'topics'  => $this->Topics_model->get_all(),
 			'content_header' => 'Topics List',
 		);
 
@@ -147,7 +147,9 @@ class Topics extends App_Controller
 
     public function add() {
         $data = array(
+			'channel' => set_value('channel'),
 			'topic' => set_value('topic'),
+			'stage' => set_value('stage'),
 			'assignto' => set_value('assignto'),
 			'content' => 'topics/topics_form',
 			'content_header' => 'Topic',
@@ -180,6 +182,8 @@ class Topics extends App_Controller
 			);
 
 			$this->Topics_model->insert($data);
+			// exit($this->db->last_query());
+			
 			$inserted_topic_id = $this->db->insert_id();
 			$stage_id = $this->input->post('stage',TRUE);
 			if($stage_id != 1){
@@ -187,7 +191,7 @@ class Topics extends App_Controller
 				$data = array(
 					'is_reserved' => 0,
 				);
-				$this->Topics_model->update_user($inserted_topic_id, $data);
+				$this->Topics_model->update($inserted_topic_id, $data);
 
 				// register assignment of topic to writer
 				$user_id = $this->input->post('assignto',TRUE);
@@ -281,8 +285,9 @@ class Topics extends App_Controller
 
     public function _rules() 
     {
-		$this->form_validation->set_rules('topic', 'Topic', 'trim|required');
-		$this->form_validation->set_rules('stage_id', 'stage id', 'trim|required');
+		$this->form_validation->set_rules('channel', 'Channel', 'trim');
+		$this->form_validation->set_rules('topic', 'Topic', 'trim');
+		$this->form_validation->set_rules('stage_id', 'stage id', 'trim');
 		$this->form_validation->set_rules('assigned', 'assigned', 'trim');
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
