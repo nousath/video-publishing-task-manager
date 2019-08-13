@@ -69,7 +69,6 @@ class Videos extends App_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->index();
         } else {
-
 			$upload = $this->upload_video();
 
 			$arr = explode('/',trim($upload));
@@ -80,51 +79,92 @@ class Videos extends App_Controller
 
 				/* update topic table: insert document link
 				---------------------------------------- */
-				$data = array(
-					'video' => $upload
-				);
-
-				$topic_id = $this->input->post('selected_topic');
-
-				$this->Topics_model->update($topic_id, $data);
 				
-
-				/* create row to audios table, insert document details
-				--------------------------------------------------- */
-
-				$user = $this->ion_auth->user()->row(); 
-
-				$data = array(
-					'topic_id' => $topic_id,
-					'submitted_by' => $user->id,
-					'submitted_at' => time(),
-				);
-
-				$this->Videos_model->insert($data);
-
-				/* send notification to admin 
-				--------------------------*/
-
-				// get notification template to send
-				$notification_template = $this->Notifications_templates_model->get_by_type('video_submitted');
-				
-				// get list of admins
-				$admins = $this->User_model->get_by_usertype(1);
-
-				// loop through admins and send notifications to all
-				foreach ($admins as $admin ) {
+	
+				$selected_topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
+				if($selected_topic->video == ''){
+					// submitting a new video: Add new row
 					$data = array(
-						'send_to' => $admin->id,
-						'body'    => $user->username.' '.$notification_template->message,
-						'created_at' => time(),
+						'video' => $upload
+					);	
+					$topic_id = $this->input->post('selected_topic');
+					$this->Topics_model->update($topic_id, $data);
+					
+
+					/* create row to scripts table, insert document details
+					--------------------------------------------------- */
+
+					$user = $this->ion_auth->user()->row(); 
+
+					$data = array(
+						'topic_id' => $topic_id,
+						'submitted_by' => $user->id,
+						'submitted_at' => time(),
 					);
 
-					// send notification to user
-					$this->Notifications_model->insert($data);
-				}
+					$this->Videos_model->insert($data);
 
-				$this->session->set_flashdata('upload_success', 'Your audio has been submitted');
-				redirect(site_url('videos'));
+					/* send notification to admin 
+					--------------------------*/
+
+					// get notification template to send
+					$notification_template = $this->Notifications_templates_model->get_by_type('script_submitted');
+					
+					// get list of admins
+					$admins = $this->User_model->get_by_usertype(1);
+
+					// loop through admins and send notifications to all
+					foreach ($admins as $admin ) {
+						$data = array(
+							'send_to' => $admin->id,
+							'body'    => $user->username.' '.$notification_template->message,
+							'created_at' => time(),
+						);
+
+						// send notification to user
+						$this->Notifications_model->insert($data);
+					}
+
+					$this->session->set_flashdata('upload_success', 'Your Video has been submitted');
+					redirect(site_url('videos'));
+				}else{
+					// re-submitting a declined script: update scripts row
+					$data = array(
+						'video' => $upload
+					);
+					$topic_id = $this->input->post('selected_topic');
+					$this->Topics_model->update($topic_id, $data);
+					
+
+					/* create row to videos table, insert document details
+					--------------------------------------------------- */
+
+					$user = $this->ion_auth->user()->row(); 
+					/* send notification to admin 
+					--------------------------*/
+
+					// get notification template to send
+					$notification_template = $this->Notifications_templates_model->get_by_type('video_submitted');
+					
+					// get list of admins
+					$admins = $this->User_model->get_by_usertype(1);
+
+					// loop through admins and send notifications to all
+					foreach ($admins as $admin ) {
+						$data = array(
+							'send_to' => $admin->id,
+							'body'    => $user->username.' '.$notification_template->message,
+							'created_at' => time(),
+						);
+
+						// send notification to user
+						$this->Notifications_model->insert($data);
+					}
+
+					$this->session->set_flashdata('upload_success', 'Your video has been updated');
+					redirect(site_url('videos')); 
+				}
+				
 			}
 		}
 	}

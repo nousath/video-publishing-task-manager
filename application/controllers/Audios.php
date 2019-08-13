@@ -377,15 +377,48 @@ class Audios extends App_Controller
 						// send notification to user
 						$this->Notifications_model->insert($data);
 					}
-				}else{
-					
-				}
-
 				$this->session->set_flashdata('upload_success', 'Your audio has been submitted');
 				redirect(site_url('audios'));
-			}
+			} else{
+				// re-submitting a declined script: update scripts row
+				$data = array(
+					'audio' => $upload
+				);
+				$topic_id = $this->input->post('selected_topic');
+				$this->Topics_model->update($topic_id, $data);
+				
+
+				/* create row to audio table, insert document details
+				--------------------------------------------------- */
+
+				$user = $this->ion_auth->user()->row(); 
+				/* send notification to admin 
+				--------------------------*/
+
+				// get notification template to send
+				$notification_template = $this->Notifications_templates_model->get_by_type('video_submitted');
+				
+				// get list of admins
+				$admins = $this->User_model->get_by_usertype(1);
+
+				// loop through admins and send notifications to all
+				foreach ($admins as $admin ) {
+					$data = array(
+						'send_to' => $admin->id,
+						'body'    => $user->username.' '.$notification_template->message,
+						'created_at' => time(),
+					);
+
+					// send notification to user
+					$this->Notifications_model->insert($data);
+				}
+
+				$this->session->set_flashdata('upload_success', 'Your audio has been updated');
+				redirect(site_url('audios')); 
+			}			
 		}
 	}
+}
 
 	public function _upload_rules() {
 		$this->form_validation->set_rules('selected_topic', 'Topic', 'trim|required');
