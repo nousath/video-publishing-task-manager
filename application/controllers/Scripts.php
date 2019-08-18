@@ -151,6 +151,7 @@ class Scripts extends App_Controller
 				/* update topic table: insert document link
 				---------------------------------------- */
 				
+	
 				$selected_topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
 				if($selected_topic->doc == ''){
 					// submitting a new script: Add new row

@@ -327,6 +327,8 @@
 							<li><a href="'.base_url('channels').'"> <i class="fa fa-television"></i> <span>Channels</span> </a></li>
 							<li><a href="'.base_url('topics').'"> <i class="fa fa-file"></i> <span>Topics</span> </a></li>
 							<li class="treeview">
+							<li><a href="'.base_url('topics/drafts').'"> <i class="fa fa-file"></i> <span>Drafts</span> </a></li>
+							<li class="treeview">
 							<a href="#">
 								<i class="fa fa-archive"></i>
 								<span>Reserves</span>
