@@ -10,7 +10,8 @@ class Audios_model extends CI_Model
     public $id = 'id';
     public $submitted_by = 'submitted_by';
 	public $submitted_at = 'submitted_at';
-    public $is_reserved = 'is_reserved';
+	public $is_reserved = 'is_reserved';
+	public $is_draft = 'is_draft';
 	
     public $order = 'DESC';
 
@@ -48,6 +49,17 @@ class Audios_model extends CI_Model
 	function get_by_reserved($is_reserved){
 		$this->db->where($this->is_reserved, $is_reserved);
         return $this->db->get($this->table)->result();
+	}
+
+	function get_by_reserved_and_draft($is_reserved, $is_draft){
+		$this->db->where($this->is_reserved, $is_reserved);
+		$this->db->where($this->is_draft, $is_draft);
+        return $this->db->get($this->table)->result();
+	}
+
+	function get_drafts($drafts_id){
+		$this->db->where($this->is_draft, $drafts_id);
+		return $this->db->get($this->table)->result();
 	}
 
 

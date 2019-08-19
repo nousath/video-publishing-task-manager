@@ -31,6 +31,15 @@ class Topics extends App_Controller
 		
 	}
 
+	public function save_as_draft($topic_id = ''){
+		$data =  array(
+			'is_draft' => 1,
+		);
+		$this->Topics_model->update($topic_id, $data);
+		$this->session->set_flashdata('draft_message', 'Topic saved as draft');
+		redirect(site_url('topics'));
+	}
+
 
 	public function assign_to_writer(){
 		
@@ -48,6 +57,7 @@ class Topics extends App_Controller
 				'user_id' => $this->input->post('user',TRUE),
 				'stage_id' => 2,
 				'is_reserved' => 0,
+				'is_draft' => 0,
 			);
 			$this->Topics_model->update($this->input->post('topic_id',TRUE), $data);
 

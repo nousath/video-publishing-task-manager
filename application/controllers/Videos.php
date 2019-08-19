@@ -23,7 +23,8 @@ class Videos extends App_Controller
 		if($user->usertype == 1){
 			// admin view
 			$data = array(
-				'videos' => $this->Videos_model->get_by_reserved(0),
+				'videos' => $this->Videos_model->get_by_reserved_and_draft(0, 0),
+				'drafts' => $this->Videos_model->get_drafts(1),
 				'content' => 'videos/admin_videos_view',
 				'content_header' => 'Manage Videos',
 				'title' => 'Manage Videos',
@@ -62,6 +63,20 @@ class Videos extends App_Controller
 			
 		}
 	}
+
+	public function save_as_draft($video_id = ''){
+		if($video_id == ''){
+			redirect(bas_url('audios'),'refresh');
+		}else{
+			$data =  array(
+				'is_draft' => 1,
+			);
+			$this->Videos_model->update($video_id, $data);
+			$this->session->set_flashdata('draft_message', 'Video saved as draft');
+			redirect(site_url('videos'));
+		}
+	}
+
 	
 	public function upload(){
 		$this->_upload_rules();

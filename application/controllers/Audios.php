@@ -25,7 +25,8 @@ class Audios extends App_Controller
 		if($user->usertype == 1){
 			// admin view
 			$data = array(
-				'audios' => $this->Audios_model->get_by_reserved(0),
+				'audios' => $this->Audios_model->get_by_reserved_and_draft(0, 0),
+				'drafts' => $this->Audios_model->get_drafts(1),
 				'content' => 'audios/admin_audios_view',
 				'content_header' => 'Manage Audios',
 				'title' => 'Manage Audios',
@@ -62,7 +63,34 @@ class Audios extends App_Controller
 			}
 			
 		}
-	}  
+	}
+
+	public function drafts(){
+		$data = array(
+			'topics'  => $this->Audios_model->get_drafts(1, true),
+			'content' => 'audios/drafts',
+			'content_header' => 'Drafts',
+			'title' => 'Drafts',
+		);
+	
+		$this->load->view('layouts/main', $data);
+
+	}
+
+
+	public function save_as_draft($audio_id = ''){
+		if($audio_id == ''){
+			redirect(bas_url('audios'),'refresh');
+		}else{
+			$data =  array(
+				'is_draft' => 1,
+			);
+			$this->Audios_model->update($audio_id, $data);
+			$this->session->set_flashdata('draft_message', 'Audio saved as draft');
+			redirect(site_url('audios'));
+		}
+	}
+
 
 	public function decline($audio_id = ''){
 
@@ -101,7 +129,7 @@ class Audios extends App_Controller
 		}
 	}
 
-	public function assign($topic_id = ''){
+	public function assign($topic_id = '', $audio_id = ''){
 		
 		// ensure that only admin is allowed
 		$user = $this->ion_auth->user()->row(); 
@@ -110,7 +138,7 @@ class Audios extends App_Controller
 		}
 
 		// ensure topic id is present
-		if($topic_id == ''){
+		if($topic_id == '' && $audio_id == ''){
 			redirect(base_url('audios'),'refresh');	
 		}
 
@@ -118,6 +146,7 @@ class Audios extends App_Controller
 		$data = array(
 			'selected_topic' => $topic,
 			'editors' => $this->User_model->get_by_usertype_and_channel(4, $topic->channel_id),
+			'audio_id' => $audio_id,
 			'content' => 'audios/assign_form',
 			'content_header' => 'Assign Audio',
 			'title' => 'Assign Audios',
@@ -151,8 +180,15 @@ class Audios extends App_Controller
 			$data =  array(
 				'user3_id' => $this->input->post('user',TRUE),
 				'is_reserved' => 0,
+				'is_draft' => 0,
 			);
 			$this->Topics_model->update($this->input->post('topic_id',TRUE), $data);
+
+			// Set script off draft
+			$data =  array(
+				'is_draft' => 0,
+			);
+			$this->Audios_model->update($this->input->post('audio_id',TRUE), $data);
 
 			// Send notification to user
 			$notification_template = $this->Notifications_templates_model->get_by_type('new_audio');

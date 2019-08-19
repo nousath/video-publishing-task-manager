@@ -52,6 +52,7 @@
 							</div>
 
 							<input type="hidden" id="topic_id" name="topic_id" value="<?=$selected_topic->id;?>">
+							<input type="hidden" id="audio_id" name="audio_id" value="<?=$audio_id;?>">
 						
 							<button type="submit" class="btn btn-info btn-sm">Submit <i class="fa fa-upload"></i></button>
 						</form>

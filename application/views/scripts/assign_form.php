@@ -53,7 +53,8 @@
 
 							<!-- $topic->id -->
 							<input type="hidden" id="topic_id" name="topic_id" value="<?=$selected_topic->id;?>">
-						
+							<input type="hidden" id="script_id" name="script_id" value="<?=$script_id;?>">
+							
 							<button type="submit" class="btn btn-info btn-sm">Submit <i class="fa fa-upload"></i></button>
 						</form>
 						

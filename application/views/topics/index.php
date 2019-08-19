@@ -41,6 +41,14 @@
 						?>
 						<?php endif; ?>
 
+						<?php if ($this->session->flashdata('draft_message')): ?>			
+						<?php echo '<div class="alert alert-success">
+													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+													<strong>'.$this->session->flashdata('draft_message').'</strong>
+												</div>'; 
+						?>
+						<?php endif; ?>
+
 
 
 						<div class="table-responsive">
@@ -76,6 +84,7 @@
 										$doc = (!empty($topic->doc)) ? '<a href="'.base_url('topics/doc/'.$topic->id.'').'" class="btn btn-warning btn-xs"><i class="fa fa-file-word-o"></i> View/Download</a>' : 'Script Unavailable';
 										$audio = (!empty($topic->audio)) ? '<a href="'.base_url('topics/audio/'.$topic->id.'').'" class="btn btn-primary btn-xs"><i class="fa fa-microphone"></i> Listen/Download</a>' : 'Audio Unavailable';
 										$video = (!empty($topic->video)) ? '<a href="'.base_url('topics/video/'.$topic->id.'').'" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Watch/Download</a>' : 'Video Unavailable';
+										$draft_button = ($topic->is_draft == 0) ? '<a class="btn btn-default btn-xs btn-block" href="'.base_url('topics/save_as_draft/'.$topic->id.'').'"><i class="fa fa-file"></i> Save as draft</a>' : '';
 
 										echo '<tr>
 												<td>'.$sn.'</td>
@@ -94,8 +103,9 @@
 												<td>'.$created_by->username.'</td>
 												<td>'.date('d/m/Y H:i:s', $topic->created_at).'</td>
 												<td>
-													<a class="btn btn-info btn-xs" href="'.base_url('topics/update/'.$topic->id.'').'"><i class="fa fa-edit"></i> Edit</a>
-													<a class="btn btn-danger btn-xs" href="'.base_url('topics/delete/'.$topic->id.'').'"><i class="fa fa-trash"></i> Delete</a>
+													<a class="btn btn-info btn-xs btn-block" href="'.base_url('topics/update/'.$topic->id.'').'"><i class="fa fa-edit"></i> Edit</a>
+													<a class="btn btn-danger btn-xs btn-block" href="'.base_url('topics/delete/'.$topic->id.'').'"><i class="fa fa-trash"></i> Delete</a>
+													'.$draft_button.'
 												</td>
 											</tr>';
 

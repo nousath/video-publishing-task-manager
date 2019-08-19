@@ -24,7 +24,8 @@ class Scripts extends App_Controller
 		if($user->usertype == 1){
 			// admin view
 			$data = array(
-				'scripts' => $this->Scripts_model->get_by_reserved(0),
+				'scripts' => $this->Scripts_model->get_by_reserved_and_draft(0, 0),
+				'drafts' => $this->Scripts_model->get_drafts(1),
 				'content' => 'scripts/admin_scripts_view',
 				'content_header' => 'Manage Scripts',
 				'title' => 'Manage Scripts',
@@ -64,7 +65,20 @@ class Scripts extends App_Controller
 		
 	}
 
-	public function assign($topic_id = ''){
+	public function save_as_draft($doc_id = ''){
+		if($doc_id == ''){
+			redirect(bas_url('scripts'),'refresh');
+		}else{
+			$data =  array(
+				'is_draft' => 1,
+			);
+			$this->Scripts_model->update($doc_id, $data);
+			$this->session->set_flashdata('draft_message', 'Script saved as draft');
+			redirect(site_url('scripts'));
+		}
+	}
+
+	public function assign($topic_id = '', $script_id = ''){
 		
 		// ensure that only admin is allowed
 		$user = $this->ion_auth->user()->row(); 
@@ -73,13 +87,14 @@ class Scripts extends App_Controller
 		}
 
 		// ensure topic id is present
-		if($topic_id == ''){
+		if($topic_id == '' && $script_id == ''){
 			redirect(base_url('scripts'),'refresh');	
 		}
 
 		$topic = $this->Topics_model->get_by_id($topic_id);
 		$data = array(
 			'selected_topic' => $topic,
+			'script_id' => $script_id,
 			'artists' => $this->User_model->get_by_usertype_and_channel(3, $topic->channel_id),
 			'content' => 'scripts/assign_form',
 			'content_header' => 'Assign Script',
@@ -114,8 +129,16 @@ class Scripts extends App_Controller
 			$data =  array(
 				'user2_id' => $this->input->post('user',TRUE),
 				'is_reserved' => 0,
+				'is_draft' => 0,
 			);
 			$this->Topics_model->update($this->input->post('topic_id',TRUE), $data);
+
+			// Set script off draft
+			$data =  array(
+				'is_draft' => 0,
+			);
+			$this->Scripts_model->update($this->input->post('script_id',TRUE), $data);
+
 
 			// Send notification to user
 			$notification_template = $this->Notifications_templates_model->get_by_type('new_script');
