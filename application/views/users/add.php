@@ -57,9 +57,9 @@
 					</div>
 
 					<div class="col-md-6">
-						<label for="salary" class="control-label"><span class="text-danger">*</span>Salary</label>
+						<label for="salary" class="control-label">Salary</label>
 						<div class="form-group">
-							<input type="number" name="salary" value="<?php echo $this->input->post('salary'); ?>" class="form-control" id="salary" required />
+							<input type="number" name="salary" value="<?php echo $this->input->post('salary'); ?>" class="form-control" id="salary" />
 						</div>
 					</div>
 					<div class="col-md-6">
