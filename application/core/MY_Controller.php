@@ -128,7 +128,7 @@ class App_Controller extends MY_Controller {
     	// uploads/users
         $config['upload_path'] = 'uploads/documents';
         $config['file_name'] =  uniqid();
-        $config['allowed_types'] = 'docx|doc';
+        $config['allowed_types'] = 'docx|doc|pdf';
         $config['max_size'] = '1024';
 
         // $config['max_width']  = '1024';
