@@ -163,7 +163,7 @@ class Scripts extends App_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->index();
         } else {
-			$upload = $this->upload_ducument();
+			$upload = $this->upload_document();
 
 			$arr = explode('/',trim($upload));
 			if($arr[0] != 'uploads'){

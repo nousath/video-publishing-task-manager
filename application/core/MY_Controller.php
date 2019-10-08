@@ -124,7 +124,7 @@ class App_Controller extends MY_Controller {
         }
 	}
 
-	public function upload_ducument(){
+	public function upload_document(){
     	// uploads/users
         $config['upload_path'] = 'uploads/documents';
         $config['file_name'] =  uniqid();
