@@ -56,7 +56,8 @@
 								<thead>
 									<tr>
 										<th>SN</th>
-										<th>Title</th>
+										<th>Topic</th>
+										<th>Channel</th>
 										<th>Stage</th>
 										<th>Assigned To</th>
 										<th>Doc</th>
@@ -85,10 +86,12 @@
 										$audio = (!empty($topic->audio)) ? '<a href="'.base_url('topics/audio/'.$topic->id.'').'" class="btn btn-primary btn-xs"><i class="fa fa-microphone"></i> Listen/Download</a>' : 'Audio Unavailable';
 										$video = (!empty($topic->video)) ? '<a href="'.base_url('topics/video/'.$topic->id.'').'" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Watch/Download</a>' : 'Video Unavailable';
 										$draft_button = ($topic->is_draft == 0) ? '<a class="btn btn-default btn-xs btn-block" href="'.base_url('topics/save_as_draft/'.$topic->id.'').'"><i class="fa fa-file"></i> Save as draft</a>' : '';
+										$channel = ($topic->channel_id != '') ? $this->Channels_model->get_by_id($topic->channel_id) : 'Channel not found';
 
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
+												<td>'.$channel->name.'</td>
 												<td>'.$stage->name.'</td>
 												<td>'.$user->username.'</td>
 												<td>
