@@ -175,8 +175,9 @@ class Scripts extends App_Controller
 				---------------------------------------- */
 				
 	
-				$selected_topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
-				if($selected_topic->doc == ''){
+				// $selected_topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
+				$selected_topic = $this->Scripts_model->get_by_id($this->input->post('selected_topic'));
+				if($selected_topic == null){
 					// submitting a new script: Add new row
 					$data = array(
 						'doc' => $upload
