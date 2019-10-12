@@ -3,8 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Scripts extends App_Controller
-{
+class Scripts extends App_Controller{
     function __construct(){
 		parent::__construct();
 		

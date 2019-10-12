@@ -17,7 +17,8 @@ class Topics extends App_Controller
 		}
     }
 
-    public function index($topic_id = ''){
+    public function index($topic_id = '')
+    {
 		
 		$data = array(
 			'title' => 'Topics',
