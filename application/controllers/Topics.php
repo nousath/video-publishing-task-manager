@@ -86,6 +86,44 @@ class Topics extends App_Controller
 		}
 	}
 
+	public function re_upload_doc($topic_id, $doc_id){
+		$selected_topic = $this->Topics_model->get_by_id($topic_id);
+		
+
+		// delete existing file first before uploading a new one
+		$delete_result = $this->delete_files_from_server(FCPATH.$selected_topic->doc);
+		if($delete_result == true){
+			$upload = $this->upload_document();
+
+			$arr = explode('/',trim($upload));
+			if($arr[0] != 'uploads'){
+				$this->session->set_flashdata('error_message', $upload);
+				redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
+			}else{
+
+				if($selected_topic != null){
+					// submitting a new script: Add new row
+					$data = array(
+						'doc' => $upload
+					);	
+
+					$this->Topics_model->update($topic_id, $data);
+					$this->session->set_flashdata('re_upload_success', 'Upload successful!');
+					redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
+				}else{
+					$this->session->set_flashdata('topic_unknown', 'Topic is unknown!');
+					redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
+				}
+				
+			}
+			
+		}else{
+			$this->session->set_flashdata('re_upload_fail', $delete_result);
+			redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
+		}
+		
+	}
+
     public function doc($id = '', $doc_id = ''){
 		if($id == '' ||  $doc_id == ''){
 			
@@ -97,6 +135,7 @@ class Topics extends App_Controller
 				'content' => 'topics/doc',
 				'topic'  => $this->Topics_model->get_by_id($id),
 				'doc_id' => $doc_id,
+				'topic_id' => $id,
 				'comments' => $this->Comments_model->get_comments(1, $doc_id),
 				'user' => $this->ion_auth->user()->row(),
 				'comment' => set_value('comment'),
