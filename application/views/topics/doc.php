@@ -4,11 +4,11 @@
 		<div class="box">
 			<div class="box-header with-border">
 
-					<div class="col-md-12">
+					<div class="col-md-8">
 						<a href="<?=base_url($topic->doc); ?>" class="btn btn-info"><i class="fa fa-download"></i> Download Document</a>
 					</div>
-					<br><br><br>
-					<div class="col-md-4">
+					<!--<br><br><br>-->
+					<div class="col-md-3">
 						<form action="<?=base_url('topics/re_upload_doc/'.$topic_id.'/'.$doc_id.''); ?>" method="POST" enctype="multipart/form-data" role="form">
 							<div class="form-group">
 								<label for="document" class="control-label">Upload edited document</label>
@@ -23,12 +23,12 @@
 				
 				<!-- <h3 class="box-title">Script Document</h3> -->
 
-				<div class="box-tools pull-right">
-					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-					</button>
+				<!--<div class="box-tools pull-right">-->
+				<!--	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>-->
+				<!--	</button>-->
 					
-					<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-				</div>
+				<!--	<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
+				<!--</div>-->
 			</div>
 			<!-- /.box-header -->
 
