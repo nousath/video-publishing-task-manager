@@ -162,7 +162,8 @@ class Scripts extends App_Controller{
         if ($this->form_validation->run() == FALSE) {
             $this->index();
         } else {
-			$upload = $this->upload_document();
+			$selected_topic = $this->Scripts_model->get_by_id($this->input->post('selected_topic'));
+			$upload = $this->upload_document($selected_topic->topic);
 
 			$arr = explode('/',trim($upload));
 			if($arr[0] != 'uploads'){

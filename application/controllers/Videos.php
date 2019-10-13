@@ -84,7 +84,8 @@ class Videos extends App_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->index();
         } else {
-			$upload = $this->upload_video();
+			$selected_topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
+			$upload = $this->upload_video($selected_topic->topic);
 
 			$arr = explode('/',trim($upload));
 			if($arr[0] != 'uploads'){
@@ -94,8 +95,6 @@ class Videos extends App_Controller
 
 				/* update topic table: insert document link
 				---------------------------------------- */
-				
-	
 				$selected_topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
 				if($selected_topic->video == ''){
 					// submitting a new video: Add new row

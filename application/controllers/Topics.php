@@ -93,7 +93,7 @@ class Topics extends App_Controller
 		// delete existing file first before uploading a new one
 		$delete_result = $this->delete_files_from_server(FCPATH.$selected_topic->doc);
 		if($delete_result == true){
-			$upload = $this->upload_document();
+			$upload = $this->upload_document($selected_topic->topic);
 
 			$arr = explode('/',trim($upload));
 			if($arr[0] != 'uploads'){
