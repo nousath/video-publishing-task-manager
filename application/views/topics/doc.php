@@ -3,21 +3,72 @@
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header with-border">
-				<a href="<?=base_url($topic->doc); ?>" class="btn btn-info btn-lg"><i class="fa fa-download"></i> Download Document</a>
+
+					<div class="col-md-8">
+						<a href="<?=base_url($topic->doc); ?>" class="btn btn-info"><i class="fa fa-download"></i> Download Document</a>
+					</div>
+					<!--<br><br><br>-->
+					<div class="col-md-3">
+						<form action="<?=base_url('topics/re_upload_doc/'.$topic_id.'/'.$doc_id.''); ?>" method="POST" enctype="multipart/form-data" role="form">
+							<div class="form-group">
+								<label for="document" class="control-label">Upload edited document</label>
+								<input type="file" class="form-control" name="document" id="document">
+								<button type="submit" class="btn btn-default btn-sm">Upload</button>
+							</div>
+						</form>
+					</div>
+
+
+
+				
 				<!-- <h3 class="box-title">Script Document</h3> -->
 
-				<div class="box-tools pull-right">
-					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-					</button>
+				<!--<div class="box-tools pull-right">-->
+				<!--	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>-->
+				<!--	</button>-->
 					
-					<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-				</div>
+				<!--	<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
+				<!--</div>-->
 			</div>
 			<!-- /.box-header -->
 
 			<div class="box-body">
 				<div class="row">
+						<?php if ($this->session->flashdata('error_message')): ?>			
+						<?php echo '<div class="alert alert-danger">
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+										<strong>'.$this->session->flashdata('error_message').'</strong>
+									</div>'; 
+						?>
+						<?php endif; ?>
+
+						<?php if ($this->session->flashdata('topic_unknown')): ?>			
+						<?php echo '<div class="alert alert-danger">
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+										<strong>'.$this->session->flashdata('topic_unknown').'</strong>
+									</div>'; 
+						?>
+						<?php endif; ?>
+
+						<?php if ($this->session->flashdata('re_upload_success')): ?>			
+						<?php echo '<div class="alert alert-success">
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+										<strong>'.$this->session->flashdata('re_upload_success').'</strong>
+									</div>'; 
+						?>
+						<?php endif; ?>
+
+						<?php if ($this->session->flashdata('re_upload_fail')): ?>			
+						<?php echo '<div class="alert alert-danger">
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+										<strong>'.$this->session->flashdata('re_upload_fail').'</strong>
+									</div>'; 
+						?>
+						<?php endif; ?>
+
+
 					<div class="col-md-10">
+						
 						<iframe src='https://docs.google.com/viewer?url=<?=base_url($topic->doc); ?>&embedded=true' frameborder='0' width='1000px' height='623px'>
 						</iframe> 
 	

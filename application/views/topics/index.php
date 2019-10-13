@@ -55,44 +55,39 @@
 							<table class="table table-hover" id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="false" data-click-to-select="true" data-toolbar="#toolbar">
 								<thead>
 									<tr>
-										<th>SN</th>
+										<!-- <th>SN</th> -->
 										<th>Topic</th>
 										<th>Channel</th>
-										<th>Stage</th>
 										<th>Assigned To</th>
 										<th>Doc</th>
 										<th>Audio</th>
 										<th>Video</th>
-										<th>Created by</th>
-										<th>Created at</th>
 										<th>Actions</th>
 									</tr>
 								</thead>
 								<tbody>
 								<?php 
 									// set initial value for SN counter
-									$sn = 0;
+									// $sn = 0;
 									foreach ($topics as $topic ) {
 										// increment SN counter by one per loop
-										$sn++;
+										// $sn++;
 
 										// make foreign key values readable
-										$stage = $this->Stages_model->get_by_id($topic->stage_id);
-										$stage_name = $stage->name;
+										// $stage = $this->Stages_model->get_by_id($topic->stage_id);
+										// $stage_name = $stage->name;
 										$user = $this->ion_auth->user($topic->user_id)->row();
 										$assigned = ($topic->user_id != '' ) ? 'Assinged' : 'Not assinged';
 										$created_by = $this->ion_auth->user($topic->created_by)->row();
 										$doc = (!empty($topic->doc)) ? '<a href="'.base_url($topic->doc).'" class="btn btn-warning btn-xs"><i class="fa fa-file-word-o"></i> View/Download</a>' : 'Script Unavailable';
 										$audio = (!empty($topic->audio)) ? '<a href="'.base_url($topic->audio).'" class="btn btn-primary btn-xs"><i class="fa fa-microphone"></i> Listen/Download</a>' : 'Audio Unavailable';
 										$video = (!empty($topic->video)) ? '<a href="'.base_url($topic->video).'" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Watch/Download</a>' : 'Video Unavailable';
-										$draft_button = ($topic->is_draft == 0) ? '<a class="btn btn-default btn-xs btn-block" href="'.base_url('topics/save_as_draft/'.$topic->id.'').'"><i class="fa fa-file"></i> Save as draft</a>' : '';
+										$draft_button = ($topic->is_draft == 0) ? '<a class="btn btn-default btn-xs" href="'.base_url('topics/save_as_draft/'.$topic->id.'').'"><i class="fa fa-file"></i> Save as draft</a>' : '';
 										$channel = ($topic->channel_id != '') ? $this->Channels_model->get_by_id($topic->channel_id) : 'Channel not found';
 
 										echo '<tr>
-												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$channel->name.'</td>
-												<td>'.$stage->name.'</td>
 												<td>'.$user->username.'</td>
 												<td>
 													'.$doc.'
@@ -103,11 +98,9 @@
 												<td>
 													'.$video.'
 												</td>
-												<td>'.$created_by->username.'</td>
-												<td>'.date('d/m/Y H:i:s', $topic->created_at).'</td>
 												<td>
-													<a class="btn btn-info btn-xs btn-block" href="'.base_url('topics/update/'.$topic->id.'').'"><i class="fa fa-edit"></i> Edit</a>
-													<a class="btn btn-danger btn-xs btn-block" href="'.base_url('topics/delete/'.$topic->id.'').'"><i class="fa fa-trash"></i> Delete</a>
+													<a class="btn btn-info btn-xs" href="'.base_url('topics/update/'.$topic->id.'').'"><i class="fa fa-edit"></i> Edit</a>
+													<a class="btn btn-danger btn-xs" href="'.base_url('topics/delete/'.$topic->id.'').'"><i class="fa fa-trash"></i> Delete</a>
 													'.$draft_button.'
 												</td>
 											</tr>';

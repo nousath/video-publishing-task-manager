@@ -124,10 +124,10 @@ class App_Controller extends MY_Controller {
         }
 	}
 
-	public function upload_document(){
+	public function upload_document($topic){
     	// uploads/users
         $config['upload_path'] = 'uploads/documents';
-        $config['file_name'] =  uniqid();
+        $config['file_name'] = $topic;
         $config['allowed_types'] = 'docx|doc|pdf';
         $config['max_size'] = '1024';
 
@@ -150,10 +150,10 @@ class App_Controller extends MY_Controller {
         }
 	}
 
-	public function upload_audio(){
+	public function upload_audio($topic){
     	// uploads/users
         $config['upload_path'] = 'uploads/audios';
-        $config['file_name'] =  uniqid();
+        $config['file_name'] =  $topic;
         $config['allowed_types'] = 'mp3';
         $config['max_size'] = '20000';
 
@@ -173,10 +173,10 @@ class App_Controller extends MY_Controller {
         }
 	}
 
-	public function upload_video(){
+	public function upload_video($topic){
     	// uploads/video
         $config['upload_path'] = 'uploads/videos';
-        $config['file_name'] =  uniqid();
+        $config['file_name'] =  $topic;
         $config['allowed_types'] = 'mp4';
         $config['max_size'] = '3000000';
 

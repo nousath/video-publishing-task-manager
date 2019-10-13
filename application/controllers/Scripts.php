@@ -3,8 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Scripts extends App_Controller
-{
+class Scripts extends App_Controller{
     function __construct(){
 		parent::__construct();
 		
@@ -163,22 +162,21 @@ class Scripts extends App_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->index();
         } else {
-			$upload = $this->upload_document();
-
-			$arr = explode('/',trim($upload));
-			if($arr[0] != 'uploads'){
-				$this->session->set_flashdata('error_message', $upload);
-				redirect(site_url('scripts'));
-			}else{
-
-				/* update topic table: insert document link
-				---------------------------------------- */
-				
 	
-				// $selected_topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
+			// $selected_topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
+			$selected_topic = $this->Scripts_model->get_by_id($this->input->post('selected_topic'));
+			$topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
+			if($selected_topic == null){
+				// submitting a new script: Add new row
 				$selected_topic = $this->Scripts_model->get_by_id($this->input->post('selected_topic'));
-				if($selected_topic == null){
-					// submitting a new script: Add new row
+				$topic = $this->Scripts_model->get_by_id($this->input->post('selected_topic'));
+				$upload = $this->upload_document($topic->topic);
+
+				$arr = explode('/',trim($upload));
+				if($arr[0] != 'uploads'){
+					$this->session->set_flashdata('error_message', $upload);
+					redirect(site_url('scripts'));
+				}else{
 					$data = array(
 						'doc' => $upload
 					);	
@@ -222,45 +220,68 @@ class Scripts extends App_Controller
 
 					$this->session->set_flashdata('upload_success', 'Your script has been submitted');
 					redirect(site_url('scripts'));
-				}else{
-					// re-submitting a declined script: update scripts row
-					$data = array(
-						'doc' => $upload
-					);
-					$topic_id = $this->input->post('selected_topic');
-					$this->Topics_model->update($topic_id, $data);
+				}
+
+			}else{
+				// delete existing file first before uploading a new one
+				$delete_result = $this->delete_files_from_server(FCPATH.$topic->doc);
+				if($delete_result == true){
+
+					$selected_topic = $this->Scripts_model->get_by_id($this->input->post('selected_topic'));
+					$topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
 					
+					$upload = $this->upload_document($topic->topic);
 
-					/* create row to scripts table, insert document details
-					--------------------------------------------------- */
+					$arr = explode('/',trim($upload));
+					if($arr[0] != 'uploads'){
+						$this->session->set_flashdata('error_message', $upload);
+						redirect(site_url('scripts'));
+					}else{
 
-					$user = $this->ion_auth->user()->row(); 
-					/* send notification to admin 
-					--------------------------*/
-
-					// get notification template to send
-					$notification_template = $this->Notifications_templates_model->get_by_type('script_submitted');
-					
-					// get list of admins
-					$admins = $this->User_model->get_by_usertype(1);
-
-					// loop through admins and send notifications to all
-					foreach ($admins as $admin ) {
 						$data = array(
-							'send_to' => $admin->id,
-							'body'    => $user->username.' '.$notification_template->message,
-							'created_at' => time(),
+							'doc' => $upload
 						);
-
-						// send notification to user
-						$this->Notifications_model->insert($data);
+						$topic_id = $this->input->post('selected_topic');
+						$this->Topics_model->update($topic_id, $data);
+						
+	
+						/* create row to scripts table, insert document details
+						--------------------------------------------------- */
+	
+						$user = $this->ion_auth->user()->row(); 
+						/* send notification to admin 
+						--------------------------*/
+	
+						// get notification template to send
+						$notification_template = $this->Notifications_templates_model->get_by_type('script_submitted');
+						
+						// get list of admins
+						$admins = $this->User_model->get_by_usertype(1);
+	
+						// loop through admins and send notifications to all
+						foreach ($admins as $admin ) {
+							$data = array(
+								'send_to' => $admin->id,
+								'body'    => $user->username.' '.$notification_template->message,
+								'created_at' => time(),
+							);
+	
+							// send notification to user
+							$this->Notifications_model->insert($data);
+						}
+	
+						$this->session->set_flashdata('upload_success', 'Your script has been updated');
+						redirect(site_url('scripts')); 
 					}
 
-					$this->session->set_flashdata('upload_success', 'Your script has been updated');
-					redirect(site_url('scripts')); 
+				}else{
+					// could not delete
+					$this->session->set_flashdata('error_message', $delete_result);
+					redirect(site_url('scripts'));
 				}
 				
 			}
+				
 		}
 	}
 
