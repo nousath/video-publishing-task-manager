@@ -43,7 +43,7 @@
 							<th>First Name</th>
 							<th>Last Name</th>
 							<th>Designition</th>
-							<th>Salary</th>
+							
 							<th>Tasks Completed</th>
 							<th>Last login</th>
 							<th>Actions</th>
@@ -63,7 +63,7 @@
 									<td>'.$u->first_name.'</td>
 									<td>'.$u->last_name.'</td>
 									<td>'.$u->job_title.'</td>
-									<td>'.$u->salary.'</td>
+									
 									<td>'.$u->tasks_completed.'</td>							
 									<td>'.date('d/m/Y H:i:s', $u->last_login).'</td>							
 									<td>

@@ -61,12 +61,7 @@
 							<input type="text" name="employed_on" value="<?php echo (date('d/m/Y', $this->input->post('employed_on')) ? date('d/m/Y', $this->input->post('employed_on')) : date('d/m/Y', $user->employed_on)); ?>" class="form-control" id="employed_on" />
 						</div>
 					</div>
-					<div class="col-md-4">
-						<label for="salary" class="control-label">Salary</label>
-						<div class="form-group">
-							<input type="text" name="salary" value="&#8358; <?php echo ($this->input->post('salary') ? $this->input->post('salary') : number_format($user->salary)); ?>" class="form-control" id="salary" disabled />
-						</div>
-					</div>
+				
 					<div class="col-md-4">
 						<label for="dob" class="control-label">DOB</label>
 						<div class="form-group">
@@ -156,12 +151,6 @@
 						<label for="employed_on" class="control-label">Employed On</label>
 						<div class="form-group">
 							<input type="text" name="employed_on" value="<?=$employed_on; ?>" class="form-control" id="employed_on" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="salary" class="control-label">Salary</label>
-						<div class="form-group">
-							<input type="text" name="salary" value="<?=$salary; ?>" class="form-control" id="salary" />
 						</div>
 					</div>
 					<div class="col-md-6">
