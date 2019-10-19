@@ -56,7 +56,7 @@ class Users extends App_Controller{
             $password = $this->input->post('password');
             $email = $this->input->post('email');
 			$group = $this->Group_model->get_group($this->input->post('group'));
-			$channel_id = ($this->input->post('channel') != '') ? $this->input->post('channel') : 0;
+			$channel_id = ($this->input->post('group') != 5) ? $this->input->post('channel') : 0;
             $additional_data = array(
                                     'created_on' => time(),
                                     'job_title' => $group->name,

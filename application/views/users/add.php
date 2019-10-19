@@ -43,10 +43,10 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="channel" class="control-label"><span class="text-danger">*</span>Staff Channel</label>
+						<label for="channel" class="control-label">Staff Channel</label>
 						<div class="form-group">
 							<select name="channel" class="form-control" id="channel" required>
-								<option></option>
+								<option value="0"></option>
 								<?php								
 									foreach ($channels as $channel) {
 										echo '<option value="'.$channel->id.'">'.$channel->name.'</option>';
