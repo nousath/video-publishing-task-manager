@@ -62,6 +62,18 @@ class Dashboard extends App_Controller{
 				
 				$this->load->view('layouts/main',$data);
 				break;
+
+
+			case 5:
+				$data = array(
+					'title' => 'SS Media Staff - Dashboard',
+					'content' => 'dashboard/proofreader',
+					'content_header' => 'Dashboard',
+					'scripts' => $this->Scripts_model->get_all(),
+				);
+				
+				$this->load->view('layouts/main',$data);
+				break;
 			
 			default:
 				
