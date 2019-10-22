@@ -5,6 +5,7 @@
 				<h3 class="box-title">Scripts</h3>
 
 				<div class="box-tools pull-right">
+                    <!-- <a class="btn btn-danger" data-toggle="modal" href='#modal-id'>Upload Script <i class="fa fa-upload"></i></a> -->
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 					</button>
 					
@@ -16,6 +17,15 @@
 			<div class="box-body">
 				<div class="row">
 					<div class="col-md-12">
+                        
+                    <?php if ($this->session->flashdata('re_upload_success')): ?>			
+                    <?php echo '<div class="alert alert-success">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <strong>'.$this->session->flashdata('re_upload_success').'</strong>
+                                </div>'; 
+                    ?>
+                    <?php endif; ?>
+
                     <table class="table table-hover" id="example2">
                         <thead>
                             <tr>
@@ -49,7 +59,10 @@
                                             <td> '.$update_alert.' '.$topic->topic.'</td>
                                             <td>'.$submitted_by.'</td>
                                             <td>'.date('M d, Y H:i:s', $script->submitted_at).'</td>
-                                            <td><a href="'.base_url($topic->doc).'" class="btn btn-default">View/Download <i class="fa fa-file-word-o"></i></a></td>
+                                            <td>
+                                                <a href="'.base_url($topic->doc).'" class="btn btn-default">View/Download <i class="fa fa-file-word-o"></i></a>
+                                                <a class="btn btn-default" href="'.base_url('dashboard/upload_proofread_doc/'.$script->topic_id.'/'.$script->id.'').'">Upload Script <i class="fa fa-upload"></i></a>
+                                            </td>
                                             
                                         </tr>';
 

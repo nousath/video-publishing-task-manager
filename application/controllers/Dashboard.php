@@ -7,10 +7,11 @@ class Dashboard extends App_Controller{
         
     // }
 
-    function index(){
+    public function index($topic_id = ""){
 		$user = $this->ion_auth->user()->row(); 
 
 		switch ($user->usertype) {
+			// admin
 			case 1:
 				$data = array(
 					'title' => 'SS Media Staff - Dashboard',
@@ -38,6 +39,7 @@ class Dashboard extends App_Controller{
 				$this->load->view('layouts/main',$data);
 				break;
 
+			// voice artist
 			case 3:
 				$data = array(
 					'title' => 'SS Media Staff - Dashboard',
@@ -50,7 +52,7 @@ class Dashboard extends App_Controller{
 				$this->load->view('layouts/main',$data);
 				break;
 
-
+			// video editor
 			case 4:
 				$data = array(
 					'title' => 'SS Media Staff - Dashboard',
@@ -63,11 +65,12 @@ class Dashboard extends App_Controller{
 				$this->load->view('layouts/main',$data);
 				break;
 
-
+			// proof reader
 			case 5:
 				$data = array(
 					'title' => 'SS Media Staff - Dashboard',
 					'content' => 'dashboard/proofreader',
+					'topic_id' => $topic_id,
 					'content_header' => 'Dashboard',
 					'scripts' => $this->Scripts_model->get_all(),
 				);
@@ -83,5 +86,18 @@ class Dashboard extends App_Controller{
 		}
 
 		
-    }
+	}
+	
+	public function upload_proofread_doc($topic_id, $doc_id){
+		$data = array(
+			'title' => 'SS Media Staff - Upload',
+			'content' => 'dashboard/upload_proofread_doc',
+			'topic_id' => $topic_id,
+			'doc_id' => $doc_id,
+			'content_header' => 'Dashboard',
+			'scripts' => $this->Scripts_model->get_all(),
+		);
+		
+		$this->load->view('layouts/main',$data);
+	}
 }
