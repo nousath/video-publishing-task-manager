@@ -56,7 +56,7 @@ class Users extends App_Controller{
             $password = $this->input->post('password');
             $email = $this->input->post('email');
 			$group = $this->Group_model->get_group($this->input->post('group'));
-			$channel_id = ($this->input->post('group') != 5) ? $this->input->post('channel') : 0;
+			$channel_id = ($this->input->post('group') != 5 && $this->input->post('group') != 6) ? $this->input->post('channel') : 0;
             $additional_data = array(
                                     'created_on' => time(),
                                     'job_title' => $group->name,
@@ -70,9 +70,7 @@ class Users extends App_Controller{
             $this->ion_auth->register($username, $password, $email, $additional_data, $group);
 			$this->session->set_flashdata('message', 'New user '.$username.' created!');
             redirect('users');
-        }
-        else
-        {            
+        }else{            
             $data = array(
 				'content' => 'users/add',
 				'title' => 'New User',
