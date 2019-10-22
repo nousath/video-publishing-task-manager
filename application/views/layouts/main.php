@@ -52,6 +52,11 @@
 		tr[data-href] {
 			cursor: pointer;
 		}
+		
+		.photo-dp{
+		    width:40px;
+		    height:30;
+		}
 	</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -138,7 +143,7 @@
 													echo '<li>
 																<a href="'.base_url('messages/read/'.$message->id.'').'">
 																	<div class="pull-left">
-																		<img src="'.base_url($sender->photo).'" class="img-circle" alt="User Image">
+																		<img src="'.base_url($sender->photo).'" class="img-circle photo-dp" alt="User Image" />
 																	</div>
 																	<h4>
 																		'.message_subject_excerpt($message->subject).'
@@ -222,19 +227,20 @@
           </li>
          
           <!-- User Account: style can be found in dropdown.less -->
+          <!-- <?=base_url($user->photo); ?> -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?php echo base_url($user->photo); ?>" class="user-image" alt="User Image">
+              <img src="<?=base_url($user->photo); ?>" class="img-circle photo-dp" alt="User Image" />
               <span class="hidden-xs"> <?php echo $user->username; ?> </span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image">
+                <!--<img src="<?=base_url($user->photo);?>" class="img-circle" alt="User Image" /> -->
 
                 <p>
 								<?php echo $user->first_name.' '.$user->last_name; ?>
-                  <small>Employed since <?=date('M - Y', $user->employed_on); ?></small>
+                  <!--<small>Employed since <?=date('M - Y', $user->employed_on); ?></small>-->
                 </p>
               </li>
               <!-- /Menu Body -->
@@ -266,7 +272,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
 					<div class="pull-left image">						
-						<img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image"> <!-- height="50" width="50" -->
+						<img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image" /> <!-- height="50" width="50" -->
 					</div>
 					<div class="pull-left info">
 						<p>
@@ -395,7 +401,14 @@
 						</ul>';
 				  break;
 				
-				  case 5:
+				case 5:
+				  # user is a proof-reader ...
+				  echo '<ul class="sidebar-menu" data-widget="tree">
+							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
+						</ul>';
+				  break;
+
+				case 6:
 				  # user is a proof-reader ...
 				  echo '<ul class="sidebar-menu" data-widget="tree">
 							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
