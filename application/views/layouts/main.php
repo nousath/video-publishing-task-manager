@@ -467,7 +467,7 @@
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Software version</b> 1.1.0
+      <b>Software version</b> 1.2.0
     </div>
     <strong>Copyright &copy;<?=date('Y'); ?> <a href="#"><?=$settings->footer; ?></a> | </strong> All rights
     reserved.
