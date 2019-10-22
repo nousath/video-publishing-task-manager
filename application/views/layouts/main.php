@@ -311,11 +311,11 @@
 			<li><a href="<?php echo base_url(); ?>"><i class="fa fa-book"></i> <span>Manual</span></a></li>
 			<li><a href="<?=base_url('reports'); ?>"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 			
-			<!-- <li class="header">LABELS</li>
+			 <li class="header">LABELS</li>
 			<li><a href="<?php echo base_url('assets/theme/'); ?>#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
 			<li><a href="<?php echo base_url('assets/theme/'); ?>#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
 			<li><a href="<?php echo base_url('assets/theme/'); ?>#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li> -->
-      	</ul> -->
+      <!--	</ul> -->
 	  <?php 
 	  	switch ($user->usertype) {
 			  case 1:
@@ -394,9 +394,18 @@
 							<li><a href="'.base_url('profile/index/'.$user->id.'').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
 						</ul>';
 				  break;
+				
+				  case 5:
+				  # user is a proof-reader ...
+				  echo '<ul class="sidebar-menu" data-widget="tree">
+							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
+						</ul>';
+				  break;
+
+				
 
 			  default:
-				  echo 'Menu did not load correctly!';
+				  echo '----NO SIDE MENU----';
 				  break;
 		  }
 	  ?>
