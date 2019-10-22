@@ -56,11 +56,11 @@ class Users extends App_Controller{
             $password = $this->input->post('password');
             $email = $this->input->post('email');
 			$group = $this->Group_model->get_group($this->input->post('group'));
+			$channel_id = ($this->input->post('group') != 5 && $this->input->post('group') != 6) ? $this->input->post('channel') : 0;
             $additional_data = array(
                                     'created_on' => time(),
                                     'job_title' => $group->name,
-                                    'salary' => $this->input->post('salary'),
-                                    'channel_id' => $this->input->post('channel'),
+                                    'channel_id' => $channel_id,
 									'job_describtion' => $this->input->post('job_describtion'),
 									'usertype' => $this->input->post('group'),
                                     );
@@ -70,9 +70,7 @@ class Users extends App_Controller{
             $this->ion_auth->register($username, $password, $email, $additional_data, $group);
 			$this->session->set_flashdata('message', 'New user '.$username.' created!');
             redirect('users');
-        }
-        else
-        {            
+        }else{            
             $data = array(
 				'content' => 'users/add',
 				'title' => 'New User',
@@ -154,7 +152,6 @@ class Users extends App_Controller{
 					'last_name' => set_value('last_name', $user->last_name),
 					'job_title' => set_value('job_title', $user->job_title),
 					'employed_on' => set_value('employed_on', $user->employed_on),
-					'salary' => set_value('salary', $user->salary),
 					'dob' => set_value('dob', $user->dob),
 					'phone' => set_value('phone', $user->phone),
 					'channels' => $this->Channels_model->get_all(),
@@ -205,15 +202,14 @@ class Users extends App_Controller{
 			if (!$this->input->post('id')) {
 				$this->edit($this->input->post('id',TRUE));
 			} else {
+				$channel_id = ($this->input->post('channel') != '') ? $this->input->post('channel') : 0;
 				$data = array(
 					'first_name' => $this->input->post('first_name'),
 					'last_name' => $this->input->post('last_name'),
 					'job_title' => $this->input->post('job_title'),
-					'salary' => $this->input->post('salary'),
-					'channel_id' => $this->input->post('channel'),
+					'channel_id' => $channel_id,
 					'job_describtion' => $this->input->post('job_describtion'),
 					'employed_on' => $this->input->post('employed_on'),
-					'salary' => $this->input->post('salary'),
 					'dob' => $this->input->post('dob'),
 					'phone' => $this->input->post('phone'),
 				);

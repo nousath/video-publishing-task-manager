@@ -43,9 +43,9 @@
 
               <hr>
 
-              <strong><i class="fa fa-money margin-r-5"></i> Salary</strong>
+              <!-- <strong><i class="fa fa-money margin-r-5"></i> Salary</strong>
 
-              <p class="text-muted">&#8358; <?=$user->salary; ?></p>
+              <p class="text-muted">&#8358; <?=$user->salary; ?></p> -->
 
               <hr>
 

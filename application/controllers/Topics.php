@@ -5,12 +5,11 @@ if (!defined('BASEPATH'))
 
 class Topics extends App_Controller
 {
-    function __construct()
-    {
+    function __construct(){
         parent::__construct();
         $user = $this->ion_auth->user()->row(); 
 
-		if($user->usertype != 1 ){
+		if($user->usertype != 1 && $user->usertype != 5 && $user->usertype != 6 ){
 			
 			redirect(base_url('dashboard'),'refresh');
 				
@@ -39,7 +38,6 @@ class Topics extends App_Controller
 		$this->session->set_flashdata('draft_message', 'Topic saved as draft');
 		redirect(site_url('topics'));
 	}
-
 
 	public function assign_to_writer(){
 		
@@ -87,42 +85,169 @@ class Topics extends App_Controller
 	}
 
 	public function re_upload_doc($topic_id, $doc_id){
-		$selected_topic = $this->Topics_model->get_by_id($topic_id);
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype == 1){
+			// admin
+			$selected_topic = $this->Topics_model->get_by_id($topic_id);
 		
+			// delete existing file first before uploading a new one
+			$delete_result = $this->delete_files_from_server(FCPATH.$selected_topic->doc);
+			if($delete_result == true){
+				$upload = $this->upload_document($selected_topic->topic);
 
-		// delete existing file first before uploading a new one
-		$delete_result = $this->delete_files_from_server(FCPATH.$selected_topic->doc);
-		if($delete_result == true){
-			$upload = $this->upload_document($selected_topic->topic);
-
-			$arr = explode('/',trim($upload));
-			if($arr[0] != 'uploads'){
-				$this->session->set_flashdata('error_message', $upload);
-				redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
-			}else{
-
-				if($selected_topic != null){
-					// submitting a new script: Add new row
-					$data = array(
-						'doc' => $upload
-					);	
-
-					$this->Topics_model->update($topic_id, $data);
-					$this->session->set_flashdata('re_upload_success', 'Upload successful!');
+				$arr = explode('/',trim($upload));
+				if($arr[0] != 'uploads'){
+					$this->session->set_flashdata('error_message', $upload);
 					redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
 				}else{
-					$this->session->set_flashdata('topic_unknown', 'Topic is unknown!');
-					redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
+
+					if($selected_topic != null){
+						// submitting a new script: Add new row
+						$data = array(
+							'doc' => $upload
+						);	
+
+						$this->Topics_model->update($topic_id, $data);
+						$this->session->set_flashdata('re_upload_success', 'Upload successful!');
+						redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
+					}else{
+						$this->session->set_flashdata('topic_unknown', 'Topic is unknown!');
+						redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
+					}
+					
 				}
 				
+			}else{
+				$this->session->set_flashdata('re_upload_fail', $delete_result);
+				redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
+			}
+				
+		}elseif($user->usertype == 5){
+
+			// proof-reader
+
+			$selected_topic = $this->Topics_model->get_by_id($topic_id);
+		
+			// delete existing file first before uploading a new one
+			$delete_result = $this->delete_files_from_server(FCPATH.$selected_topic->doc);
+			
+			if($delete_result == true){
+				$upload = $this->upload_document($selected_topic->topic);
+
+				$arr = explode('/',trim($upload));
+				if($arr[0] != 'uploads'){
+					$this->session->set_flashdata('error_message', $upload);
+					redirect(site_url('dashboard/upload_proofread_doc/'.$topic_id.'/'.$doc_id.''));
+				}else{
+
+					if($selected_topic != null){
+						// submitting a new script: Add new row
+						$data = array(
+							'doc' => $upload
+						);	
+
+						$this->Topics_model->update($topic_id, $data);
+						$this->session->set_flashdata('re_upload_success', 'Upload successful!');
+						redirect(site_url('dashboard'));
+					}else{
+						$this->session->set_flashdata('topic_unknown', 'Topic is unknown!');
+						redirect(site_url('dashboard/upload_proofread_doc/'.$topic_id.'/'.$doc_id.''));
+					}
+					
+				}
+				
+			}else{
+				$this->session->set_flashdata('re_upload_fail', $delete_result);
+				redirect(site_url('dashboard/upload_proofread_doc/'.$topic_id.'/'.$doc_id.''));
 			}
 			
-		}else{
-			$this->session->set_flashdata('re_upload_fail', $delete_result);
-			redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
 		}
 		
 	}
+
+	public function re_upload_audio($topic_id, $audio_id){
+		$user = $this->ion_auth->user()->row(); 
+
+		if($user->usertype == 1){
+			// admin
+			$selected_topic = $this->Topics_model->get_by_id($topic_id);
+		
+			// delete existing file first before uploading a new one
+			$delete_result = $this->delete_files_from_server(FCPATH.$selected_topic->audio);
+			if($delete_result == true){
+				$upload = $this->upload_audio($selected_topic->topic);
+
+				$arr = explode('/',trim($upload));
+				if($arr[0] != 'uploads'){
+					$this->session->set_flashdata('error_message', $upload);
+					redirect(site_url('topics/audio/'.$topic_id.'/'.$audio_id.''));
+				}else{
+
+					if($selected_topic != null){
+						// submitting a new script: Add new row
+						$data = array(
+							'audio' => $upload
+						);	
+
+						$this->Topics_model->update($topic_id, $data);
+						$this->session->set_flashdata('re_upload_success', 'Upload successful!');
+						redirect(site_url('topics/audio/'.$topic_id.'/'.$audio_id.''));
+					}else{
+						$this->session->set_flashdata('topic_unknown', 'Topic is unknown!');
+						redirect(site_url('topics/audio/'.$topic_id.'/'.$audio_id.''));
+					}
+					
+				}
+				
+			}else{
+				$this->session->set_flashdata('re_upload_fail', $delete_result);
+				redirect(site_url('topics/audio/'.$topic_id.'/'.$audio_id.''));
+			}
+				
+		}elseif($user->usertype == 6){
+
+			// proof-reader
+
+			$selected_topic = $this->Topics_model->get_by_id($topic_id);
+		
+			// delete existing file first before uploading a new one
+			$delete_result = $this->delete_files_from_server(FCPATH.$selected_topic->audio);
+			
+			if($delete_result == true){
+				$upload = $this->upload_audio($selected_topic->topic);
+
+				$arr = explode('/',trim($upload));
+				if($arr[0] != 'uploads'){
+					$this->session->set_flashdata('error_message', $upload);
+					redirect(site_url('dashboard/upload_edited_audio/'.$topic_id.'/'.$audio_id.''));
+				}else{
+
+					if($selected_topic != null){
+						// submitting a new script: Add new row
+						$data = array(
+							'audio' => $upload
+						);	
+
+						$this->Topics_model->update($topic_id, $data);
+						$this->session->set_flashdata('re_upload_success', 'Upload successful!');
+						redirect(site_url('dashboard'));
+					}else{
+						$this->session->set_flashdata('topic_unknown', 'Topic is unknown!');
+						redirect(site_url('dashboard/upload_edited_audio/'.$topic_id.'/'.$audio_id.''));
+					}
+					
+				}
+				
+			}else{
+				$this->session->set_flashdata('re_upload_fail', $delete_result);
+				redirect(site_url('dashboard/upload_edited_audio/'.$topic_id.'/'.$audio_id.''));
+			}
+			
+		}
+		
+	}
+
 
     public function doc($id = '', $doc_id = ''){
 		if($id == '' ||  $doc_id == ''){

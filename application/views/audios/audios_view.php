@@ -107,7 +107,7 @@
 								<tr>
 									<th>SN</th>
 									<th>Topic</th>
-									<th>Submitted At</th>
+									<th>Date</th>
 									<!-- <th>Audio Status</th> -->
 								</tr>
 							</thead>
@@ -121,7 +121,7 @@
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
-												<td>'.date('M d, Y H:i:s', $audio->submitted_at).'</td>
+												<td>'.date('m/y', $audio->submitted_at).'</td>
 												<td><a class="btn btn-danger btn-flat" href="'.base_url("audios/index/$audio->id").'">Comments <i class="fa fa-comments"></i></a></td>
 											</tr>';
 

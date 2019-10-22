@@ -52,6 +52,11 @@
 		tr[data-href] {
 			cursor: pointer;
 		}
+		
+		.photo-dp{
+		    width:40px;
+		    height:30;
+		}
 	</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -138,7 +143,7 @@
 													echo '<li>
 																<a href="'.base_url('messages/read/'.$message->id.'').'">
 																	<div class="pull-left">
-																		<img src="'.base_url($sender->photo).'" class="img-circle" alt="User Image">
+																		<img src="'.base_url($sender->photo).'" class="img-circle photo-dp" alt="User Image" />
 																	</div>
 																	<h4>
 																		'.message_subject_excerpt($message->subject).'
@@ -222,19 +227,20 @@
           </li>
          
           <!-- User Account: style can be found in dropdown.less -->
+          <!-- <?=base_url($user->photo); ?> -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?php echo base_url($user->photo); ?>" class="user-image" alt="User Image">
+              <img src="<?=base_url($user->photo); ?>" class="img-circle photo-dp" alt="User Image" />
               <span class="hidden-xs"> <?php echo $user->username; ?> </span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image">
+                <!--<img src="<?=base_url($user->photo);?>" class="img-circle" alt="User Image" /> -->
 
                 <p>
 								<?php echo $user->first_name.' '.$user->last_name; ?>
-                  <small>Employed since <?=date('M - Y', $user->employed_on); ?></small>
+                  <!--<small>Employed since <?=date('M - Y', $user->employed_on); ?></small>-->
                 </p>
               </li>
               <!-- /Menu Body -->
@@ -266,7 +272,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
 					<div class="pull-left image">						
-						<img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image"> <!-- height="50" width="50" -->
+						<img src="<?php echo base_url($user->photo); ?>" class="img-circle" alt="User Image" /> <!-- height="50" width="50" -->
 					</div>
 					<div class="pull-left info">
 						<p>
@@ -311,11 +317,11 @@
 			<li><a href="<?php echo base_url(); ?>"><i class="fa fa-book"></i> <span>Manual</span></a></li>
 			<li><a href="<?=base_url('reports'); ?>"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 			
-			<!-- <li class="header">LABELS</li>
+			 <li class="header">LABELS</li>
 			<li><a href="<?php echo base_url('assets/theme/'); ?>#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
 			<li><a href="<?php echo base_url('assets/theme/'); ?>#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
 			<li><a href="<?php echo base_url('assets/theme/'); ?>#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li> -->
-      	</ul> -->
+      <!--	</ul> -->
 	  <?php 
 	  	switch ($user->usertype) {
 			  case 1:
@@ -394,9 +400,25 @@
 							<li><a href="'.base_url('profile/index/'.$user->id.'').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
 						</ul>';
 				  break;
+				
+				case 5:
+				  # user is a proof-reader ...
+				  echo '<ul class="sidebar-menu" data-widget="tree">
+							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
+						</ul>';
+				  break;
+
+				case 6:
+				  # user is a proof-reader ...
+				  echo '<ul class="sidebar-menu" data-widget="tree">
+							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
+						</ul>';
+				  break;
+
+				
 
 			  default:
-				  echo 'Menu did not load correctly!';
+				  echo '----NO SIDE MENU----';
 				  break;
 		  }
 	  ?>
@@ -458,7 +480,7 @@
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Software version</b> 1.1.0
+      <b>Software version</b> 1.2.0
     </div>
     <strong>Copyright &copy;<?=date('Y'); ?> <a href="#"><?=$settings->footer; ?></a> | </strong> All rights
     reserved.
@@ -537,7 +559,21 @@
 			'info'        : true,
 			'autoWidth'   : false
 			})
+
+
+			$('#example2').DataTable({
+				'paging'      : true,
+				'lengthChange': false,
+				'searching'   : true,
+				'ordering'    : true,
+				'info'        : true,
+				'autoWidth'   : false
+			})
 		})
+
+		// $(function () {
+
+		// })
 	</script>
 
 

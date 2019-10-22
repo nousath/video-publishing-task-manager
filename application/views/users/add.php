@@ -43,10 +43,10 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="channel" class="control-label"><span class="text-danger">*</span>Staff Channel</label>
+						<label for="channel" class="control-label">Staff Channel</label>
 						<div class="form-group">
 							<select name="channel" class="form-control" id="channel" required>
-								<option></option>
+								<option value="0"></option>
 								<?php								
 									foreach ($channels as $channel) {
 										echo '<option value="'.$channel->id.'">'.$channel->name.'</option>';
@@ -56,12 +56,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-6">
-						<label for="salary" class="control-label">Salary</label>
-						<div class="form-group">
-							<input type="number" name="salary" value="<?php echo $this->input->post('salary'); ?>" class="form-control" id="salary" />
-						</div>
-					</div>
+					
 					<div class="col-md-6">
 						<label for="job_describtion" class="control-label">Job Describtion</label>
 						<div class="form-group">

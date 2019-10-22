@@ -44,7 +44,7 @@
 										<th>Title</th>
 										<th>Assigned To</th>
 										<th>Created by</th>
-										<th>Created at</th>
+										<th>Date</th>
 										<th>Actions</th>
 									</tr>
 								</thead>
@@ -69,7 +69,7 @@
 												<td>'.$topic->topic.'</td>
 												<td>'.$user->username.'</td>
 												<td>'.$created_by->username.'</td>
-												<td>'.date('d/m/Y H:i:s', $topic->created_at).'</td>
+												<td>'.date('m/y', $topic->created_at).'</td>
 												<td>
 													<a class="btn btn-success btn-xs" data-toggle="modal" href="#modal-id'.$sn.'"><i class="fa fa-share"></i> Assign to writer</a>
 													<a class="btn btn-info btn-xs" href="'.base_url('topics/update/'.$topic->id.'').'"><i class="fa fa-edit"></i> Edit</a>

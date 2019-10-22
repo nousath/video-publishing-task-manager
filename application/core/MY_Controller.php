@@ -125,9 +125,10 @@ class App_Controller extends MY_Controller {
 	}
 
 	public function upload_document($topic){
+		$filename = preg_replace('/\s+/', '_', $topic);
     	// uploads/users
         $config['upload_path'] = 'uploads/documents';
-        $config['file_name'] = $topic;
+        $config['file_name'] = $filename;
         $config['allowed_types'] = 'docx|doc|pdf';
         $config['max_size'] = '1024';
 
@@ -151,9 +152,11 @@ class App_Controller extends MY_Controller {
 	}
 
 	public function upload_audio($topic){
+		$filename = preg_replace('/\s+/', '_', $topic);
+
     	// uploads/users
         $config['upload_path'] = 'uploads/audios';
-        $config['file_name'] =  $topic;
+        $config['file_name'] =  $filename;
         $config['allowed_types'] = 'mp3';
         $config['max_size'] = '20000';
 
@@ -174,9 +177,11 @@ class App_Controller extends MY_Controller {
 	}
 
 	public function upload_video($topic){
+		$filename = preg_replace('/\s+/', '_', $topic);
+
     	// uploads/video
         $config['upload_path'] = 'uploads/videos';
-        $config['file_name'] =  $topic;
+        $config['file_name'] =  $filename;
         $config['allowed_types'] = 'mp4';
         $config['max_size'] = '3000000';
 

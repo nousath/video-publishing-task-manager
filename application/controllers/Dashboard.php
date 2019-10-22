@@ -7,10 +7,11 @@ class Dashboard extends App_Controller{
         
     // }
 
-    function index(){
+    public function index($topic_id = ""){
 		$user = $this->ion_auth->user()->row(); 
 
 		switch ($user->usertype) {
+			// admin
 			case 1:
 				$data = array(
 					'title' => 'SS Media Staff - Dashboard',
@@ -38,6 +39,7 @@ class Dashboard extends App_Controller{
 				$this->load->view('layouts/main',$data);
 				break;
 
+			// voice artist
 			case 3:
 				$data = array(
 					'title' => 'SS Media Staff - Dashboard',
@@ -50,7 +52,7 @@ class Dashboard extends App_Controller{
 				$this->load->view('layouts/main',$data);
 				break;
 
-
+			// video editor
 			case 4:
 				$data = array(
 					'title' => 'SS Media Staff - Dashboard',
@@ -58,6 +60,32 @@ class Dashboard extends App_Controller{
 					'content_header' => 'Dashboard',
 					'videos_by_user' => $this->Topics_model->get_by_editor_assigned($user->id),
 					'messages' => $this->Messages_model->get_by_user($user->id),
+				);
+				
+				$this->load->view('layouts/main',$data);
+				break;
+
+			// proof reader 
+			case 5:
+				$data = array(
+					'title' => 'SS Media Staff - Dashboard',
+					'content' => 'dashboard/proofreader',
+					'topic_id' => $topic_id,
+					'content_header' => 'Dashboard',
+					'scripts' => $this->Scripts_model->get_all(),
+				);
+				
+				$this->load->view('layouts/main',$data);
+				break;
+
+			// voice_editor
+			case 6:
+				$data = array(
+					'title' => 'SS Media Staff - Dashboard',
+					'content' => 'dashboard/voice_editor',
+					'topic_id' => $topic_id,
+					'content_header' => 'Dashboard',
+					'audios' => $this->Audios_model->get_all(),
 				);
 				
 				$this->load->view('layouts/main',$data);
@@ -71,5 +99,32 @@ class Dashboard extends App_Controller{
 		}
 
 		
-    }
+	}
+
+	
+	public function upload_proofread_doc($topic_id, $doc_id){
+		$data = array(
+			'title' => 'SS Media Staff - Upload',
+			'content' => 'dashboard/upload_proofread_doc',
+			'topic_id' => $topic_id,
+			'doc_id' => $doc_id,
+			'content_header' => 'Dashboard',
+			'scripts' => $this->Scripts_model->get_all(),
+		);
+		
+		$this->load->view('layouts/main',$data);
+	}
+
+	public function upload_edited_audio($topic_id, $audio_id){
+		$data = array(
+			'title' => 'SS Media Staff - Upload',
+			'content' => 'dashboard/upload_edited_audio',
+			'topic_id' => $topic_id,
+			'audio_id' => $audio_id,
+			'content_header' => 'Dashboard',
+			'scripts' => $this->Scripts_model->get_all(),
+		);
+		
+		$this->load->view('layouts/main',$data);
+	}
 }
