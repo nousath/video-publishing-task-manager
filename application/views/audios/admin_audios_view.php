@@ -63,7 +63,7 @@
 									<th>SN</th>
 									<th>Topic</th>
 									<th>Submitted By</th>
-									<th>Submitted At</th>
+									<th>Date</th>
 									<th>File</th>
 									<th>Actions</th>
 								</tr>
@@ -93,7 +93,7 @@
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by.'</td>
-												<td>'.date('M d, Y H:i:s', $audio->submitted_at).'</td>
+												<td>'.date('m/y', $audio->submitted_at).'</td>
 												<td><a href="'.base_url("topics/audio/$audio->topic_id/$audio->id").'" class="btn btn-warning btn-xs btn-block">Listen/Download <i class="fa fa-microphone"></i></a></td>
 												<td>'.$status.' '.$decline.' '.$assign.' '.$reserve_button.' '.$draft_button.'</td>
 											</tr>';
@@ -143,7 +143,7 @@
 						<th>SN</th>
 						<th>Topic</th>
 						<th>Submitted By</th>
-						<th>Submitted At</th>
+						<th>Date</th>
 						<th>File</th>
 						<th>Approve/Decline</th>
 					</tr>
@@ -171,7 +171,7 @@
 								<td>'.$sn.'</td>
 								<td>'.$topic->topic.'</td>
 								<td>'.$submitted_by.'</td>
-								<td>'.date('M d, Y H:i:s', $draft->submitted_at).'</td>
+								<td>'.date('m/y', $draft->submitted_at).'</td>
 								<td><a href="'.base_url("topics/audio/$draft->topic_id/$draft->id").'" class="btn btn-warning btn-xs btn-block">Listen/Download <i class="fa fa-microphone"></i></a></td>
 								<td>'.$assign.' '.$reserve_button.'</td>
 							</tr>';

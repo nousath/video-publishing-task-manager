@@ -84,7 +84,7 @@
 								<tr>
 									<th>SN</th>
 									<th>Topic</th>
-									<th>Submitted At</th>
+									<th>Date</th>
 									<!-- <th>Script Status</th> -->
 								</tr>
 							</thead>
@@ -98,7 +98,7 @@
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
-												<td>'.date('M d, Y H:i:s', $script->submitted_at).'</td>
+												<td>'.date('m/y', $script->submitted_at).'</td>
 												<td><a class="btn btn-danger btn-flat" href="'.base_url("scripts/index/$script->id").'">Comments <i class="fa fa-comments"></i></a></td>
 											</tr>';
 
