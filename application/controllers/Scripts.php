@@ -169,7 +169,7 @@ class Scripts extends App_Controller{
 			if($selected_topic == null){
 				// submitting a new script: Add new row
 				$selected_topic = $this->Scripts_model->get_by_id($this->input->post('selected_topic'));
-				$topic = $this->Scripts_model->get_by_id($this->input->post('selected_topic'));
+				$topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
 				$upload = $this->upload_document($topic->topic);
 
 				$arr = explode('/',trim($upload));
