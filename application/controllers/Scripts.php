@@ -164,9 +164,10 @@ class Scripts extends App_Controller{
         } else {
 	
 			// $selected_topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
-			$selected_topic = $this->Scripts_model->get_by_id($this->input->post('selected_topic'));
+			$num_rows_exist = $this->Scripts_model->get_num_rows_by_topic($this->input->post('selected_topic'));
+		
 			$topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));
-			if($selected_topic == null){
+			if($num_rows_exist < 1){
 				// submitting a new script: Add new row
 				$selected_topic = $this->Scripts_model->get_by_id($this->input->post('selected_topic'));
 				$topic = $this->Topics_model->get_by_id($this->input->post('selected_topic'));

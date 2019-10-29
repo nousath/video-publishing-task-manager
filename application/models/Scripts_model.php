@@ -12,6 +12,7 @@ class Scripts_model extends CI_Model
     public $submitted_by = 'submitted_by';
 	public $order = 'DESC';
 	public $is_draft = 'is_draft';
+	public $topic_id = 'topic_id';
 
     function __construct()
     {
@@ -23,6 +24,28 @@ class Scripts_model extends CI_Model
     {
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
+    }
+    
+    // get the number of rows
+    function get_num_rows($id = ""){
+        if($id == ""){
+            return $this->db->get($this->table)->num_rows();
+        }else{
+            $this->db->where($this->id, $id);
+            return $this->db->get($this->table)->num_rows();
+        }
+        
+    }
+    
+    // get the number of rows
+    function get_num_rows_by_topic($topic_id = ""){
+        if($topic_id == ""){
+            return $this->db->get($this->table)->num_rows();
+        }else{
+            $this->db->where($this->topic_id, $topic_id);
+            return $this->db->get($this->table)->num_rows();
+        }
+        
 	}
 
 	function get_by_user($user_id){
