@@ -66,7 +66,7 @@
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by.'</td>
-												<td>'.date('m/y', $audio->submitted_at).'</td>
+												<td>'.date('d/M', $audio->submitted_at).'</td>
 												<td><a href="'.base_url("topics/audio/$audio->topic_id/$audio->id").'" class="btn btn-warning btn-sm btn-block">Listen/Download <i class="fa fa-microphone"></i></a></td>
 												<td>'.$status.' '.$assign.'</td>
 											</tr>';

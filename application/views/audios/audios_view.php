@@ -121,7 +121,7 @@
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
-												<td>'.date('m/y', $audio->submitted_at).'</td>
+												<td>'.date('d/M', $audio->submitted_at).'</td>
 												<td><a class="btn btn-danger btn-flat" href="'.base_url("audios/index/$audio->id").'">Comments <i class="fa fa-comments"></i></a></td>
 											</tr>';
 

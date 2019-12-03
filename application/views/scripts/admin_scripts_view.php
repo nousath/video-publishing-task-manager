@@ -93,7 +93,7 @@
 												<td>'.$sn.'</td>
 												<td> '.$update_alert.' '.$topic->topic.'</td>
 												<td>'.$submitted_by.'</td>
-												<td>'.date('m/y', $script->submitted_at).'</td>
+												<td>'.date('d/M', $script->submitted_at).'</td>
 												<td><a href="'.base_url('topics/doc/'.$script->topic_id.'/'.$script->id.'').'" class="btn btn-warning btn-xs btn-block">View/Download <i class="fa fa-file-word-o"></i></a></td>
 												<td>'.$status.' '.$decline.' '.$assign.' '.$reserve_button.' '.$draft_button.'</td>
 											</tr>';
@@ -170,7 +170,7 @@
 									<td>'.$sn.'</td>
 									<td> '.$update_alert.' '.$topic->topic.'</td>
 									<td>'.$submitted_by.'</td>
-									<td>'.date('m/y', $draft->submitted_at).'</td>
+									<td>'.date('d/M', $draft->submitted_at).'</td>
 									<td><a href="'.base_url('topics/doc/'.$draft->topic_id.'/'.$draft->id.'').'" class="btn btn-warning btn-xs btn-block">View/Download <i class="fa fa-file-word-o"></i></a></td>
 									<td>'.$assign.' '.$reserve_button.'</td>
 								</tr>';

@@ -119,7 +119,7 @@
 										echo '<tr>
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
-												<td>'.date('m/y', $video->submitted_at).'</td>
+												<td>'.date('d/M', $video->submitted_at).'</td>
 												<td><a class="btn btn-danger btn-flat" href="'.base_url("videos/index/$video->id").'">Comments <i class="fa fa-comments"></i></a></td>
 											</tr>';
 

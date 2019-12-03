@@ -64,7 +64,7 @@
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by.'</td>
-												<td>'.date('m/y', $script->submitted_at).'</td>
+												<td>'.date('d/M', $script->submitted_at).'</td>
 												<td><a href="'.base_url('topics/doc/'.$script->topic_id.'/'.$script->id.'').'" class="btn btn-warning btn-sm btn-block">View/Download <i class="fa fa-file-word-o"></i></a></td>
 												<td>'.$status.' '.$assign.'</td>
 											</tr>';

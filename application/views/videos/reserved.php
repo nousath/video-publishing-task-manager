@@ -71,7 +71,7 @@
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by.'</td>
-												<td>'.date('m/y', $video->submitted_at).'</td>
+												<td>'.date('d/M', $video->submitted_at).'</td>
 												<td><a href="'.base_url("topics/video/$video->topic_id/$video->id").'" class="btn btn-warning btn-sm btn-block"><i class="fa fa-video-camera"></i> Watch/Download</a></td>
 												<td>'.$status.' '.$publish.'</td>
 											</tr>';

@@ -58,7 +58,7 @@
                                             <td>'.$sn.'</td>
                                             <td> '.$update_alert.' '.$topic->topic.'</td>
                                             <td>'.$submitted_by.'</td>
-                                            <td>'.date('m/y', $script->submitted_at).'</td>
+                                            <td>'.date('d/M', $script->submitted_at).'</td>
                                             <td>
                                                 <a href="'.base_url($topic->doc).'" class="btn btn-default">View/Download <i class="fa fa-file-word-o"></i></a>
                                                 <a class="btn btn-default" href="'.base_url('dashboard/upload_proofread_doc/'.$script->topic_id.'/'.$script->id.'').'">Upload Script <i class="fa fa-upload"></i></a>

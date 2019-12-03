@@ -89,7 +89,7 @@
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by.'</td>
-												<td>'.date('m/y', $video->submitted_at).'</td>
+												<td>'.date('d/M', $video->submitted_at).'</td>
 												<td><a href="'.base_url("topics/video/$video->topic_id/$video->id").'" class="btn btn-warning btn-xs btn-block"><i class="fa fa-video-camera"></i> Watch/Download</a></td>
 												<td>'.$status.' '.$publish.' '.$reserve_button.' '.$draft_button.'</td>
 											</tr>';
@@ -165,7 +165,7 @@
 								<td>'.$sn.'</td>
 								<td>'.$topic->topic.'</td>
 								<td>'.$submitted_by.'</td>
-								<td>'.date('m/y', $draft->submitted_at).'</td>
+								<td>'.date('d/M', $draft->submitted_at).'</td>
 								<td><a href="'.base_url("topics/video/$draft->topic_id/$draft->id").'" class="btn btn-warning btn-xs btn-block"><i class="fa fa-video-camera"></i> Watch/Download</a></td>
 								<td>'.$publish.' '.$reserve_button.'</td>
 							</tr>';

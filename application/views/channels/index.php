@@ -76,7 +76,7 @@
 											<td>'.$sn.'</td>
 											<td>'.$channel->name.'</td>
 											<td>'.$number_of_topics_per_channel.'</td>
-											<td>'.date('m/y', $channel->created_at).'</td>
+											<td>'.date('d/M', $channel->created_at).'</td>
 											<td>'.$created_by.'</td>
 											<td>';
 												echo "<a class='btn btn-primary btn-sm' data-toggle='modal' href='#modal-id$channel->id'>Edit <i class='fa fa-edit'></i></a> ";

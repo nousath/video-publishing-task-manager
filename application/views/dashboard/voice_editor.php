@@ -55,7 +55,7 @@
                                             <td>'.$sn.'</td>
                                             <td>'.$topic->topic.'</td>
                                             <td>'.$submitted_by.'</td>
-                                            <td>'.date('m/y', $audio->submitted_at).'</td>
+                                            <td>'.date('d/M', $audio->submitted_at).'</td>
                                             <td>
                                                 <a href="'.base_url($topic->audio).'" class="btn btn-default">Listen/Download <i class="fa fa-file-word-o"></i></a>
                                                 <a class="btn btn-default" href="'.base_url('dashboard/upload_edited_audio/'.$audio->topic_id.'/'.$audio->id.'').'">Upload audio <i class="fa fa-upload"></i></a>

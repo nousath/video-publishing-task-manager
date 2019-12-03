@@ -93,7 +93,7 @@
 												<td>'.$sn.'</td>
 												<td>'.$topic->topic.'</td>
 												<td>'.$submitted_by.'</td>
-												<td>'.date('m/y', $audio->submitted_at).'</td>
+												<td>'.date('d/M', $audio->submitted_at).'</td>
 												<td><a href="'.base_url("topics/audio/$audio->topic_id/$audio->id").'" class="btn btn-warning btn-xs btn-block">Listen/Download <i class="fa fa-microphone"></i></a></td>
 												<td>'.$status.' '.$decline.' '.$assign.' '.$reserve_button.' '.$draft_button.'</td>
 											</tr>';
@@ -171,7 +171,7 @@
 								<td>'.$sn.'</td>
 								<td>'.$topic->topic.'</td>
 								<td>'.$submitted_by.'</td>
-								<td>'.date('m/y', $draft->submitted_at).'</td>
+								<td>'.date('d/M', $draft->submitted_at).'</td>
 								<td><a href="'.base_url("topics/audio/$draft->topic_id/$draft->id").'" class="btn btn-warning btn-xs btn-block">Listen/Download <i class="fa fa-microphone"></i></a></td>
 								<td>'.$assign.' '.$reserve_button.'</td>
 							</tr>';
