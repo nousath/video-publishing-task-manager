@@ -107,8 +107,14 @@ class Topics extends App_Controller
 						$data = array(
 							'doc' => $upload
 						);	
-
 						$this->Topics_model->update($topic_id, $data);
+
+						// set proof-reeded status to true
+						$data = array(
+							'is_proofread' => 1
+						);
+						$this->Scripts_model->update($doc_id, $data);
+
 						$this->session->set_flashdata('re_upload_success', 'Upload successful!');
 						redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
 					}else{
@@ -146,8 +152,14 @@ class Topics extends App_Controller
 						$data = array(
 							'doc' => $upload
 						);	
-
 						$this->Topics_model->update($topic_id, $data);
+
+						// set proof-reeded status to true
+						$data = array(
+							'is_proofread' => 1
+						);
+						$this->Scripts_model->update($doc_id, $data);
+						
 						$this->session->set_flashdata('re_upload_success', 'Upload successful!');
 						redirect(site_url('dashboard'));
 					}else{
