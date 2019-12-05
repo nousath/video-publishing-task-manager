@@ -17,6 +17,8 @@
 			<div class="box-body">
 				<div class="row">
 					<div class="col-md-12">
+
+                        <a class="btn btn-sm btn-primary" data-toggle="modal" href='#modal-id'>New Topic <i class="fa fa-plus"></i></a>
                         
                     <?php if ($this->session->flashdata('re_upload_success')): ?>			
                     <?php echo '<div class="alert alert-success">
@@ -25,6 +27,14 @@
                                 </div>'; 
                     ?>
                     <?php endif; ?>
+
+                    <?php if ($this->session->flashdata('success_message')): ?>			
+						<?php echo '<div class="alert alert-success">
+													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+													<strong>'.$this->session->flashdata('success_message').'</strong>
+												</div>'; 
+						?>
+					<?php endif; ?>
 
                     <table class="table table-hover" id="example2">
                         <thead>
@@ -93,3 +103,92 @@
 	<!-- /.col -->
 </div>
 <!-- /.row -->
+
+
+
+
+<div class="modal fade" id="modal-id">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Create Topic</h4>
+            </div>
+            <div class="modal-body">
+            <div class="row">
+					<div class="col-md-12">
+						<p>Fields marked (<span class="text text-danger">*</span>) are compulsory.</p>
+						<form action="<?=base_url('topics/create_action'); ?>" method="post">
+							<div class="form-group">
+								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Channel <?php echo form_error('channel') ?></label>
+								<select name="channel" id="channel" class="form-control" required>
+									<option></option>
+									<?php 
+										foreach ($channels as $channel ) {
+											echo '<option value="'.$channel->id.'">'.$channel->name.'</option>';
+										}
+									?>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Title <?php echo form_error('topic') ?></label>
+								<input type="text" class="form-control" name="topic" id="topic" placeholder="For example: Henry Ford's 7 Secrets To Success" value="<?php set_value('topic') ?>" required />
+							</div>
+
+							<div class="form-group">
+								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Assign Topic To <?php echo form_error('assignto') ?></label>
+								<select name="assignto" id="assignto" class="form-control" required>
+									<option></option>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Set Stage<?php echo form_error('stage') ?></label>
+								<select name="stage" id="stage" class="form-control" required>
+									<option value="1"></option>
+									<?php 
+										foreach ($stages as $stage ) {
+											echo '<option value="'.$stage->id.'">'.$stage->name.'</option>';
+										}
+									?>
+								</select>
+							</div>
+
+							<button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button> 
+							<a href="<?php echo site_url('topics') ?>" class="btn btn-default">Cancel</a>
+						</form>
+					</div>
+					<!-- /.col -->
+				</div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+// load LGA dynamically 
+	$(document).ready(function () {
+		$('#channel').change(function () { 
+			
+			var channel_id = $('#channel').val();
+
+			if(channel_id != ''){
+				$.ajax({
+					url: '<?=base_url();?>topics/get_by_channel',
+					type: "POST",
+					data: {channel_id:channel_id},
+					success: function (data) {
+						$('#assignto').html(data);
+					}
+				});
+			}
+		});
+	});
+
+</script>

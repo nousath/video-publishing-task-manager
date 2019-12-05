@@ -68,11 +68,19 @@ class Dashboard extends App_Controller{
 			// proof reader 
 			case 5:
 				$data = array(
+					'channel' => set_value('channel'),
+					// 'topic' => set_value('topic'),
+					'stage' => set_value('stage'),
+					'assignto' => set_value('assignto'),
+					'users' => $this->User_model->get_by_usertype(2),
+					'stages' => $this->Stages_model->get_all(),
+					'channels' => $this->Channels_model->get_all(),
 					'title' => 'SS Media Staff - Dashboard',
 					'content' => 'dashboard/proofreader',
 					'topic_id' => $topic_id,
 					'content_header' => 'Dashboard',
 					'scripts' => $this->Scripts_model->get_all(),
+					
 				);
 				
 				$this->load->view('layouts/main',$data);

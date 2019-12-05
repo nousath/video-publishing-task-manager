@@ -410,9 +410,15 @@ class Topics extends App_Controller
 				$this->Notifications_model->insert($data);
 			}
 
-
-            $this->session->set_flashdata('success_message', 'Topic has been created');
-            redirect(site_url('topics'));
+			$user = $this->ion_auth->user()->row(); 
+			if($user->usertype == 5){
+				$this->session->set_flashdata('success_message', 'Topic has been created');
+            	redirect(site_url('dashboard'));
+			}else{
+				$this->session->set_flashdata('success_message', 'Topic has been created');
+            	redirect(site_url('topics'));
+			}
+            
         }
     }
     
