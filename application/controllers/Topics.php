@@ -115,6 +115,50 @@ class Topics extends App_Controller
 						);
 						$this->Scripts_model->update($doc_id, $data);
 
+						// ---------------------------------------
+						// assign proof-readed script to VO artist
+						// ---------------------------------------
+
+						// insert into assignment table
+						$data = array(
+							'topic_id' => $topic_id,
+							'user_id' => $user->id,
+							'stage_id' => 3,
+						);
+						$this->Assignment_model->insert($data);
+
+						// update user2_id in topics table 
+						$data =  array(
+							'user2_id' => $user->id,
+							'is_reserved' => 0,
+							'is_draft' => 0,
+						);
+						$this->Topics_model->update($topic_id, $data);
+
+						// Set script off draft
+						$data =  array(
+							'is_draft' => 0,
+						);
+						$this->Scripts_model->update($doc_id, $data);
+
+
+						// Send notification to user
+						// $notification_template = $this->Notifications_templates_model->get_by_type('new_script');
+					
+						// $data = array(
+						// 	'send_to' => $this->input->post('user',TRUE),
+						// 	'body'    => $notification_template->message,
+						// 	'created_at' => time(),
+						// );
+						// $this->Notifications_model->insert($data);
+
+						// $user_assigned = $this->ion_auth->user($this->input->post('user',TRUE))->row();
+						// $this->session->set_flashdata('assingment_success', 'Topic assigned to '.$user_assigned->username.' ');
+						// redirect(site_url('scripts'));
+
+
+
+
 						$this->session->set_flashdata('re_upload_success', 'Upload successful!');
 						redirect(site_url('topics/doc/'.$topic_id.'/'.$doc_id.''));
 					}else{
@@ -159,6 +203,52 @@ class Topics extends App_Controller
 							'is_proofread' => 1
 						);
 						$this->Scripts_model->update($doc_id, $data);
+
+						
+						// ---------------------------------------
+						// assign proof-readed script to VO artist
+						// ---------------------------------------
+
+						// insert into assignment table
+						$data = array(
+							'topic_id' => $topic_id,
+							'user_id' => $user->id,
+							'stage_id' => 3,
+						);
+						$this->Assignment_model->insert($data);
+
+						// update user2_id in topics table 
+						$data =  array(
+							'user2_id' => $user->id,
+							'is_reserved' => 0,
+							'is_draft' => 0,
+						);
+						$this->Topics_model->update($topic_id, $data);
+
+						// Set script off draft
+						$data =  array(
+							'is_draft' => 0,
+						);
+						$this->Scripts_model->update($doc_id, $data);
+
+
+						// Send notification to user
+						// $notification_template = $this->Notifications_templates_model->get_by_type('new_script');
+					
+						// $data = array(
+						// 	'send_to' => $this->input->post('user',TRUE),
+						// 	'body'    => $notification_template->message,
+						// 	'created_at' => time(),
+						// );
+						// $this->Notifications_model->insert($data);
+
+						// $user_assigned = $this->ion_auth->user($this->input->post('user',TRUE))->row();
+						// $this->session->set_flashdata('assingment_success', 'Topic assigned to '.$user_assigned->username.' ');
+						// redirect(site_url('scripts'));
+
+
+
+
 						
 						$this->session->set_flashdata('re_upload_success', 'Upload successful!');
 						redirect(site_url('dashboard'));
