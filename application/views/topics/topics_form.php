@@ -47,10 +47,12 @@
 								<label for="varchar"><span class="text text-danger"><strong>*</strong></span> Set Stage<?php echo form_error('stage') ?></label>
 								<select name="stage" id="stage" class="form-control" required>
 									<option value="1"></option>
+									<option value="1">Reserved</option>
+									<option value="5">Published</option>
 									<?php 
-										foreach ($stages as $stage ) {
-											echo '<option value="'.$stage->id.'">'.$stage->name.'</option>';
-										}
+										// foreach ($stages as $stage ) {
+										// 	echo '<option value="'.$stage->id.'">'.$stage->name.'</option>';
+										// }
 									?>
 								</select>
 							</div>

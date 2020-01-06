@@ -89,9 +89,13 @@
 										$reserve_button = ($script->is_reserved == 0) ? '<a href="'.base_url('reserves/do_reserve/'.$script->id.'/1').'" class="btn btn-primary btn-xs">Reserve Script  <i class="fa fa-archive"></i></a>' : '';
 										$update_alert = ($script->is_edited == 1) ? '<small class="label pull-right bg-green">New Update</small>' : '';
 										$draft_button = ($script->is_draft == 0) ? '<a class="btn btn-default btn-xs" href="'.base_url('scripts/save_as_draft/'.$script->id.'').'"><i class="fa fa-file"></i> Save as draft</a>' : '';
+
+										// Check proof-reading status
+										// <span data-toggle="tooltip" title="3 New Messages" class="badge bg-green">3</span>
+										$proofread_status = ($script->is_proofread == 1) ? '<span data-toggle="tooltip" title="This script has been proof-read" class="badge bg-green"><i class="fa fa-check"></i></span>' : '';
 										echo '<tr>
 												<td>'.$sn.'</td>
-												<td> '.$update_alert.' '.$topic->topic.'</td>
+												<td> '.$update_alert.' '.$topic->topic.' '.$proofread_status.'</td>
 												<td>'.$submitted_by.'</td>
 												<td>'.date('d/M', $script->submitted_at).'</td>
 												<td><a href="'.base_url('topics/doc/'.$script->topic_id.'/'.$script->id.'').'" class="btn btn-warning btn-xs btn-block">View/Download <i class="fa fa-file-word-o"></i></a></td>

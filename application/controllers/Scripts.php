@@ -94,7 +94,7 @@ class Scripts extends App_Controller{
 		$data = array(
 			'selected_topic' => $topic,
 			'script_id' => $script_id,
-			'artists' => $this->User_model->get_by_usertype_and_channel(3, $topic->channel_id),
+			'artists' => $this->User_model->get_by_usertype(3), // get_by_usertype_and_channel(3, $topic->channel_id),
 			'content' => 'scripts/assign_form',
 			'content_header' => 'Assign Script',
 			'title' => 'Assign Scripts',
