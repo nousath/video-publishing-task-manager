@@ -80,7 +80,7 @@ class Audios extends App_Controller
 
 	public function save_as_draft($audio_id = ''){
 		if($audio_id == ''){
-			redirect(bas_url('audios'),'refresh');
+			redirect(base_url('audios'),'refresh');
 		}else{
 			$data =  array(
 				'is_draft' => 1,
