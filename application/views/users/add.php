@@ -74,3 +74,12 @@
       	</div>
     </div>
 </div>
+
+<!-- Add new row to user group -->
+<!-- 
+	Rename Admin to Super Admin 
+	UPDATE `groups` SET `name` = 'Super Admin' WHERE `groups`.`id` = 1;
+
+
+
+-->

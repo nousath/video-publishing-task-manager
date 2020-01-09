@@ -67,6 +67,7 @@
 								</thead>
 								<tbody>
 								<?php 
+									$user_in_session = $this->ion_auth->user()->row(); 
 									// set initial value for SN counter
 									// $sn = 0;
 									foreach ($topics as $topic ) {
@@ -84,6 +85,7 @@
 										$video = (!empty($topic->video)) ? '<a href="'.base_url($topic->video).'" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Watch/Download</a>' : 'Video Unavailable';
 										$draft_button = ($topic->is_draft == 0) ? '<a class="btn btn-default btn-xs" href="'.base_url('topics/save_as_draft/'.$topic->id.'').'"><i class="fa fa-file"></i> Save as draft</a>' : '';
 										$channel = ($topic->channel_id != '') ? $this->Channels_model->get_by_id($topic->channel_id) : 'Channel not found';
+										$delete_button = ($user_in_session->usertype == 7) ? '' : '<a class="btn btn-danger btn-xs" href="'.base_url('topics/delete/'.$topic->id.'').'"><i class="fa fa-trash"></i> Delete</a>';
 
 										echo '<tr>
 												<td>'.$topic->topic.'</td>
@@ -100,7 +102,7 @@
 												</td>
 												<td>
 													<a class="btn btn-info btn-xs" href="'.base_url('topics/update/'.$topic->id.'').'"><i class="fa fa-edit"></i> Edit</a>
-													<a class="btn btn-danger btn-xs" href="'.base_url('topics/delete/'.$topic->id.'').'"><i class="fa fa-trash"></i> Delete</a>
+													'.$delete_button.'
 													'.$draft_button.'
 												</td>
 											</tr>';

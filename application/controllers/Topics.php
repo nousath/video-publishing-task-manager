@@ -9,7 +9,7 @@ class Topics extends App_Controller
         parent::__construct();
         $user = $this->ion_auth->user()->row(); 
 
-		if($user->usertype != 1 && $user->usertype != 5 && $user->usertype != 6 ){
+		if($user->usertype != 1 && $user->usertype != 5 && $user->usertype != 6 && $user->usertype != 7 ){
 			
 			redirect(base_url('dashboard'),'refresh');
 				
