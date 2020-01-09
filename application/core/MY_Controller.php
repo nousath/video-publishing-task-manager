@@ -99,7 +99,7 @@ class App_Controller extends MY_Controller {
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size'] = '1024';
 
-        $config['max_width']  = '1024';
+        $config['max_width']  = '2000';
         $config['max_height']  = '768';
 
         $this->load->library('upload', $config);
@@ -130,7 +130,7 @@ class App_Controller extends MY_Controller {
         $config['upload_path'] = 'uploads/documents';
         $config['file_name'] = $filename;
         $config['allowed_types'] = 'docx|doc|pdf';
-        $config['max_size'] = '1024';
+        $config['max_size'] = '2000';
 
         // $config['max_width']  = '1024';
         // $config['max_height']  = '768';
@@ -158,7 +158,7 @@ class App_Controller extends MY_Controller {
         $config['upload_path'] = 'uploads/audios';
         $config['file_name'] =  $filename;
         $config['allowed_types'] = 'mp3';
-        $config['max_size'] = '20000';
+        $config['max_size'] = '40000';
 
         $this->load->library('upload', $config);
         if ( ! $this->upload->do_upload('audio'))
@@ -183,7 +183,7 @@ class App_Controller extends MY_Controller {
         $config['upload_path'] = 'uploads/videos';
         $config['file_name'] =  $filename;
         $config['allowed_types'] = 'mp4';
-        $config['max_size'] = '3000000';
+        $config['max_size'] = '100000';
 
         $this->load->library('upload', $config);
         if ( ! $this->upload->do_upload('video'))
