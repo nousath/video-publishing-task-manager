@@ -325,7 +325,7 @@
 	  <?php 
 	  	switch ($user->usertype) {
 			  case 1:
-				  # user is admin
+				  # user is super admin
 				  
 				  echo '<ul class="sidebar-menu" data-widget="tree">
 							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
@@ -363,6 +363,46 @@
 							<li><a href="'.base_url('settings').'"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 						</ul>';
 				  break;
+
+				  case 7:
+					# user is regular admin
+					
+					echo '<ul class="sidebar-menu" data-widget="tree">
+							  <li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
+							  <li class="header">SECTIONS</li>
+							  <li><a href="'.base_url('channels').'"> <i class="fa fa-television"></i> <span>Channels</span> </a></li>
+							  <li><a href="'.base_url('topics').'"> <i class="fa fa-file"></i> <span>Topics</span> </a></li>
+							  <li class="treeview">
+							  <li><a href="'.base_url('topics/drafts').'"> <i class="fa fa-file"></i> <span>Drafts</span> </a></li>
+							  <li class="treeview">
+							  <a href="#">
+								  <i class="fa fa-archive"></i>
+								  <span>Reserves</span>
+								  <span class="pull-right-container">
+								  <i class="fa fa-angle-left pull-right"></i>
+								  </span>
+							  </a>
+							  <ul class="treeview-menu">
+								  <li><a href="'.base_url('reserves').'"><i class="fa fa-circle-o"></i> Topics</a></li>
+								  <li><a href="'.base_url('reserves/scripts').'"><i class="fa fa-circle-o"></i> Scripts</a></li>
+								  <li><a href="'.base_url('reserves/audios').'"><i class="fa fa-circle-o"></i> Audios</a></li>
+								  <li><a href="'.base_url('reserves/videos').'"><i class="fa fa-circle-o"></i> Videos</a></li>
+							  </ul>
+							  </li>
+							  <li><a href="'.base_url('scripts').'"> <i class="fa fa-edit"></i> <span>Scripts</span> </a></li>
+							  <li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
+							  <li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
+							  <li><a href="'.base_url('users').'"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
+							  <li><a href="'.base_url('ratings').'"> <i class="fa fa-star"></i> <span>Ratings</span> </a></li>
+							  <li><a href="#"> <i class="fa fa-book"></i> <span>Reports</span> </a></li>
+						  
+				  
+							  <li class="header">SYSTEM</li>
+							  <li><a href="'.base_url('backups').'"> <i class="fa fa-database"></i> <span>Backup</span></a></li>
+							  <li><a href="'.base_url('videos/manual').'"> <i class="fa fa-book"></i> <span>Manual</span></a></li>
+							  <li><a href="'.base_url('settings').'"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
+						  </ul>';
+					break;
 
 				case 2:
 				  # user is a writer

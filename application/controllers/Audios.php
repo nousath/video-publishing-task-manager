@@ -11,7 +11,7 @@ class Audios extends App_Controller
 		
 		$user = $this->ion_auth->user()->row(); 
 
-		if($user->usertype != 1 && $user->usertype != 3){
+		if($user->usertype != 1 && $user->usertype != 3 && $user->usertype != 7){
 			
 			redirect(base_url('dashboard'),'refresh');
 				
@@ -22,7 +22,7 @@ class Audios extends App_Controller
     public function index($audio_id = ''){
 		$user = $this->ion_auth->user()->row(); 
 
-		if($user->usertype == 1){
+		if($user->usertype == 1 || $user->usertype == 7){
 			// admin view
 			$data = array(
 				'audios' => $this->Audios_model->get_by_reserved_and_draft(0, 0),
@@ -80,7 +80,7 @@ class Audios extends App_Controller
 
 	public function save_as_draft($audio_id = ''){
 		if($audio_id == ''){
-			redirect(bas_url('audios'),'refresh');
+			redirect(base_url('audios'),'refresh');
 		}else{
 			$data =  array(
 				'is_draft' => 1,

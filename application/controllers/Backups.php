@@ -10,7 +10,7 @@ class Backups extends App_Controller
 		
 		$user = $this->ion_auth->user()->row(); 
 
-		if($user->usertype != 1 ){
+		if($user->usertype != 1 && $user->usertype != 7){
 			
 			redirect(base_url('dashboard'),'refresh');
 				

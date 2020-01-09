@@ -50,9 +50,11 @@
 						</tr>
 					</thead>
 					<tbody>
-                    <?php
+					<?php
+						$user_in_session = $this->ion_auth->user()->row(); 
 	
 						foreach ($users as $u ) {
+							$delete_button = ($user_in_session->usertype == 7) ? '' : '<a href="'.site_url('users/remove/'.$u->id).'" class="btn btn-danger btn-xs">Delete <span class="fa fa-trash"></span></a>';
 
 							
 						echo '	<tr data-href="'.base_url('profile/index/'.$u->id.'').'">
@@ -68,7 +70,7 @@
 									<td>'.date('d/m/Y H:i:s', $u->last_login).'</td>							
 									<td>
 										<a href="'.site_url('users/edit/'.$u->id).'" class="btn btn-info btn-xs">Edit <span class="fa fa-pencil"></span></a> 
-										<a href="'.site_url('users/remove/'.$u->id).'" class="btn btn-danger btn-xs">Delete <span class="fa fa-trash"></span></a>
+										'.$delete_button.'
 									</td>
 								</tr>
 							';

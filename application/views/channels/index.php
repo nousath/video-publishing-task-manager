@@ -67,11 +67,12 @@
 							<tbody>
 							<?php 
 								$sn = 1;
+								$user_in_session = $this->ion_auth->user()->row(); 
 								foreach ($channels as $channel ) {
 									$number_of_topics_per_channel = $this->Topics_model->num_by_channel($channel->id);
 									$user = $this->ion_auth->user($channel->created_by)->row();
 									$created_by = ($user->first_name == '' && $user->first_name == '') ? $user->username : $user->first_name.' '.$user->last_name;
-									
+									$delete_button = ($user_in_session->usertype == 7) ? '' : '<a href="'.base_url('channels/delete/'.$channel->id.'').'" class="btn btn-danger btn-sm">Delete <i class="fa fa-trash"></i></a>';
 									echo '<tr>
 											<td>'.$sn.'</td>
 											<td>'.$channel->name.'</td>
@@ -80,7 +81,7 @@
 											<td>'.$created_by.'</td>
 											<td>';
 												echo "<a class='btn btn-primary btn-sm' data-toggle='modal' href='#modal-id$channel->id'>Edit <i class='fa fa-edit'></i></a> ";
-												echo '<a href="'.base_url('channels/delete/'.$channel->id.'').'" class="btn btn-danger btn-sm">Delete <i class="fa fa-trash"></i></a>
+												echo ''.$delete_button.'
 												
 											</td>
 										</tr>

@@ -11,8 +11,23 @@ class Dashboard extends App_Controller{
 		$user = $this->ion_auth->user()->row(); 
 
 		switch ($user->usertype) {
-			// admin
+			// super admin
 			case 1:
+				$data = array(
+					'title' => 'SS Media Staff - Dashboard',
+					'content' => 'dashboard/dashboard',
+					'content_header' => 'Dashboard',
+					'number_of_topics' => $this->Topics_model->get_num_all(),
+					'number_of_staff' => $this->User_model->get_num_all(),
+					'number_of_messages' => $this->Messages_model->number_of_messages_to_user($user->id),
+					'number_of_channels' => $this->Channels_model->get_num_all(),
+				);
+				
+				$this->load->view('layouts/main',$data);
+				break;
+
+			// Regular admin
+			case 7:
 				$data = array(
 					'title' => 'SS Media Staff - Dashboard',
 					'content' => 'dashboard/dashboard',
@@ -108,6 +123,13 @@ class Dashboard extends App_Controller{
 
 		
 	}
+
+
+
+
+
+
+
 
 	
 	public function upload_proofread_doc($topic_id, $doc_id){
