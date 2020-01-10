@@ -145,7 +145,6 @@ $autoload['model'] = array(
 	'Assignment_model',
 	'Notifications_templates_model',
 	'Notifications_model', 
-	'Messages_model',
 	'Scripts_model',
 	'Audios_model',
 	'Videos_model',
