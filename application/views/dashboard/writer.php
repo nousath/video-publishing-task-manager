@@ -18,21 +18,6 @@
 		</div>
 		<!-- ./col -->
 		
-
-		<div class="col-md-6 col-sm-12 col-xs-12">
-          <div class="info-box">
-			<a href="<?=base_url('messages'); ?>">
-				<span class="info-box-icon bg-green"><i class="fa fa-envelope-o"></i></span>
-			</a>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Messages</span>
-              <span class="info-box-number"><?=count($messages); ?></span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-		</div>
       </div>
       <!-- /.row -->
     </section>
