@@ -353,7 +353,6 @@
 							<li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
 							<li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
 							<li><a href="'.base_url('users').'"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
-							<li><a href="#"> <i class="fa fa-book"></i> <span>Reports</span> </a></li>
 						
 				
 							<li class="header">SYSTEM</li>
@@ -392,7 +391,6 @@
 							  <li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
 							  <li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
 							  <li><a href="'.base_url('users').'"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
-							  <li><a href="#"> <i class="fa fa-book"></i> <span>Reports</span> </a></li>
 						  
 				  
 							  <li class="header">SYSTEM</li>
