@@ -268,6 +268,7 @@ class Topics extends App_Controller
 		
 	}
 
+	// Re-upload audio
 	public function re_upload_audio($topic_id, $audio_id){
 		$user = $this->ion_auth->user()->row(); 
 
@@ -293,6 +294,40 @@ class Topics extends App_Controller
 						);	
 
 						$this->Topics_model->update($topic_id, $data);
+
+						// set edited status to true
+						$data = array(
+							'is_edited' => 1
+						);
+						$this->Audios_model->update($audio_id, $data);
+
+						// -------------------------------------------
+						// assign proof-readed script to video editor
+						// -------------------------------------------
+
+						// insert into assignment table
+						$data = array(
+							'topic_id' => $topic_id,
+							'user_id' => $user->id,
+							'stage_id' => 3,
+						);
+						$this->Assignment_model->insert($data);
+
+						// update user2_id in topics table 
+						$data =  array(
+							'user2_id' => $user->id,
+							'is_reserved' => 0,
+							'is_draft' => 0,
+						);
+						$this->Topics_model->update($topic_id, $data);
+
+						// Set script off draft
+						$data =  array(
+							'is_draft' => 0,
+						);
+						$this->Audios_model->update($audio_id, $data);
+
+
 						$this->session->set_flashdata('re_upload_success', 'Upload successful!');
 						redirect(site_url('topics/audio/'.$topic_id.'/'.$audio_id.''));
 					}else{
@@ -309,7 +344,7 @@ class Topics extends App_Controller
 				
 		}elseif($user->usertype == 6){
 
-			// proof-reader
+			// audio editor
 
 			$selected_topic = $this->Topics_model->get_by_id($topic_id);
 		

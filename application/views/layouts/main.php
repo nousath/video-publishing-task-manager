@@ -81,13 +81,14 @@
       <!-- Navbar Right Menu -->
 			<div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
+          
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="fa fa-envelope-o"></i>
+							<i class="fa fa-bell-o"></i>
 							<?php 
-								$number_of_unread_messages = $this->Messages_model->count_unread_messages($user->id, 0); 
-								$messages = $this->Messages_model->get_by_user($user->id, 5);
+								$number_of_unread_notifications = $this->Notifications_model->count_unread_notifications($user->id, 0); 
+								$notifications = $this->Notifications_model->get_by_user($user->id, 5);
 
 								// create excerpt
 								function excerpt($title) {
@@ -100,93 +101,6 @@
 									}
 								}
 
-								function message_subject_excerpt($title) {
-									$new = substr($title, 0, 15);
-					
-									if (strlen($title) > 18) {
-											return $new.'...';
-									} else {
-											return $title;
-									}
-								}
-
-								
-
-								if($number_of_unread_messages > 0){
-									echo '<span class="label label-success">'.$number_of_unread_messages.'</span>
-									<ul class="dropdown-menu">
-										<li class="header">You have '.$number_of_unread_messages.' messages</li>
-										<li>
-											<!-- inner menu: contains the actual data -->
-											<ul class="menu">
-											<!-- start message -->
-												';
-
-
-												foreach ($messages as $message ) {
-													$send_message_time = new DateTime(date('d-m-Y H:i:s', $message->send_at));
-													$view_message_time = new DateTime("NOW");
-
-													$how_long = $send_message_time->diff($view_message_time);
-
-													if($how_long->d > 0 ){
-
-														$time_ago = $how_long->d.' days '.$how_long->h.' hours '.$how_long->i.' minutes';
-						
-													}else{
-														$time_ago = $how_long->h .' hours '. $how_long->i.' minutes';
-													}
-						
-
-													$sender = $this->ion_auth->user($message->send_from)->row();
-
-													echo '<li>
-																<a href="'.base_url('messages/read/'.$message->id.'').'">
-																	<div class="pull-left">
-																		<img src="'.base_url($sender->photo).'" class="img-circle photo-dp" alt="User Image" />
-																	</div>
-																	<h4>
-																		'.message_subject_excerpt($message->subject).'
-																		<small><i class="fa fa-clock-o"></i> '.$time_ago.'</small>
-																	</h4>
-																	<p>'.excerpt($message->body).'</p>
-																</a>
-															</li>';
-												}
-
-										echo '
-												<!-- end message -->
-											
-											</ul>
-										</li>
-										<li class="footer"><a href="'.base_url('messages').'">See All Messages</a></li>
-									</ul>';
-								}
-
-
-							?>
-
-              
-            </a>
-          </li>
-          <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="fa fa-bell-o"></i>
-							<?php 
-								$number_of_unread_notifications = $this->Notifications_model->count_unread_notifications($user->id, 0); 
-								$notifications = $this->Notifications_model->get_by_user($user->id, 5);
-
-								// create excerpt
-								// function excerpt($title) {
-								// 	$new = substr($title, 0, 27);
-					
-								// 	if (strlen($title) > 30) {
-								// 			return $new.'...';
-								// 	} else {
-								// 			return $title;
-								// 	}
-								// }
 
 
 							?>
@@ -334,32 +248,14 @@
 							<li><a href="'.base_url('topics').'"> <i class="fa fa-file"></i> <span>Topics</span> </a></li>
 							<li class="treeview">
 							<li><a href="'.base_url('topics/drafts').'"> <i class="fa fa-file"></i> <span>Drafts</span> </a></li>
-							<li class="treeview">
-							<a href="#">
-								<i class="fa fa-archive"></i>
-								<span>Reserves</span>
-								<span class="pull-right-container">
-								<i class="fa fa-angle-left pull-right"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a href="'.base_url('reserves').'"><i class="fa fa-circle-o"></i> Topics</a></li>
-								<li><a href="'.base_url('reserves/scripts').'"><i class="fa fa-circle-o"></i> Scripts</a></li>
-								<li><a href="'.base_url('reserves/audios').'"><i class="fa fa-circle-o"></i> Audios</a></li>
-								<li><a href="'.base_url('reserves/videos').'"><i class="fa fa-circle-o"></i> Videos</a></li>
-							</ul>
-							</li>
+							
 							<li><a href="'.base_url('scripts').'"> <i class="fa fa-edit"></i> <span>Scripts</span> </a></li>
 							<li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
-							<li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
 							<li><a href="'.base_url('users').'"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
-							<li><a href="'.base_url('ratings').'"> <i class="fa fa-star"></i> <span>Ratings</span> </a></li>
-							<li><a href="#"> <i class="fa fa-book"></i> <span>Reports</span> </a></li>
 						
 				
 							<li class="header">SYSTEM</li>
 							<li><a href="'.base_url('backups').'"> <i class="fa fa-database"></i> <span>Backup</span></a></li>
-							<li><a href="'.base_url('videos/manual').'"> <i class="fa fa-book"></i> <span>Manual</span></a></li>
 							<li><a href="'.base_url('settings').'"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 						</ul>';
 				  break;
@@ -374,32 +270,13 @@
 							  <li><a href="'.base_url('topics').'"> <i class="fa fa-file"></i> <span>Topics</span> </a></li>
 							  <li class="treeview">
 							  <li><a href="'.base_url('topics/drafts').'"> <i class="fa fa-file"></i> <span>Drafts</span> </a></li>
-							  <li class="treeview">
-							  <a href="#">
-								  <i class="fa fa-archive"></i>
-								  <span>Reserves</span>
-								  <span class="pull-right-container">
-								  <i class="fa fa-angle-left pull-right"></i>
-								  </span>
-							  </a>
-							  <ul class="treeview-menu">
-								  <li><a href="'.base_url('reserves').'"><i class="fa fa-circle-o"></i> Topics</a></li>
-								  <li><a href="'.base_url('reserves/scripts').'"><i class="fa fa-circle-o"></i> Scripts</a></li>
-								  <li><a href="'.base_url('reserves/audios').'"><i class="fa fa-circle-o"></i> Audios</a></li>
-								  <li><a href="'.base_url('reserves/videos').'"><i class="fa fa-circle-o"></i> Videos</a></li>
-							  </ul>
-							  </li>
 							  <li><a href="'.base_url('scripts').'"> <i class="fa fa-edit"></i> <span>Scripts</span> </a></li>
 							  <li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
-							  <li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
 							  <li><a href="'.base_url('users').'"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
-							  <li><a href="'.base_url('ratings').'"> <i class="fa fa-star"></i> <span>Ratings</span> </a></li>
-							  <li><a href="#"> <i class="fa fa-book"></i> <span>Reports</span> </a></li>
 						  
 				  
 							  <li class="header">SYSTEM</li>
 							  <li><a href="'.base_url('backups').'"> <i class="fa fa-database"></i> <span>Backup</span></a></li>
-							  <li><a href="'.base_url('videos/manual').'"> <i class="fa fa-book"></i> <span>Manual</span></a></li>
 							  <li><a href="'.base_url('settings').'"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 						  </ul>';
 					break;
@@ -410,7 +287,6 @@
 							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
 							<li class="header">SECTIONS</li>
 							<li><a href="'.base_url('scripts').'"> <i class="fa fa-file"></i> <span>Scripts</span> </a></li>
-							<li><a href="'.base_url('messages').'"> <i class="fa fa-envelope"></i> <span>Messages</span> </a></li>
 							<li><a href="'.base_url('notifications').'"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
 							<li><a href="'.base_url('profile/index/'.$user->id.'').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
 						</ul>';
@@ -423,7 +299,6 @@
 							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
 							<li class="header">SECTIONS</li>
 							<li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
-							<li><a href="'.base_url('messages').'"> <i class="fa fa-envelope"></i> <span>Messages</span> </a></li>
 							<li><a href="'.base_url('notifications').'"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
 							<li><a href="'.base_url('profile/index/'.$user->id.'').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
 						</ul>';
@@ -435,7 +310,6 @@
 							<li><a href="'.base_url('dashboard').'"> <i class="fa fa-dashboard"></i> <span>Dashboard</span> </a></li>
 							<li class="header">SECTIONS</li>
 							<li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
-							<li><a href="'.base_url('messages').'"> <i class="fa fa-envelope"></i> <span>Messages</span> </a></li>
 							<li><a href="'.base_url('notifications').'"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
 							<li><a href="'.base_url('profile/index/'.$user->id.'').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
 						</ul>';
@@ -621,3 +495,22 @@
 
 </body>
 </html>
+
+
+<!-- 
+	Removed block
+	<li class="treeview">
+		<a href="#">
+			<i class="fa fa-archive"></i>
+			<span>Reserves</span>
+			<span class="pull-right-container">
+			<i class="fa fa-angle-left pull-right"></i>
+			</span>
+		</a>
+		<ul class="treeview-menu">
+			<li><a href="'.base_url('reserves').'"><i class="fa fa-circle-o"></i> Topics</a></li>
+			<li><a href="'.base_url('reserves/scripts').'"><i class="fa fa-circle-o"></i> Scripts</a></li>
+			<li><a href="'.base_url('reserves/audios').'"><i class="fa fa-circle-o"></i> Audios</a></li>
+			<li><a href="'.base_url('reserves/videos').'"><i class="fa fa-circle-o"></i> Videos</a></li>
+		</ul>
+	</li> -->

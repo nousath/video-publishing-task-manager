@@ -10,6 +10,7 @@ class Assignment_model extends CI_Model
     public $id = 'id';
     public $user_id = 'user_id';
     public $stage_id = 'stage_id';
+    public $topic_id = 'topic_id';
     public $order = 'DESC';
 
     function __construct()
@@ -36,6 +37,17 @@ class Assignment_model extends CI_Model
 		$this->db->where($this->user_id, $user_id);
 		$this->db->where($this->stage_id, $stage_id);
         return $this->db->get($this->table)->result();
+    }
+    
+    function get_by_user_and_topic($user_id, $topic_id){
+		$this->db->where($this->user_id, $user_id);
+		$this->db->where($this->topic_id, $topic_id);
+        return $this->db->get($this->table)->row();
+    }
+    
+    function get_by_topic($topic_id){
+		$this->db->where($this->topic_id, $topic_id);
+        return $this->db->get($this->table)->row();
 	}
 
 	function get_by_user($user_id){

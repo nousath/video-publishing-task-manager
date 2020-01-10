@@ -66,7 +66,7 @@ class Scripts extends App_Controller{
 
 	public function save_as_draft($doc_id = ''){
 		if($doc_id == ''){
-			redirect(bas_url('scripts'),'refresh');
+			redirect(base_url('scripts'),'refresh');
 		}else{
 			$data =  array(
 				'is_draft' => 1,

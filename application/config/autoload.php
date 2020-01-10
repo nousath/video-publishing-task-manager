@@ -145,13 +145,11 @@ $autoload['model'] = array(
 	'Assignment_model',
 	'Notifications_templates_model',
 	'Notifications_model', 
-	'Messages_model',
 	'Scripts_model',
 	'Audios_model',
 	'Videos_model',
 	'Channels_model',
 	'Settings_model',
 	'Backups_model',
-	'Ratings_model',
 	'Comments_model',
 );
