@@ -351,13 +351,11 @@
 							</li>
 							<li><a href="'.base_url('scripts').'"> <i class="fa fa-edit"></i> <span>Scripts</span> </a></li>
 							<li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
-							<li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
 							<li><a href="'.base_url('users').'"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
 						
 				
 							<li class="header">SYSTEM</li>
 							<li><a href="'.base_url('backups').'"> <i class="fa fa-database"></i> <span>Backup</span></a></li>
-							<li><a href="'.base_url('videos/manual').'"> <i class="fa fa-book"></i> <span>Manual</span></a></li>
 							<li><a href="'.base_url('settings').'"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 						</ul>';
 				  break;
@@ -389,13 +387,11 @@
 							  </li>
 							  <li><a href="'.base_url('scripts').'"> <i class="fa fa-edit"></i> <span>Scripts</span> </a></li>
 							  <li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
-							  <li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
 							  <li><a href="'.base_url('users').'"> <i class="fa fa-group"></i> <span>Staff</span> </a></li>
 						  
 				  
 							  <li class="header">SYSTEM</li>
 							  <li><a href="'.base_url('backups').'"> <i class="fa fa-database"></i> <span>Backup</span></a></li>
-							  <li><a href="'.base_url('videos/manual').'"> <i class="fa fa-book"></i> <span>Manual</span></a></li>
 							  <li><a href="'.base_url('settings').'"> <i class="fa fa-cog"></i> <span>Settings</span> </a></li>
 						  </ul>';
 					break;
