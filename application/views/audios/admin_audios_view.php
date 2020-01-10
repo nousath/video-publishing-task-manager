@@ -87,7 +87,8 @@
 										$status = ($audio->approved == 0) ? '<a href="'.base_url('audios/toggle_approve/'.$audio->id.'').'" class="btn btn-success btn-xs">Approve Audio  <i class="fa fa-toggle-on"></i></a>' : '';
 										$assign = ($audio->approved == 1 ) ? '<a href="'.base_url('audios/assign/'.$topic->id.'').'" class="btn btn-info btn-xs">Assign to Editor  <i class="fa fa-share"></i></a>' : '';
 										$decline = ($audio->approved == 0) ? '<a href="'.base_url('audios/decline/'.$audio->id.'').'" class="btn btn-danger btn-xs">Decline Audio  <i class="fa fa-toggle-off"></i></a>' : '';
-										$reserve_button = ($audio->is_reserved == 0) ? '<a href="'.base_url('reserves/do_reserve/'.$audio->id.'/2').'" class="btn btn-primary btn-xs">Reserve Audio  <i class="fa fa-archive"></i></a>' : '';
+										// $reserve_button = ($audio->is_reserved == 0) ? '<a href="'.base_url('reserves/do_reserve/'.$audio->id.'/2').'" class="btn btn-primary btn-xs">Reserve Audio  <i class="fa fa-archive"></i></a>' : '';
+										// '.$reserve_button.'
 										$draft_button = ($audio->is_draft == 0) ? '<a class="btn btn-default btn-xs" href="'.base_url('audios/save_as_draft/'.$audio->id.'').'"><i class="fa fa-file"></i> Save as draft</a>' : '';
 										echo '<tr>
 												<td>'.$sn.'</td>
@@ -95,7 +96,7 @@
 												<td>'.$submitted_by.'</td>
 												<td>'.date('d/M', $audio->submitted_at).'</td>
 												<td><a href="'.base_url("topics/audio/$audio->topic_id/$audio->id").'" class="btn btn-warning btn-xs btn-block">Listen/Download <i class="fa fa-microphone"></i></a></td>
-												<td>'.$status.' '.$decline.' '.$assign.' '.$reserve_button.' '.$draft_button.'</td>
+												<td>'.$status.' '.$decline.' '.$assign.' '.$draft_button.'</td>
 											</tr>';
 
 											$sn++;
