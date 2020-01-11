@@ -12,7 +12,7 @@ class Comments_model extends CI_Model
     public $media_type = 'media_type';
     public $media_id = 'media_id';
     public $id = 'id';
-    public $order = 'ASC';
+    public $order = 'DESC';
 
     function __construct()
     {

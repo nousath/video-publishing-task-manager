@@ -43,7 +43,7 @@ class Topics_model extends CI_Model
 	}
 	
     function get_num_all(){
-        $this->db->order_by($this->id, $this->order);
+        // $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->num_rows();
     }
 
@@ -55,6 +55,7 @@ class Topics_model extends CI_Model
 
 	function get_by_channel($channel_id){
         $this->db->where($this->channel_id, $channel_id);
+        $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
 	}
 
@@ -65,21 +66,25 @@ class Topics_model extends CI_Model
 	
 	function get_by_writer_assigned($writer_id){
         $this->db->where($this->user_id, $writer_id);
+        $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
 	}
 	
 	function get_by_artist_assigned($artist_id){
         $this->db->where($this->user2_id, $artist_id);
+        $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
 	}
 	
 	function get_by_editor_assigned($editor_id){
         $this->db->where($this->user3_id, $editor_id);
+        $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
 	}
 	
 	function get_drafts($drafts_id){
-		$this->db->where($this->is_draft, $drafts_id);
+        $this->db->where($this->is_draft, $drafts_id);
+        $this->db->order_by($this->id, $this->order);
 		return $this->db->get($this->table)->result();
 	}
     
@@ -105,7 +110,8 @@ class Topics_model extends CI_Model
 	
 	function get_by_stage_and_assigned($stage, $assigned){
 		$this->db->where($this->stage_id, $stage);
-		$this->db->where($this->assigned, $assigned);
+        $this->db->where($this->assigned, $assigned);
+        $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
 	}
 

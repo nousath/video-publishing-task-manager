@@ -28,7 +28,8 @@ class Audios_model extends CI_Model
 	}
 	
 	function get_by_user($user_id){
-		$this->db->where($this->submitted_by, $user_id);
+        $this->db->where($this->submitted_by, $user_id);
+        $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
 	}
 	
@@ -47,18 +48,21 @@ class Audios_model extends CI_Model
 	}
 	
 	function get_by_reserved($is_reserved){
-		$this->db->where($this->is_reserved, $is_reserved);
+        $this->db->where($this->is_reserved, $is_reserved);
+        $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
 	}
 
 	function get_by_reserved_and_draft($is_reserved, $is_draft){
 		$this->db->where($this->is_reserved, $is_reserved);
-		$this->db->where($this->is_draft, $is_draft);
+        $this->db->where($this->is_draft, $is_draft);
+        $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
 	}
 
 	function get_drafts($drafts_id){
-		$this->db->where($this->is_draft, $drafts_id);
+        $this->db->where($this->is_draft, $drafts_id);
+        $this->db->order_by($this->id, $this->order);
 		return $this->db->get($this->table)->result();
 	}
 
