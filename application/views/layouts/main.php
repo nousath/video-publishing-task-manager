@@ -288,7 +288,6 @@
 							<li class="header">SECTIONS</li>
 							<li><a href="'.base_url('scripts').'"> <i class="fa fa-file"></i> <span>Scripts</span> </a></li>
 							<li><a href="'.base_url('notifications').'"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
-							<li><a href="'.base_url('profile/index/'.$user->id.'').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
 						</ul>';
 				  
 				  break;
@@ -300,7 +299,6 @@
 							<li class="header">SECTIONS</li>
 							<li><a href="'.base_url('audios').'"> <i class="fa fa-microphone"></i> <span>Audios</span> </a></li>
 							<li><a href="'.base_url('notifications').'"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
-							<li><a href="'.base_url('profile/index/'.$user->id.'').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
 						</ul>';
 				  break;
 
@@ -311,7 +309,6 @@
 							<li class="header">SECTIONS</li>
 							<li><a href="'.base_url('videos').'"> <i class="fa fa-video-camera"></i> <span>Videos</span> </a></li>
 							<li><a href="'.base_url('notifications').'"> <i class="fa fa-bell"></i> <span>Notifications</span> </a></li>
-							<li><a href="'.base_url('profile/index/'.$user->id.'').'"> <i class="fa fa-user"></i> <span>Profile</span> </a></li>
 						</ul>';
 				  break;
 				
