@@ -50,7 +50,11 @@
 										if($assigned_topics != null){
 
 											foreach ($assigned_topics as $topic ) {
-												echo '<option value="'.$topic->id.'">'.$topic->topic.'</option>';
+												$unsubmitted_topic = $this->Scripts_model->get_num_rows_by_topic($topic->id);
+												if($unsubmitted_topic < 1){
+													echo '<option value="'.$topic->id.'">'.$topic->topic.'</option>';
+												}
+												
 											}
 										}
 									?>
@@ -70,44 +74,107 @@
 					<!-- /.col -->
 
 					<div class="col-md-9">
-						<legend>Submitted Scripts</legend>
-						<?php if ($this->session->flashdata('upload_success')): ?>			
-						<?php echo '<div class="alert alert-success">
-													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-													<strong>'.$this->session->flashdata('upload_success').'</strong>
-												</div>'; 
-						?>
-						<?php endif; ?>
-						
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th>SN</th>
-									<th>Topic</th>
-									<th>Date</th>
-									<!-- <th>Script Status</th> -->
-								</tr>
-							</thead>
-							<tbody>
-							<?php 
-								$sn = 1;
-								// if($scripts_by_user != null){
-									foreach ($scripts as $script ) {
-										$topic = $this->Topics_model->get_by_id($script->topic_id);
-										// $status = ($script->approved == 0) ? 'Not Approved <i class="fa fa-times"></i>' : 'Approved <i class="fa fa-check"></i>';
-										echo '<tr>
-												<td>'.$sn.'</td>
-												<td>'.$topic->topic.'</td>
-												<td>'.date('d/M', $script->submitted_at).'</td>
-												<td><a class="btn btn-danger btn-flat" href="'.base_url("scripts/index/$script->id").'">Comments <i class="fa fa-comments"></i></a></td>
-											</tr>';
 
-											$sn++;
-									}
-								// }
-							?>
-							</tbody> 
-						</table>
+						<div role="tabpanel">
+							<!-- Nav tabs -->
+							<ul class="nav nav-tabs" role="tablist">
+								<li role="presentation" class="active">
+									<a href="#home" aria-controls="home" role="tab" data-toggle="tab"><span class="text text-danger text-bold">Unwritten Scripts (Topics)</span></a>
+								</li>
+								<li role="presentation">
+									<a href="#tab" aria-controls="tab" role="tab" data-toggle="tab"><span class="text text-success text-bold">Submitted Scripts</span></a>
+								</li>
+							</ul>
+
+							<!-- Tab panes -->
+							<div class="tab-content">
+								<div role="tabpanel" class="tab-pane active" id="home">
+
+									<!-- Unwritten Scripts -->
+									<!-- <legend>Submitted Scripts</legend> -->
+									<?php if ($this->session->flashdata('upload_success')): ?>			
+									<?php echo '<div class="alert alert-success">
+																<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+																<strong>'.$this->session->flashdata('upload_success').'</strong>
+															</div>'; 
+									?>
+									<?php endif; ?>
+									
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th>SN</th>
+												<th>Topic</th>
+												<th>Date</th>
+											</tr>
+										</thead>
+										<tbody>
+										<?php 
+											$sn = 1;
+											foreach ($scripts as $script ) {
+
+												$unsubmitted_topic = $this->Scripts_model->get_num_rows_by_topic($script->topic_id);
+												if($unsubmitted_topic < 1){
+													$topic = $this->Topics_model->get_by_id($script->topic_id);
+													echo '<tr>
+															<td>'.$sn.'</td>
+															<td>'.$topic->topic.'</td>
+															<td>'.date('d/M', $script->submitted_at).'</td>
+															<td><a class="btn btn-danger btn-flat" href="'.base_url("scripts/index/$script->id").'">Comments <i class="fa fa-comments"></i></a></td>
+														</tr>';
+
+													$sn++;
+												}
+												
+											}
+										?>
+										</tbody> 
+									</table>
+
+								</div>
+
+								<!-- Submitted Scripts -->
+								<div role="tabpanel" class="tab-pane" id="tab">
+
+									<?php if ($this->session->flashdata('upload_success')): ?>			
+									<?php echo '<div class="alert alert-success">
+																<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+																<strong>'.$this->session->flashdata('upload_success').'</strong>
+															</div>'; 
+									?>
+									<?php endif; ?>
+									
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th>SN</th>
+												<th>Topic</th>
+												<th>Date</th>
+											</tr>
+										</thead>
+										<tbody>
+										<?php 
+											$sn = 1;
+											foreach ($scripts as $script ) {
+												$topic = $this->Topics_model->get_by_id($script->topic_id);
+												echo '<tr>
+														<td>'.$sn.'</td>
+														<td>'.$topic->topic.'</td>
+														<td>'.date('d/M', $script->submitted_at).'</td>
+														<td><a class="btn btn-danger btn-flat" href="'.base_url("scripts/index/$script->id").'">Comments <i class="fa fa-comments"></i></a></td>
+													</tr>';
+
+													$sn++;
+											}
+										?>
+										</tbody> 
+									</table>
+
+
+
+								</div>
+							</div>
+						</div>
 						
 					</div>
 					<!-- /.col -->

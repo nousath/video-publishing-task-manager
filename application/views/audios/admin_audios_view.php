@@ -57,7 +57,7 @@
 						?>
 						<?php endif; ?>
 						
-						<table class="table table-hover">
+						<table class="table table-hover" id="example2">
 							<thead>
 								<tr>
 									<th>SN</th>

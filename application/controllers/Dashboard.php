@@ -79,7 +79,6 @@ class Dashboard extends App_Controller{
 			case 5:
 				$data = array(
 					'channel' => set_value('channel'),
-					// 'topic' => set_value('topic'),
 					'stage' => set_value('stage'),
 					'assignto' => set_value('assignto'),
 					'users' => $this->User_model->get_by_usertype(2),

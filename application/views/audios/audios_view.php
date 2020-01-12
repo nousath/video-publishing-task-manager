@@ -40,12 +40,12 @@
 										if($assigned_scripts != null){
 
 											foreach ($assigned_scripts as $topic ) {
-												echo '<option value="'.$topic->id.'">'.$topic->topic.'</option>';
+												$unsubmitted_topic = $this->Scripts_model->get_num_rows_by_topic($topic->id);
+												if($unsubmitted_topic < 1){
+													echo '<option value="'.$topic->id.'">'.$topic->topic.'</option>';
+												}
 											}
 										}
-										// else{
-										// 	echo 'No assigned scripts';
-										// }
 									?>
 									
 								</select>
@@ -62,75 +62,102 @@
 					</div>
 					<!-- /.col -->
 
-					<div class="col-md-4">
-						<legend>Download scripts</legend>
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th>SN</th>
-									<th>Topic</th>
-								</tr>
-							</thead>
-							<tbody>
-							<?php 
-								$sn = 1;
-								if($assigned_scripts != null){
-									foreach ($assigned_scripts as $topic ) {
-										
-										echo '<tr>
-												<td>'.$sn.'</td>
-												<td>'.$topic->topic.'</td>
-												<td><a href="'.base_url($topic->doc).'" class="btn btn-warning btn-sm btn-block"><i class="fa fa-file-word-o"></i> Download Script</a></td>
-											</tr>';
+					
 
-											$sn++;
-									}
-								}
-							?>
-							</tbody>
-						</table>
-					</div>
-					<!-- /.col -->
-
-					<div class="col-md-5">
-						<legend>My Submitted Audios</legend>
-						<?php if ($this->session->flashdata('upload_success')): ?>			
-						<?php echo '<div class="alert alert-success">
-													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-													<strong>'.$this->session->flashdata('upload_success').'</strong>
-												</div>'; 
-						?>
-						<?php endif; ?>
+					<div class="col-md-9">
+						<div role="tabpanel">
+							<!-- Nav tabs -->
+							<ul class="nav nav-tabs" role="tablist">
+								<li role="presentation" class="active">
+									<a href="#home" aria-controls="home" role="tab" data-toggle="tab"><span class="text text-danger text-bold">Unsubmitted Audios</span></a>
+								</li>
+								<li role="presentation">
+									<a href="#tab" aria-controls="tab" role="tab" data-toggle="tab"><span class="text text-primary text-bold">Submitted Audios</span></a>
+								</li>
+							</ul>
 						
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th>SN</th>
-									<th>Topic</th>
-									<th>Date</th>
-									<!-- <th>Audio Status</th> -->
-								</tr>
-							</thead>
-							<tbody>
-							<?php 
-								$sn = 1;
-								// if($scripts_by_user != null){
-									foreach ($audios as $audio ) {
-										$topic = $this->Topics_model->get_by_id($audio->topic_id);
-										// $status = ($audio->approved == 0) ? 'Not Approved <i class="fa fa-times"></i>' : 'Approved <i class="fa fa-check"></i>';
-										echo '<tr>
-												<td>'.$sn.'</td>
-												<td>'.$topic->topic.'</td>
-												<td>'.date('d/M', $audio->submitted_at).'</td>
-												<td><a class="btn btn-danger btn-flat" href="'.base_url("audios/index/$audio->id").'">Comments <i class="fa fa-comments"></i></a></td>
-											</tr>';
+							<!-- Tab panes -->
+							<div class="tab-content">
+								<div role="tabpanel" class="tab-pane active" id="home">
+									<?php if ($this->session->flashdata('upload_success')): ?>			
+									<?php echo '<div class="alert alert-success">
+																<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+																<strong>'.$this->session->flashdata('upload_success').'</strong>
+															</div>'; 
+									?>
+									<?php endif; ?>
+									
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th>SN</th>
+												<th>Topic</th>
+												<th>Date</th>
+											</tr>
+										</thead>
+										<tbody>
+										<?php 
+											$sn = 1;
+											// if($scripts_by_user != null){
+												foreach ($audios as $audio ) {
+													$unsubmitted_topic = $this->Scripts_model->get_num_rows_by_topic($audio->topic_id);
+													if($unsubmitted_topic < 1){
+														$topic = $this->Topics_model->get_by_id($audio->topic_id);
+														echo '<tr>
+																<td>'.$sn.'</td>
+																<td>'.$topic->topic.'</td>
+																<td>'.date('d/M', $audio->submitted_at).'</td>
+																<td><td><a href="'.base_url($topic->doc).'" class="btn btn-warning btn-sm btn-block"><i class="fa fa-file-word-o"></i> Download Script</a></td> <a class="btn btn-danger btn-flat" href="'.base_url("audios/index/$audio->id").'">Comments <i class="fa fa-comments"></i></a></td>
+															</tr>';
 
-											$sn++;
-									}
-								// }
-							?>
-							</tbody>
-						</table>
+														$sn++;
+													}
+													
+												}
+											// }
+										?>
+										</tbody>
+									</table>
+								</div>
+
+								<!-- Submitted Audios -->
+								<div role="tabpanel" class="tab-pane" id="tab">
+									<?php if ($this->session->flashdata('upload_success')): ?>			
+									<?php echo '<div class="alert alert-success">
+																<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+																<strong>'.$this->session->flashdata('upload_success').'</strong>
+															</div>'; 
+									?>
+									<?php endif; ?>
+									
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th>SN</th>
+												<th>Topic</th>
+												<th>Date</th>
+											</tr>
+										</thead>
+										<tbody>
+										<?php 
+											$sn = 1;
+												foreach ($audios as $audio ) {
+													$topic = $this->Topics_model->get_by_id($audio->topic_id);
+													echo '<tr>
+															<td>'.$sn.'</td>
+															<td>'.$topic->topic.'</td>
+															<td>'.date('d/M', $audio->submitted_at).'</td>
+															<td><a class="btn btn-danger btn-flat" href="'.base_url("audios/index/$audio->id").'">Comments <i class="fa fa-comments"></i></a></td>
+														</tr>';
+
+														$sn++;
+												}
+										?>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
 						
 					</div>
 					<!-- /.col -->
@@ -212,3 +239,5 @@
 		});
 	}); 
 	</script> -->
+
+	
