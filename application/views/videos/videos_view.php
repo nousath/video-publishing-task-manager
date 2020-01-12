@@ -40,7 +40,10 @@
 										if($assigned_audios != null){
 
 											foreach ($assigned_audios as $topic ) {
-												echo '<option value="'.$topic->id.'">'.$topic->topic.'</option>';
+												$unsubmitted_topic = $this->Audios_model->get_num_rows_by_topic($topic->id);
+												if($unsubmitted_topic < 1){
+													echo '<option value="'.$topic->id.'">'.$topic->topic.'</option>';
+												}
 											}
 										}
 									
@@ -91,7 +94,7 @@
 					<!-- /.col -->
 
 					<div class="col-md-5">
-						<legend>My Submitted Videos</legend>
+						<legend>My Videos</legend>
 						<?php if ($this->session->flashdata('upload_success')): ?>			
 						<?php echo '<div class="alert alert-success">
 													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -106,26 +109,25 @@
 									<th>SN</th>
 									<th>Topic</th>
 									<th>Date</th>
-									<!-- <th>Video Status</th> -->
 								</tr>
 							</thead>
 							<tbody>
 							<?php 
 								$sn = 1;
-								// if($scripts_by_user != null){
-									foreach ($videos as $video ) {
-										$topic = $this->Topics_model->get_by_id($video->topic_id);
-										// $status = ($video->approved == 0) ? 'Not Approved <i class="fa fa-times"></i>' : 'Approved <i class="fa fa-check"></i>';
-										echo '<tr>
-												<td>'.$sn.'</td>
-												<td>'.$topic->topic.'</td>
-												<td>'.date('d/M', $video->submitted_at).'</td>
-												<td><a class="btn btn-danger btn-flat" href="'.base_url("videos/index/$video->id").'">Comments <i class="fa fa-comments"></i></a></td>
-											</tr>';
+								foreach ($videos as $video ) {
+									$topic = $this->Topics_model->get_by_id($video->topic_id);
+									echo '<tr>
+											<td>'.$sn.'</td>
+											<td>'.$topic->topic.'</td>
+											<td>'.date('d/M', $video->submitted_at).'</td>
+											<td>
+												'.$topic->doc.' '.$topic->audio.'
+												 <a class="btn btn-danger btn-flat" href="'.base_url("videos/index/$video->id").'">Comments <i class="fa fa-comments"></i></a>
+											</td>
+										</tr>';
 
-											$sn++;
-									}
-								// }
+										$sn++;
+								}
 							?>
 							</tbody>
 						</table>

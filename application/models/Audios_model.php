@@ -31,6 +31,17 @@ class Audios_model extends CI_Model
         $this->db->where($this->submitted_by, $user_id);
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
+    }
+    
+     // get the number of rows by topic
+     function get_num_rows_by_topic($topic_id = ""){
+        if($topic_id == ""){
+            return $this->db->get($this->table)->num_rows();
+        }else{
+            $this->db->where($this->topic_id, $topic_id);
+            return $this->db->get($this->table)->num_rows();
+        }
+        
 	}
 	
 
