@@ -50,7 +50,7 @@
 						?>
 						<?php endif; ?>
 
-						<table class="table table-hover">
+						<table class="table table-hover" id="example2">
 							<div class="pull-right">
 								
 							</div>
@@ -72,7 +72,7 @@
 									$number_of_topics_per_channel = $this->Topics_model->num_by_channel($channel->id);
 									$user = $this->ion_auth->user($channel->created_by)->row();
 									$created_by = ($user->first_name == '' && $user->first_name == '') ? $user->username : $user->first_name.' '.$user->last_name;
-									$delete_button = ($user_in_session->usertype == 7) ? '' : '<a href="'.base_url('channels/delete/'.$channel->id.'').'" class="btn btn-danger btn-sm">Delete <i class="fa fa-trash"></i></a>';
+									$delete_button = ($user_in_session->usertype == 7) ? '' : "<a class='btn btn-danger btn-xs' data-toggle='modal' href='#modal-id-del$channel->id'>Edit <i class='fa fa-trash'></i></a>";
 									echo '<tr>
 											<td>'.$sn.'</td>
 											<td>'.$channel->name.'</td>
@@ -80,7 +80,7 @@
 											<td>'.date('d/M', $channel->created_at).'</td>
 											<td>'.$created_by.'</td>
 											<td>';
-												echo "<a class='btn btn-primary btn-sm' data-toggle='modal' href='#modal-id$channel->id'>Edit <i class='fa fa-edit'></i></a> ";
+												echo "<a class='btn btn-primary btn-xs' data-toggle='modal' href='#modal-id$channel->id'>Edit <i class='fa fa-edit'></i></a> ";
 												echo ''.$delete_button.'
 												
 											</td>
@@ -107,6 +107,24 @@
 													</div>
 													<div class="modal-footer">
 														<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+													</div>
+												</div>
+											</div>
+										</div>
+
+
+										<div class="modal fade" id="modal-id-del'.$channel->id.'">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+														<h4 class="modal-title">Are you sure you want to delete this channel?</h4>
+													</div>
+													<div class="modal-body">
+													<a href="'.base_url('channels/delete/'.$channel->id.'').'" class="btn btn-danger btn-xs">YES, Delete <i class="fa fa-trash"></i></a>
+														<button type="button" class="btn btn-default btn-xs" data-dismiss="modal">NO, Cancel</button>
+													</div>
+													<div class="modal-footer">
 													</div>
 												</div>
 											</div>
