@@ -52,10 +52,9 @@
 
 
 						<div class="table-responsive">
-							<table class="table table-hover" id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="false" data-click-to-select="true" data-toolbar="#toolbar">
+							<table class="table table-hover" id="example2">
 								<thead>
 									<tr>
-										<!-- <th>SN</th> -->
 										<th>Topic</th>
 										<th>Channel</th>
 										<th>Assigned To</th>
@@ -80,12 +79,12 @@
 										$user = $this->ion_auth->user($topic->user_id)->row();
 										$assigned = ($topic->user_id != '' ) ? 'Assinged' : 'Not assinged';
 										$created_by = $this->ion_auth->user($topic->created_by)->row();
-										$doc = (!empty($topic->doc)) ? '<a href="'.base_url($topic->doc).'" class="btn btn-warning btn-xs"><i class="fa fa-file-word-o"></i> View/Download</a>' : 'Script Unavailable';
-										$audio = (!empty($topic->audio)) ? '<a href="'.base_url($topic->audio).'" class="btn btn-primary btn-xs"><i class="fa fa-microphone"></i> Listen/Download</a>' : 'Audio Unavailable';
-										$video = (!empty($topic->video)) ? '<a href="'.base_url($topic->video).'" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Watch/Download</a>' : 'Video Unavailable';
+										$doc = (!empty($topic->doc)) ? '<a href="'.base_url($topic->doc).'" style="color:orange;"><i class="fa fa-file-word-o"></i> View/Download</a>' : 'Script Unavailable';
+										$audio = (!empty($topic->audio)) ? '<a href="'.base_url($topic->audio).'" style="color:blue;"><i class="fa fa-microphone"></i> Listen/Download</a>' : 'Audio Unavailable';
+										$video = (!empty($topic->video)) ? '<a href="'.base_url($topic->video).'" style="color:green;"><i class="fa fa-video-camera"></i> Watch/Download</a>' : 'Video Unavailable';
 										$draft_button = ($topic->is_draft == 0) ? '<a class="btn btn-default btn-xs" href="'.base_url('topics/save_as_draft/'.$topic->id.'').'"><i class="fa fa-file"></i> Save as draft</a>' : '';
 										$channel = ($topic->channel_id != '') ? $this->Channels_model->get_by_id($topic->channel_id) : 'Channel not found';
-										$delete_button = ($user_in_session->usertype == 7) ? '' : '<a class="btn btn-danger btn-xs" href="'.base_url('topics/delete/'.$topic->id.'').'"><i class="fa fa-trash"></i> Delete</a>';
+										$delete_button = ($user_in_session->usertype == 7) ? '' : "<a class='btn btn-danger btn-xs' data-toggle='modal' href='#modal-id$topic->id'>Delete <i class='fa fa-trash'></i></a>";
 
 										echo '<tr>
 												<td>'.$topic->topic.'</td>
@@ -105,7 +104,25 @@
 													'.$delete_button.'
 													'.$draft_button.'
 												</td>
-											</tr>';
+											</tr>
+											
+											
+											<div class="modal fade" id="modal-id'.$topic->id.'">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+														<h4 class="modal-title">Are you sure you want to delete <span class="text text-danger">'.$topic->topic.'?</span></h4>
+													</div>
+													<div class="modal-body">
+														<a class="btn btn-danger btn-xs" href="'.base_url('topics/delete/'.$topic->id.'').'"><i class="fa fa-trash"></i>YES, Delete</a>
+														<button type="button" class="btn btn-default btn-xs" data-dismiss="modal">NO, Cancel</button>
+													</div>
+													<div class="modal-footer">
+													</div>
+												</div>
+											</div>
+										</div>';
 
 									}
 								?>

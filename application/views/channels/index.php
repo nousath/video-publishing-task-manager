@@ -72,7 +72,7 @@
 									$number_of_topics_per_channel = $this->Topics_model->num_by_channel($channel->id);
 									$user = $this->ion_auth->user($channel->created_by)->row();
 									$created_by = ($user->first_name == '' && $user->first_name == '') ? $user->username : $user->first_name.' '.$user->last_name;
-									$delete_button = ($user_in_session->usertype == 7) ? '' : "<a class='btn btn-danger btn-xs' data-toggle='modal' href='#modal-id-del$channel->id'>Edit <i class='fa fa-trash'></i></a>";
+									$delete_button = ($user_in_session->usertype == 7) ? '' : "<a class='btn btn-danger btn-xs' data-toggle='modal' href='#modal-id-del$channel->id'>Delete <i class='fa fa-trash'></i></a>";
 									echo '<tr>
 											<td>'.$sn.'</td>
 											<td>'.$channel->name.'</td>
@@ -118,7 +118,7 @@
 												<div class="modal-content">
 													<div class="modal-header">
 														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-														<h4 class="modal-title">Are you sure you want to delete this channel?</h4>
+														<h4 class="modal-title">Are you sure you want to delete <span class="text text-danger">'.$channel->name.'?</span></h4>
 													</div>
 													<div class="modal-body">
 													<a href="'.base_url('channels/delete/'.$channel->id.'').'" class="btn btn-danger btn-xs">YES, Delete <i class="fa fa-trash"></i></a>

@@ -54,7 +54,7 @@
 						$user_in_session = $this->ion_auth->user()->row(); 
 	
 						foreach ($users as $u ) {
-							$delete_button = ($user_in_session->usertype == 7) ? '' : '<a href="'.site_url('users/remove/'.$u->id).'" class="btn btn-danger btn-xs">Delete <span class="fa fa-trash"></span></a>';
+							$delete_button = ($user_in_session->usertype == 7) ? '' : "<a class='btn btn-danger btn-xs' data-toggle='modal' href='#modal-id-del$u->id'>Delete <i class='fa fa-trash'></i></a>";
 
 							
 						echo '	<tr data-href="'.base_url('profile/index/'.$u->id.'').'">
@@ -73,7 +73,24 @@
 										'.$delete_button.'
 									</td>
 								</tr>
-							';
+							
+							
+								<div class="modal fade" id="modal-id'.$u->id.'">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+											<h4 class="modal-title">Are you sure you want to delete <span class="text text-danger">'.$u->username.'?</span></h4>
+										</div>
+										<div class="modal-body">
+										<a href="'.site_url('users/remove/'.$u->id).'" class="btn btn-danger btn-xs">YES, Delete <span class="fa fa-trash"></span></a>
+											<button type="button" class="btn btn-default btn-xs" data-dismiss="modal">NO, Cancel</button>
+										</div>
+										<div class="modal-footer">
+										</div>
+									</div>
+								</div>
+							</div>';
 						}
 						
 					?>
